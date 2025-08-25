@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inner Circle — RSVP Code</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="brand"><a href="index.html">Inner&nbsp;Circle</a></div>
+  <main class="container">
+    <section class="card">
+      <h1>Enter RSVP Code</h1>
+      <p class="lead">This event is invite-only. Please enter the code from your invitation.</p>
+      <form class="form" id="codeForm">
+        <div>
+          <label class="label" for="code">RSVP Code</label>
+          <input class="input" id="code" name="code" placeholder="e.g. INNER25" required/>
+          <p class="helper">Need help? Contact your host.</p>
+        </div>
+        <button class="button" type="submit">Continue</button>
+      </form>
+      <div id="codeError" class="notice" style="display:none; margin-top:12px">
+        Invalid code. Please try again.
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
