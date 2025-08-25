@@ -3,31 +3,34 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Inner Circle — Code</title>
+  <title>Inner Circle — Enter Code</title>
   <style>
-    html, body { margin:0; height:100%; background:#000; color:#fff; }
-    body { display:flex; flex-direction:column; align-items:center; justify-content:center; font:400 16px/1.4 system-ui, sans-serif; text-align:center; }
-    h1 { font-size:28px; margin:0 0 8px }
-    p { margin:0 0 18px; color:#aaa }
-    .input {
-      width:260px; padding:14px 16px; border-radius:8px;
-      border:1px solid #444; background:#111; color:#fff; outline:none;
+    html,body{margin:0;height:100%;background:#000;color:#fff}
+    body{display:flex;flex-direction:column;align-items:center;justify-content:center;
+         font:400 16px/1.4 system-ui, sans-serif;text-align:center;padding:24px}
+    h1{font:700 28px/1.2 system-ui, sans-serif;margin:0 0 8px}
+    p{margin:0 0 18px;color:#bdbdbd}
+    .input{
+      width:260px;padding:14px 16px;border-radius:10px;
+      border:1px solid #333;background:#111;color:#fff;outline:none
     }
-    .input::placeholder{ color:#777 }
+    .input::placeholder{color:#777}
     .circle-btn{
-      display:flex; align-items:center; justify-content:center;
-      width:120px; height:120px; border-radius:50%;
-      background:#e11900; color:#fff; font-weight:700; font-size:18px;
-      border:0; cursor:pointer; margin:20px auto 0; transition:background .2s ease;
+      display:flex;align-items:center;justify-content:center;
+      width:120px;height:120px;border-radius:50%;
+      background:#e11900;color:#fff;font:700 18px/1 system-ui, sans-serif;
+      border:0;cursor:pointer;margin:22px auto 0;transition:background .2s ease
     }
-    .circle-btn:hover{ background:#b31200 }
+    .circle-btn:hover{background:#b31200}
   </style>
 </head>
 <body>
   <h1>Welcome to the Inner Circle</h1>
   <p>This event is invite-only. Please enter your code.</p>
-  <form action="rsvp.html">
-    <input class="input" type="text" name="code" placeholder="e.g. INNER25" required />
+
+  <!-- Simple client-side gate: if empty, browser blocks submit (required) -->
+  <form action="rsvp.html" method="get">
+    <input class="input" type="text" name="code" placeholder="e.g. INNER25" required/>
     <button class="circle-btn" type="submit">Continue</button>
   </form>
 </body>
