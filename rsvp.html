@@ -5,63 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>RSVP Form</title>
   <style>
-    html, body {
-      margin:0; height:100%;
-      background:#000; color:#fff;
-      font-family:Inter, sans-serif;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .container {
-      width:100%; max-width:500px;
-      padding:20px;
-      text-align:center;
-    }
-    h1 {
-      font-size:28px; margin-bottom:8px;
-    }
-    p {
-      margin:0 0 25px; color:#aaa;
-    }
-    .form-group {
-      margin-bottom:15px;
-      text-align:left;
-    }
-    label {
-      display:block;
-      font-size:14px;
-      margin-bottom:6px;
-      color:#ddd;
-    }
+    html, body { margin:0; height:100%; background:#000; color:#fff; font-family:Inter, system-ui, sans-serif; }
+    body { display:flex; align-items:center; justify-content:center; padding:24px; }
+    .container { width:min(560px, 100%); }
+    h1 { font-size:28px; margin:0 0 6px; text-align:center; }
+    p  { color:#aaa; margin:0 0 22px; text-align:center; }
+    .grid { display:grid; gap:14px; }
+    label { font-size:13px; color:#ddd; margin-bottom:6px; display:block; }
     input, select, textarea {
-      width:100%;
-      padding:12px;
-      border-radius:6px;
-      border:1px solid #333;
-      background:#111;
-      color:#fff;
-      font-size:14px;
+      width:100%; padding:12px; border-radius:8px; border:1px solid #333; background:#111; color:#fff; font-size:14px;
     }
-    input:focus, select:focus, textarea:focus {
-      outline:none; border:1px solid #e11900;
-    }
-    textarea {
-      resize:vertical;
-      min-height:80px;
-    }
+    input:focus, select:focus, textarea:focus { outline:none; border-color:#e11900; }
+    .row2 { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    textarea { min-height:90px; resize:vertical; }
     .circle-btn {
       display:flex; align-items:center; justify-content:center;
-      width:120px; height:120px;
-      margin:25px auto 0;
-      border-radius:50%;
-      background:#e11900; color:#fff;
-      font-weight:700; font-size:18px;
-      text-decoration:none; cursor:pointer;
-      box-shadow:0 6px 18px rgba(0,0,0,.6);
-      transition:background .2s ease, transform .15s ease;
-      border:none;
+      width:120px; height:120px; border-radius:50%; margin:22px auto 0;
+      background:#e11900; color:#fff; font-weight:700; font-size:18px; border:0; cursor:pointer;
+      transition:background .2s ease, transform .1s ease; box-shadow:0 10px 30px rgba(0,0,0,.45);
     }
-    .circle-btn:hover { background:#b31200; transform:scale(1.05); }
-    .circle-btn:active { transform:scale(0.95); }
+    .circle-btn:hover { background:#b31200; }
+    .circle-btn:active { transform:scale(.96); }
+    .msg { min-height:20px; color:#ff9a9a; text-align:center; margin-top:10px; }
   </style>
 </head>
 <body>
@@ -69,40 +34,105 @@
     <h1>Inner Circle</h1>
     <p>Confirm your attendance</p>
 
-    <form action="confirm.html" method="GET">
-      <div class="form-group">
-        <label>First Name</label>
-        <input type="text" name="first" required>
+    <form id="rsvpForm" class="grid" novalidate>
+      <div class="row2">
+        <div>
+          <label for="first">First Name</label>
+          <input id="first" name="first" required />
+        </div>
+        <div>
+          <label for="last">Last Name</label>
+          <input id="last" name="last" required />
+        </div>
       </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" name="last" required>
+
+      <div class="row2">
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div>
+          <label for="phone">Phone (for SMS)</label>
+          <input id="phone" name="phone" type="tel" placeholder="+1 555 123 4567" />
+        </div>
       </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" required>
+
+      <div class="row2">
+        <div>
+          <label for="notify">How should we notify you?</label>
+          <select id="notify" name="notify">
+            <option value="email">Email</option>
+            <option value="text">Text</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div>
+          <label for="plusone">Plus One</label>
+          <select id="plusone" name="plusone">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="tel" name="phone" placeholder="+1 555 123 4567" required>
+
+      <div>
+        <label for="diet">Dietary Notes (optional)</label>
+        <textarea id="diet" name="diet"></textarea>
       </div>
-      <div class="form-group">
-        <label>Plus One</label>
-        <select name="plusone" required>
-          <option value="no">No</option>
-          <option value="yes">Yes</option>
-        </select>
+
+      <div>
+        <label for="notes">Notes (optional)</label>
+        <textarea id="notes" name="notes"></textarea>
       </div>
-      <div class="form-group">
-        <label>Dietary Notes</label>
-        <textarea name="diet"></textarea>
-      </div>
-      <div class="form-group">
-        <label>Additional Notes</label>
-        <textarea name="notes"></textarea>
-      </div>
-      <button type="submit" class="circle-btn">Send</button>
+
+      <button class="circle-btn" id="submitBtn" type="submit">Send</button>
+      <div id="msg" class="msg" role="alert" aria-live="polite"></div>
     </form>
   </div>
+
+  <script>
+    // Paste your Apps Script Web App URL (the one you just deployed)
+    const RSVP_URL = "PASTE_YOUR_EXEC_URL_HERE";
+
+    const form = document.getElementById('rsvpForm');
+    const btn  = document.getElementById('submitBtn');
+    const msg  = document.getElementById('msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.type = 'rsvp';
+
+      if (!RSVP_URL || RSVP_URL.includes('PASTE_YOUR_EXEC_URL_HERE')) {
+        alert('Add your Apps Script Web App URL in rsvp.html (RSVP_URL).');
+        return;
+      }
+
+      btn.disabled = true;
+      try {
+        const res = await fetch(RSVP_URL, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(data)
+        });
+        const raw = await res.text();
+        let json; try { json = JSON.parse(raw); } catch { json = {}; }
+
+        if (json.ok) {
+          window.location.href = 'confirm.html';
+        } else {
+          msg.textContent = 'Submission error. Please try again.';
+          console.log('Server response:', raw);
+        }
+      } catch (err) {
+        msg.textContent = 'Network error. Please try again.';
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
