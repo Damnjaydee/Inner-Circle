@@ -36,8 +36,8 @@ const gateOk = () => sessionStorage.getItem(GATE_KEY) === "1";
     const missing = required.some(k => !String(data[k]||'').trim());
     if(missing){ qs('#formError').style.display = 'block'; return; }
 
-    const emailOk = /.+@.+\\..+/.test(data.email);
-    const phoneOk = String(data.phone).replace(/\\D/g,'').length >= 10;
+    const emailOk = /.+@.+\..+/.test(data.email);
+    const phoneOk = String(data.phone).replace(/\D/g,'').length >= 10;
     if(!emailOk || !phoneOk){ qs('#formError').style.display = 'block'; return; }
 
     const name = encodeURIComponent(data.firstName.trim());
@@ -51,6 +51,6 @@ const gateOk = () => sessionStorage.getItem(GATE_KEY) === "1";
   if(!lead) return;
   const { name } = getParams();
   if(name){
-    lead.textContent = `Thank you, ${decodeURIComponent(name)} — we'll send directions to your email/SMS before the event.`;
+    lead.textContent = `Thank you, ${decodeURIComponent(name)} — we’ll send directions to your email/SMS before the event.`;
   }
 })();
