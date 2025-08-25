@@ -5,17 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Inner Circle — Home</title>
   <style>
-    body {margin:0; height:100vh; display:flex; align-items:center; justify-content:center; background:#fff;}
+    body {
+      margin:0; height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      background:#000; /* black background */
+    }
     .circle-btn {
       display:flex; align-items:center; justify-content:center;
       width:140px; height:140px; border-radius:50%;
-      background:#e11900; color:#fff; font-family:sans-serif;
-      font-weight:bold; font-size:20px; text-decoration:none;
+      background:#e11900; color:#fff;
+      font-family:sans-serif; font-weight:bold; font-size:20px;
+      text-decoration:none;
+      box-shadow:0 6px 18px rgba(0,0,0,.4);
+      transition:transform .15s ease, background .2s ease;
     }
-    .circle-btn:hover{background:#b31200}
+    .circle-btn:hover { background:#b31200; transform:scale(1.05) }
+    .circle-btn:active { transform:scale(0.95) }
   </style>
 </head>
 <body>
-  <a href="code.html" class="circle-btn">RSVP</a>
+  <a href="rsvp.html" class="circle-btn">RSVP</a>
 </body>
 </html>
