@@ -3,35 +3,172 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Inner Circle — RSVP Form</title>
+  <title>Inner Circle — Confirm your attendance</title>
+  <!-- Serif for headings + clean sans for UI -->
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#fff; font-family:sans-serif;}
-    form {display:grid; gap:12px; width:280px;}
-    input, select, textarea {
-      padding:10px 14px; border:1px solid #ccc; border-radius:8px; font-size:15px;
+    :root{
+      --paper:#0b0b0b;      /* page bg */
+      --card:#111;          /* card bg */
+      --ink:#eae7df;        /* main text (warm off-white) */
+      --muted:#a8a39a;      /* secondary text */
+      --line:rgba(234,231,223,.20); /* hairline */
+      --pill:#1b1b1b;       /* radio pill bg */
+      --pill-line:#2a2a2a;  /* radio pill border */
+      --accent:#ffffff;     /* button text / outlines */
     }
-    textarea{min-height:80px}
-    .circle-btn {
-      display:flex; align-items:center; justify-content:center;
-      width:120px; height:120px; border-radius:50%;
-      background:#e11900; color:#fff; font-weight:bold; font-size:18px;
-      text-decoration:none; border:none; margin:16px auto 0; cursor:pointer;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      display:flex; align-items:center; justify-content:center; padding:24px;
     }
-    .circle-btn:hover{background:#b31200}
+    .card{
+      width:min(880px, 100%);
+      background:linear-gradient(180deg, #111 0%, #0f0f0f 100%);
+      border:1px solid #191919;
+      border-radius:20px;
+      box-shadow:0 30px 80px rgba(0,0,0,.6);
+      padding:34px 34px 28px;
+      position:relative;
+    }
+    .card:after{ /* soft outer glow */
+      content:""; position:absolute; inset:-8px; border-radius:24px;
+      box-shadow:0 10px 60px rgba(0,0,0,.55); pointer-events:none;
+    }
+
+    /* Headings */
+    h1.title{
+      font-family:"Bodoni Moda", serif;
+      font-weight:700; letter-spacing:.5px; font-size:36px; margin:0 0 8px;
+    }
+    h2.kicker{
+      font-family:"Bodoni Moda", serif;
+      font-weight:600; font-size:22px; margin:0 0 6px;
+    }
+    .eyebrow{
+      position:absolute; top:20px; right:24px; font-size:12px; letter-spacing:.14em;
+      color:var(--muted); text-transform:uppercase;
+    }
+    .sub{ color:var(--muted); margin:0 0 18px; }
+
+    /* Grid */
+    .grid{ display:grid; gap:22px; }
+    @media (min-width:780px){
+      .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    }
+
+    /* Labels + inputs */
+    .label{
+      font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--muted); margin:0 0 8px; display:block;
+    }
+    .input, .textarea{
+      width:100%; background:#0f0f0f; color:var(--ink);
+      border:1px solid var(--line); border-radius:10px;
+      padding:14px 16px; font:inherit;
+      outline:none; transition:border-color .15s ease, background .2s ease;
+    }
+    .input::placeholder, .textarea::placeholder{ color:#6f6b64 }
+    .input:focus, .textarea:focus{ border-color:#d7d1c6; background:#111 }
+    .textarea{ min-height:120px; resize:vertical }
+
+    /* Dividers */
+    .hr{ height:1px; background:var(--line); margin:8px 0 6px }
+
+    /* Radio pills */
+    .pills{ display:flex; gap:10px; flex-wrap:wrap }
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      background:var(--pill); border:1px solid var(--pill-line);
+      color:var(--ink); border-radius:999px; padding:10px 16px; cursor:pointer;
+      user-select:none;
+    }
+    .pill input{ appearance:none; width:14px; height:14px; border-radius:50%;
+      border:1px solid #6a6a6a; display:inline-block; position:relative; }
+    .pill input:checked{ border-color:#e9e5dd; }
+    .pill input:checked:after{ content:""; position:absolute; inset:3px; border-radius:50%; background:#e9e5dd; }
+
+    /* Confirm button */
+    .cta{
+      width:100%; display:inline-flex; align-items:center; justify-content:center;
+      height:52px; border-radius:999px; margin-top:16px;
+      color:var(--accent); background:transparent; border:1px solid rgba(255,255,255,.85);
+      font-weight:700; letter-spacing:.15em; text-transform:uppercase; cursor:pointer;
+      transition:background .2s ease, transform .04s ease, border-color .2s ease;
+    }
+    .cta:hover{ background:rgba(255,255,255,.06); border-color:#fff; }
+    .cta:active{ transform:translateY(1px) }
+
+    .footnote{ margin-top:18px; color:var(--muted); font-size:12px }
   </style>
 </head>
 <body>
-  <form action="confirm.html">
-    <input type="text" placeholder="First Name" required/>
-    <input type="text" placeholder="Last Name" required/>
-    <input type="email" placeholder="Email" required/>
-    <input type="tel" placeholder="Mobile" required/>
-    <select required>
-      <option value="" disabled selected>Total Guests</option>
-      <option>1</option><option>2</option><option>3</option><option>4</option>
-    </select>
-    <textarea placeholder="Notes (optional)"></textarea>
-    <button type="submit" class="circle-btn">Send</button>
-  </form>
+  <article class="card">
+    <div class="eyebrow">Private RSVP</div>
+
+    <h1 class="title">Inner Circle</h1>
+    <h2 class="kicker">Confirm your attendance</h2>
+    <p class="sub">Final details are shared privately upon confirmation.</p>
+
+    <form class="grid" action="confirm.html" method="get" novalidate>
+      <div class="row-2">
+        <div>
+          <label class="label" for="first">First name</label>
+          <input class="input" id="first" name="first" placeholder="First Name" required>
+        </div>
+        <div>
+          <label class="label" for="last">Last name</label>
+          <input class="input" id="last" name="last" placeholder="Last Name" required>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="row-2">
+        <div>
+          <label class="label">How should we notify you?</label>
+          <div class="pills">
+            <label class="pill"><input type="radio" name="notify" value="email" checked> Email</label>
+            <label class="pill"><input type="radio" name="notify" value="text"> Text</label>
+            <label class="pill"><input type="radio" name="notify" value="both"> Both</label>
+          </div>
+        </div>
+        <div>
+          <label class="label" for="phone">Phone</label>
+          <input class="input" id="phone" name="phone" placeholder="+1 555 123 4567" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="label" for="email">Email</label>
+        <input class="input" id="email" name="email" type="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="hr"></div>
+
+      <div>
+        <label class="label">Plus one</label>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="plusone" value="no" checked> No</label>
+          <label class="pill"><input type="radio" name="plusone" value="yes"> Yes</label>
+        </div>
+      </div>
+
+      <div>
+        <label class="label" for="diet">Dietary notes</label>
+        <textarea class="textarea" id="diet" name="diet" placeholder="Allergies or preferences (optional)"></textarea>
+      </div>
+
+      <div>
+        <label class="label" for="notes">Notes</label>
+        <textarea class="textarea" id="notes" name="notes" placeholder="Anything else we should know? (optional)"></textarea>
+      </div>
+
+      <button class="cta" type="submit">Confirm RSVP</button>
+      <p class="footnote">This invitation is strictly personal and non-transferable.</p>
+    </form>
+  </article>
 </body>
 </html>
