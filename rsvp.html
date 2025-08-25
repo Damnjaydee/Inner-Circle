@@ -7,60 +7,34 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="brand"><a href="index.html">Inner&nbsp;Circle</a></div>
   <main class="container">
     <section class="card">
-      <h1>Complete Your RSVP</h1>
-      <p class="lead">Secure your spot. We'll confirm by email/SMS with directions.</p>
+      <h1 style="text-align:center">Complete Your RSVP</h1>
+      <p class="lead" style="text-align:center">Secure your spot. We'll confirm via email/SMS.</p>
 
       <form class="form" id="rsvpForm" novalidate>
         <div class="row">
-          <div>
-            <label class="label" for="firstName">First name</label>
-            <input class="input" id="firstName" name="firstName" required />
-          </div>
-          <div>
-            <label class="label" for="lastName">Last name</label>
-            <input class="input" id="lastName" name="lastName" required />
-          </div>
+          <input class="input" id="firstName" name="firstName" placeholder="First Name" required />
+          <input class="input" id="lastName" name="lastName" placeholder="Last Name" required />
         </div>
-
         <div class="row">
-          <div>
-            <label class="label" for="email">Email</label>
-            <input class="input" id="email" name="email" type="email" required />
-          </div>
-          <div>
-            <label class="label" for="phone">Mobile (SMS)</label>
-            <input class="input" id="phone" name="phone" type="tel" placeholder="(###) ###-####" required />
-            <p class="helper">We'll text directions on the day of.</p>
-          </div>
+          <input class="input" id="email" name="email" type="email" placeholder="Email" required />
+          <input class="input" id="phone" name="phone" type="tel" placeholder="Mobile (SMS)" required />
         </div>
-
         <div class="row">
-          <div>
-            <label class="label" for="guests">Total in your party</label>
-            <select class="select" id="guests" name="guests" required>
-              <option value="" disabled selected>Select</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-            </select>
-          </div>
-          <div>
-            <label class="label" for="diet">Dietary preferences</label>
-            <input class="input" id="diet" name="diet" placeholder="(optional)" />
-          </div>
+          <select class="select" id="guests" name="guests" required>
+            <option value="" disabled selected>Total Guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+          </select>
+          <input class="input" id="diet" name="diet" placeholder="Dietary preferences (optional)" />
         </div>
+        <textarea class="textarea" id="notes" name="notes" placeholder="Notes for host (optional)"></textarea>
 
-        <div>
-          <label class="label" for="notes">Notes for the host</label>
-          <textarea class="textarea" id="notes" name="notes" placeholder="Allergies, timing, plus-one name, etc."></textarea>
+        <div style="text-align:center; margin-top:20px;">
+          <button class="circle-btn" type="submit">Send</button>
         </div>
-
-        <button class="button" type="submit">Complete RSVP</button>
       </form>
+
       <div id="formError" class="notice" style="display:none; margin-top:12px">
         Please complete all required fields.
       </div>
