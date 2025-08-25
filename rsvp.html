@@ -1,45 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Inner Circle — RSVP Form</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#fff; font-family:sans-serif;}
+    form {display:grid; gap:12px; width:280px;}
+    input, select, textarea {
+      padding:10px 14px; border:1px solid #ccc; border-radius:8px; font-size:15px;
+    }
+    textarea{min-height:80px}
+    .circle-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:120px; height:120px; border-radius:50%;
+      background:#e11900; color:#fff; font-weight:bold; font-size:18px;
+      text-decoration:none; border:none; margin:16px auto 0; cursor:pointer;
+    }
+    .circle-btn:hover{background:#b31200}
+  </style>
 </head>
 <body>
-  <main class="container">
-    <section class="card">
-      <h1 style="text-align:center">Complete Your RSVP</h1>
-      <p class="lead" style="text-align:center">Secure your spot. We'll confirm via email/SMS.</p>
-
-      <form class="form" id="rsvpForm" novalidate>
-        <div class="row">
-          <input class="input" id="firstName" name="firstName" placeholder="First Name" required />
-          <input class="input" id="lastName" name="lastName" placeholder="Last Name" required />
-        </div>
-        <div class="row">
-          <input class="input" id="email" name="email" type="email" placeholder="Email" required />
-          <input class="input" id="phone" name="phone" type="tel" placeholder="Mobile (SMS)" required />
-        </div>
-        <div class="row">
-          <select class="select" id="guests" name="guests" required>
-            <option value="" disabled selected>Total Guests</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option>
-          </select>
-          <input class="input" id="diet" name="diet" placeholder="Dietary preferences (optional)" />
-        </div>
-        <textarea class="textarea" id="notes" name="notes" placeholder="Notes for host (optional)"></textarea>
-
-        <div style="text-align:center; margin-top:20px;">
-          <button class="circle-btn" type="submit">Send</button>
-        </div>
-      </form>
-
-      <div id="formError" class="notice" style="display:none; margin-top:12px">
-        Please complete all required fields.
-      </div>
-    </section>
-  </main>
-  <script src="app.js"></script>
+  <form action="confirm.html">
+    <input type="text" placeholder="First Name" required/>
+    <input type="text" placeholder="Last Name" required/>
+    <input type="email" placeholder="Email" required/>
+    <input type="tel" placeholder="Mobile" required/>
+    <select required>
+      <option value="" disabled selected>Total Guests</option>
+      <option>1</option><option>2</option><option>3</option><option>4</option>
+    </select>
+    <textarea placeholder="Notes (optional)"></textarea>
+    <button type="submit" class="circle-btn">Send</button>
+  </form>
 </body>
 </html>
