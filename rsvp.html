@@ -4,116 +4,110 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Inner Circle — Confirm your attendance</title>
-  <!-- Serif for headings + clean sans for UI -->
+
+  <!-- Bodoni for headings, Inter for UI -->
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --paper:#0b0b0b;      /* page bg */
-      --card:#111;          /* card bg */
-      --ink:#eae7df;        /* main text (warm off-white) */
-      --muted:#a8a39a;      /* secondary text */
-      --line:rgba(234,231,223,.20); /* hairline */
-      --pill:#1b1b1b;       /* radio pill bg */
-      --pill-line:#2a2a2a;  /* radio pill border */
-      --accent:#ffffff;     /* button text / outlines */
+      --ink:#111;            /* primary text */
+      --muted:#666;          /* secondary text */
+      --line:#e6e6e6;        /* dividers */
+      --pill:#f7f7f7;        /* pill bg */
+      --pill-line:#dcdcdc;   /* pill border */
+      --btn:#0f0f0f;         /* button (outline/filled) */
+      --paper:#ffffff;       /* page */
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0; background:var(--paper); color:var(--ink);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      display:flex; align-items:center; justify-content:center; padding:24px;
-    }
-    .card{
-      width:min(880px, 100%);
-      background:linear-gradient(180deg, #111 0%, #0f0f0f 100%);
-      border:1px solid #191919;
-      border-radius:20px;
-      box-shadow:0 30px 80px rgba(0,0,0,.6);
-      padding:34px 34px 28px;
-      position:relative;
-    }
-    .card:after{ /* soft outer glow */
-      content:""; position:absolute; inset:-8px; border-radius:24px;
-      box-shadow:0 10px 60px rgba(0,0,0,.55); pointer-events:none;
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      display:flex; align-items:flex-start; justify-content:center;
+      padding:32px 18px;
     }
 
-    /* Headings */
-    h1.title{
-      font-family:"Bodoni Moda", serif;
-      font-weight:700; letter-spacing:.5px; font-size:36px; margin:0 0 8px;
+    .wrap{
+      width:min(860px, 100%);
     }
-    h2.kicker{
-      font-family:"Bodoni Moda", serif;
-      font-weight:600; font-size:22px; margin:0 0 6px;
-    }
+
+    /* Header */
     .eyebrow{
-      position:absolute; top:20px; right:24px; font-size:12px; letter-spacing:.14em;
-      color:var(--muted); text-transform:uppercase;
+      float:right; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#888;
     }
-    .sub{ color:var(--muted); margin:0 0 18px; }
-
-    /* Grid */
-    .grid{ display:grid; gap:22px; }
-    @media (min-width:780px){
-      .row-2{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+    h1{
+      font-family:"Bodoni Moda", serif; font-weight:700; letter-spacing:.2px;
+      font-size:40px; line-height:1.1; margin:0 0 6px;
     }
+    .kicker{
+      font-family:"Bodoni Moda", serif; font-weight:600; font-size:24px; margin:0 0 8px;
+    }
+    .sub{ color:var(--muted); margin:0 0 18px }
 
-    /* Labels + inputs */
+    /* Form layout */
+    form{ margin-top:8px }
+    .grid{ display:grid; gap:22px }
+    .row2{ display:grid; gap:18px }
+    @media (min-width:760px){ .row2{ grid-template-columns:1fr 1fr } }
+
     .label{
-      font-size:12px; letter-spacing:.18em; text-transform:uppercase;
-      color:var(--muted); margin:0 0 8px; display:block;
+      display:block; font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+      color:#888; margin:0 0 8px;
     }
+
     .input, .textarea{
-      width:100%; background:#0f0f0f; color:var(--ink);
-      border:1px solid var(--line); border-radius:10px;
-      padding:14px 16px; font:inherit;
-      outline:none; transition:border-color .15s ease, background .2s ease;
+      width:100%; background:#fff; color:var(--ink);
+      border:1px solid #ddd; border-radius:10px;
+      padding:14px 16px; font:inherit; outline:none;
+      transition:border-color .15s ease, box-shadow .15s ease;
     }
-    .input::placeholder, .textarea::placeholder{ color:#6f6b64 }
-    .input:focus, .textarea:focus{ border-color:#d7d1c6; background:#111 }
+    .input::placeholder, .textarea::placeholder{ color:#aaa }
+    .input:focus, .textarea:focus{
+      border-color:#bbb; box-shadow:0 0 0 3px rgba(0,0,0,.04);
+    }
     .textarea{ min-height:120px; resize:vertical }
 
-    /* Dividers */
-    .hr{ height:1px; background:var(--line); margin:8px 0 6px }
+    .hr{ height:1px; background:var(--line); margin:6px 0 2px }
 
-    /* Radio pills */
+    /* Pills (radio options) */
     .pills{ display:flex; gap:10px; flex-wrap:wrap }
     .pill{
       display:inline-flex; align-items:center; gap:10px;
       background:var(--pill); border:1px solid var(--pill-line);
-      color:var(--ink); border-radius:999px; padding:10px 16px; cursor:pointer;
-      user-select:none;
+      color:var(--ink); border-radius:999px; padding:10px 16px; cursor:pointer; user-select:none;
     }
-    .pill input{ appearance:none; width:14px; height:14px; border-radius:50%;
-      border:1px solid #6a6a6a; display:inline-block; position:relative; }
-    .pill input:checked{ border-color:#e9e5dd; }
-    .pill input:checked:after{ content:""; position:absolute; inset:3px; border-radius:50%; background:#e9e5dd; }
+    .pill input{
+      appearance:none; width:14px; height:14px; border-radius:50%;
+      border:1px solid #8d8d8d; position:relative; display:inline-block;
+    }
+    .pill input:checked{ border-color:#111 }
+    .pill input:checked:after{ content:""; position:absolute; inset:3px; border-radius:50%; background:#111 }
 
-    /* Confirm button */
+    /* Confirm button (wide, rounded, outline) */
     .cta{
-      width:100%; display:inline-flex; align-items:center; justify-content:center;
-      height:52px; border-radius:999px; margin-top:16px;
-      color:var(--accent); background:transparent; border:1px solid rgba(255,255,255,.85);
-      font-weight:700; letter-spacing:.15em; text-transform:uppercase; cursor:pointer;
-      transition:background .2s ease, transform .04s ease, border-color .2s ease;
+      width:100%; height:56px; border-radius:999px; margin-top:4px;
+      display:inline-flex; align-items:center; justify-content:center;
+      font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+      color:#fff; background:var(--btn); border:1px solid #0f0f0f;
+      cursor:pointer; transition:transform .04s ease, filter .2s ease;
     }
-    .cta:hover{ background:rgba(255,255,255,.06); border-color:#fff; }
+    .cta:hover{ filter:brightness(1.05) }
     .cta:active{ transform:translateY(1px) }
 
-    .footnote{ margin-top:18px; color:var(--muted); font-size:12px }
+    .foot{ margin-top:12px; color:#7a7a7a; font-size:12px }
   </style>
 </head>
 <body>
-  <article class="card">
+  <div class="wrap">
     <div class="eyebrow">Private RSVP</div>
-
-    <h1 class="title">Inner Circle</h1>
-    <h2 class="kicker">Confirm your attendance</h2>
+    <h1>Inner Circle</h1>
+    <div class="kicker">Confirm your attendance</div>
     <p class="sub">Final details are shared privately upon confirmation.</p>
 
+    <!-- Simple GET → confirm.html so it works without any JS -->
     <form class="grid" action="confirm.html" method="get" novalidate>
-      <div class="row-2">
+      <div class="row2">
         <div>
           <label class="label" for="first">First name</label>
           <input class="input" id="first" name="first" placeholder="First Name" required>
@@ -126,7 +120,7 @@
 
       <div class="hr"></div>
 
-      <div class="row-2">
+      <div class="row2">
         <div>
           <label class="label">How should we notify you?</label>
           <div class="pills">
@@ -156,19 +150,20 @@
         </div>
       </div>
 
-      <div>
-        <label class="label" for="diet">Dietary notes</label>
-        <textarea class="textarea" id="diet" name="diet" placeholder="Allergies or preferences (optional)"></textarea>
-      </div>
-
-      <div>
-        <label class="label" for="notes">Notes</label>
-        <textarea class="textarea" id="notes" name="notes" placeholder="Anything else we should know? (optional)"></textarea>
+      <div class="row2">
+        <div>
+          <label class="label" for="diet">Dietary notes</label>
+          <textarea class="textarea" id="diet" name="diet" placeholder="Allergies or preferences (optional)"></textarea>
+        </div>
+        <div>
+          <label class="label" for="notes">Notes</label>
+          <textarea class="textarea" id="notes" name="notes" placeholder="Anything else we should know? (optional)"></textarea>
+        </div>
       </div>
 
       <button class="cta" type="submit">Confirm RSVP</button>
-      <p class="footnote">This invitation is strictly personal and non-transferable.</p>
+      <p class="foot">This invitation is strictly personal and non-transferable.</p>
     </form>
-  </article>
+  </div>
 </body>
 </html>
