@@ -1,14 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Inner Circle — Home</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {margin:0; height:100vh; display:flex; align-items:center; justify-content:center; background:#fff;}
+    .circle-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:140px; height:140px; border-radius:50%;
+      background:#e11900; color:#fff; font-family:sans-serif;
+      font-weight:bold; font-size:20px; text-decoration:none;
+    }
+    .circle-btn:hover{background:#b31200}
+  </style>
 </head>
 <body>
-  <main class="circle-container">
-    <a href="code.html" class="circle-btn" aria-label="Confirm RSVP">RSVP</a>
-  </main>
+  <a href="code.html" class="circle-btn">RSVP</a>
 </body>
 </html>
