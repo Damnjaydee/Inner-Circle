@@ -3,114 +3,105 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Inner Circle — RSVP Form</title>
+  <title>RSVP Form</title>
   <style>
-    :root{
-      --bg:#000;--ink:#eee;--muted:#a9a9a9;--line:#2a2a2a;
-      --field:#0f0f0f;--field-border:#2e2e2e;--red:#e11900;--red-press:#b31200;
+    html, body {
+      margin:0; height:100%;
+      background:#000; color:#fff;
+      font-family:Inter, sans-serif;
+      display:flex; align-items:center; justify-content:center;
     }
-    html,body{margin:0;height:100%;background:var(--bg);color:var(--ink)}
-    body{display:flex;align-items:flex-start;justify-content:center;
-         font:400 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-         padding:36px 18px}
-    .wrap{width:min(840px,100%)}
-    h1{font:700 34px/1.1 system-ui,sans-serif;margin:0 0 6px}
-    .kicker{font:600 18px/1.2 system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
-    .sub{color:var(--muted);margin:0 0 18px}
-    form{display:grid;gap:22px;margin-top:8px}
-    .row2{display:grid;gap:18px}
-    @media(min-width:760px){.row2{grid-template-columns:1fr 1fr}}
-    .label{display:block;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#bdbdbd;margin:0 0 8px}
-    .input,.textarea{
-      width:100%;background:var(--field);color:var(--ink);border:1px solid var(--field-border);
-      border-radius:10px;padding:14px 16px;outline:none;transition:border-color .15s ease, box-shadow .15s ease
+    .container {
+      width:100%; max-width:500px;
+      padding:20px;
+      text-align:center;
     }
-    .input::placeholder,.textarea::placeholder{color:#7a7a7a}
-    .input:focus,.textarea:focus{border-color:#555;box-shadow:0 0 0 3px rgba(255,255,255,.06)}
-    .textarea{min-height:120px;resize:vertical}
-    .hr{height:1px;background:var(--line);margin:6px 0 2px}
-    .pills{display:flex;gap:10px;flex-wrap:wrap}
-    .pill{
-      display:inline-flex;align-items:center;gap:10px;background:#0e0e0e;border:1px solid #252525;
-      color:var(--ink);border-radius:999px;padding:10px 16px;user-select:none;cursor:pointer
+    h1 {
+      font-size:28px; margin-bottom:8px;
     }
-    .pill input{appearance:none;width:14px;height:14px;border-radius:50%;border:1px solid #7a7a7a;position:relative}
-    .pill input:checked{border-color:#fff}
-    .pill input:checked:after{content:"";position:absolute;inset:3px;border-radius:50%;background:#fff}
-    .circle-btn{
-      display:flex;align-items:center;justify-content:center;
-      width:130px;height:130px;border-radius:50%;background:var(--red);color:#fff;
-      font:700 18px/1 system-ui,sans-serif;border:0;cursor:pointer;margin:6px auto 0;
-      transition:background .2s ease, transform .1s ease;box-shadow:0 10px 30px rgba(0,0,0,.45)
+    p {
+      margin:0 0 25px; color:#aaa;
     }
-    .circle-btn:hover{background:var(--red-press)}
-    .circle-btn:active{transform:scale(.96)}
-    .foot{color:var(--muted);font-size:12px;text-align:center}
+    .form-group {
+      margin-bottom:15px;
+      text-align:left;
+    }
+    label {
+      display:block;
+      font-size:14px;
+      margin-bottom:6px;
+      color:#ddd;
+    }
+    input, select, textarea {
+      width:100%;
+      padding:12px;
+      border-radius:6px;
+      border:1px solid #333;
+      background:#111;
+      color:#fff;
+      font-size:14px;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline:none; border:1px solid #e11900;
+    }
+    textarea {
+      resize:vertical;
+      min-height:80px;
+    }
+    .circle-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:120px; height:120px;
+      margin:25px auto 0;
+      border-radius:50%;
+      background:#e11900; color:#fff;
+      font-weight:700; font-size:18px;
+      text-decoration:none; cursor:pointer;
+      box-shadow:0 6px 18px rgba(0,0,0,.6);
+      transition:background .2s ease, transform .15s ease;
+      border:none;
+    }
+    .circle-btn:hover { background:#b31200; transform:scale(1.05); }
+    .circle-btn:active { transform:scale(0.95); }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="container">
     <h1>Inner Circle</h1>
-    <div class="kicker">Confirm your attendance</div>
-    <p class="sub">Final details are shared privately upon confirmation.</p>
+    <p>Confirm your attendance</p>
 
-    <form action="confirm.html" method="get" novalidate>
-      <div class="row2">
-        <div>
-          <label class="label" for="first">First name</label>
-          <input class="input" id="first" name="first" placeholder="First Name" required>
-        </div>
-        <div>
-          <label class="label" for="last">Last name</label>
-          <input class="input" id="last" name="last" placeholder="Last Name" required>
-        </div>
+    <form action="confirm.html" method="GET">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" name="first" required>
       </div>
-
-      <div class="hr"></div>
-
-      <div class="row2">
-        <div>
-          <span class="label">How should we notify you?</span>
-          <div class="pills">
-            <label class="pill"><input type="radio" name="notify" value="email" checked> Email</label>
-            <label class="pill"><input type="radio" name="notify" value="text"> Text</label>
-            <label class="pill"><input type="radio" name="notify" value="both"> Both</label>
-          </div>
-        </div>
-        <div>
-          <label class="label" for="phone">Phone</label>
-          <input class="input" id="phone" name="phone" placeholder="+1 555 123 4567" required>
-        </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" name="last" required>
       </div>
-
-      <div>
-        <label class="label" for="email">Email</label>
-        <input class="input" id="email" name="email" type="email" placeholder="you@example.com" required>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
       </div>
-
-      <div class="hr"></div>
-
-      <div>
-        <span class="label">Plus one</span>
-        <div class="pills">
-          <label class="pill"><input type="radio" name="plusone" value="no" checked> No</label>
-          <label class="pill"><input type="radio" name="plusone" value="yes"> Yes</label>
-        </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" name="phone" placeholder="+1 555 123 4567" required>
       </div>
-
-      <div class="row2">
-        <div>
-          <label class="label" for="diet">Dietary notes</label>
-          <textarea class="textarea" id="diet" name="diet" placeholder="Allergies or preferences (optional)"></textarea>
-        </div>
-        <div>
-          <label class="label" for="notes">Notes</label>
-          <textarea class="textarea" id="notes" name="notes" placeholder="Anything else we should know? (optional)"></textarea>
-        </div>
+      <div class="form-group">
+        <label>Plus One</label>
+        <select name="plusone" required>
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
       </div>
-
-      <button class="circle-btn" type="submit">Confirm</button>
-      <p class="foot">This invitation is strictly personal and non-transferable.</p>
+      <div class="form-group">
+        <label>Dietary Notes</label>
+        <textarea name="diet"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Additional Notes</label>
+        <textarea name="notes"></textarea>
+      </div>
+      <button type="submit" class="circle-btn">Send</button>
     </form>
   </div>
 </body>
