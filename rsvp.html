@@ -3,110 +3,58 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Inner Circle — Confirm your attendance</title>
-
-  <!-- Bodoni for headings, Inter for UI -->
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
+  <title>Inner Circle — RSVP Form</title>
   <style>
     :root{
-      --ink:#111;            /* primary text */
-      --muted:#666;          /* secondary text */
-      --line:#e6e6e6;        /* dividers */
-      --pill:#f7f7f7;        /* pill bg */
-      --pill-line:#dcdcdc;   /* pill border */
-      --btn:#0f0f0f;         /* button (outline/filled) */
-      --paper:#ffffff;       /* page */
+      --bg:#000;--ink:#eee;--muted:#a9a9a9;--line:#2a2a2a;
+      --field:#0f0f0f;--field-border:#2e2e2e;--red:#e11900;--red-press:#b31200;
     }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:var(--paper); color:var(--ink);
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      display:flex; align-items:flex-start; justify-content:center;
-      padding:32px 18px;
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--ink)}
+    body{display:flex;align-items:flex-start;justify-content:center;
+         font:400 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+         padding:36px 18px}
+    .wrap{width:min(840px,100%)}
+    h1{font:700 34px/1.1 system-ui,sans-serif;margin:0 0 6px}
+    .kicker{font:600 18px/1.2 system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
+    .sub{color:var(--muted);margin:0 0 18px}
+    form{display:grid;gap:22px;margin-top:8px}
+    .row2{display:grid;gap:18px}
+    @media(min-width:760px){.row2{grid-template-columns:1fr 1fr}}
+    .label{display:block;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#bdbdbd;margin:0 0 8px}
+    .input,.textarea{
+      width:100%;background:var(--field);color:var(--ink);border:1px solid var(--field-border);
+      border-radius:10px;padding:14px 16px;outline:none;transition:border-color .15s ease, box-shadow .15s ease
     }
-
-    .wrap{
-      width:min(860px, 100%);
-    }
-
-    /* Header */
-    .eyebrow{
-      float:right; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#888;
-    }
-    h1{
-      font-family:"Bodoni Moda", serif; font-weight:700; letter-spacing:.2px;
-      font-size:40px; line-height:1.1; margin:0 0 6px;
-    }
-    .kicker{
-      font-family:"Bodoni Moda", serif; font-weight:600; font-size:24px; margin:0 0 8px;
-    }
-    .sub{ color:var(--muted); margin:0 0 18px }
-
-    /* Form layout */
-    form{ margin-top:8px }
-    .grid{ display:grid; gap:22px }
-    .row2{ display:grid; gap:18px }
-    @media (min-width:760px){ .row2{ grid-template-columns:1fr 1fr } }
-
-    .label{
-      display:block; font-size:12px; letter-spacing:.18em; text-transform:uppercase;
-      color:#888; margin:0 0 8px;
-    }
-
-    .input, .textarea{
-      width:100%; background:#fff; color:var(--ink);
-      border:1px solid #ddd; border-radius:10px;
-      padding:14px 16px; font:inherit; outline:none;
-      transition:border-color .15s ease, box-shadow .15s ease;
-    }
-    .input::placeholder, .textarea::placeholder{ color:#aaa }
-    .input:focus, .textarea:focus{
-      border-color:#bbb; box-shadow:0 0 0 3px rgba(0,0,0,.04);
-    }
-    .textarea{ min-height:120px; resize:vertical }
-
-    .hr{ height:1px; background:var(--line); margin:6px 0 2px }
-
-    /* Pills (radio options) */
-    .pills{ display:flex; gap:10px; flex-wrap:wrap }
+    .input::placeholder,.textarea::placeholder{color:#7a7a7a}
+    .input:focus,.textarea:focus{border-color:#555;box-shadow:0 0 0 3px rgba(255,255,255,.06)}
+    .textarea{min-height:120px;resize:vertical}
+    .hr{height:1px;background:var(--line);margin:6px 0 2px}
+    .pills{display:flex;gap:10px;flex-wrap:wrap}
     .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      background:var(--pill); border:1px solid var(--pill-line);
-      color:var(--ink); border-radius:999px; padding:10px 16px; cursor:pointer; user-select:none;
+      display:inline-flex;align-items:center;gap:10px;background:#0e0e0e;border:1px solid #252525;
+      color:var(--ink);border-radius:999px;padding:10px 16px;user-select:none;cursor:pointer
     }
-    .pill input{
-      appearance:none; width:14px; height:14px; border-radius:50%;
-      border:1px solid #8d8d8d; position:relative; display:inline-block;
+    .pill input{appearance:none;width:14px;height:14px;border-radius:50%;border:1px solid #7a7a7a;position:relative}
+    .pill input:checked{border-color:#fff}
+    .pill input:checked:after{content:"";position:absolute;inset:3px;border-radius:50%;background:#fff}
+    .circle-btn{
+      display:flex;align-items:center;justify-content:center;
+      width:130px;height:130px;border-radius:50%;background:var(--red);color:#fff;
+      font:700 18px/1 system-ui,sans-serif;border:0;cursor:pointer;margin:6px auto 0;
+      transition:background .2s ease, transform .1s ease;box-shadow:0 10px 30px rgba(0,0,0,.45)
     }
-    .pill input:checked{ border-color:#111 }
-    .pill input:checked:after{ content:""; position:absolute; inset:3px; border-radius:50%; background:#111 }
-
-    /* Confirm button (wide, rounded, outline) */
-    .cta{
-      width:100%; height:56px; border-radius:999px; margin-top:4px;
-      display:inline-flex; align-items:center; justify-content:center;
-      font-weight:700; letter-spacing:.18em; text-transform:uppercase;
-      color:#fff; background:var(--btn); border:1px solid #0f0f0f;
-      cursor:pointer; transition:transform .04s ease, filter .2s ease;
-    }
-    .cta:hover{ filter:brightness(1.05) }
-    .cta:active{ transform:translateY(1px) }
-
-    .foot{ margin-top:12px; color:#7a7a7a; font-size:12px }
+    .circle-btn:hover{background:var(--red-press)}
+    .circle-btn:active{transform:scale(.96)}
+    .foot{color:var(--muted);font-size:12px;text-align:center}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="eyebrow">Private RSVP</div>
     <h1>Inner Circle</h1>
     <div class="kicker">Confirm your attendance</div>
     <p class="sub">Final details are shared privately upon confirmation.</p>
 
-    <!-- Simple GET → confirm.html so it works without any JS -->
-    <form class="grid" action="confirm.html" method="get" novalidate>
+    <form action="confirm.html" method="get" novalidate>
       <div class="row2">
         <div>
           <label class="label" for="first">First name</label>
@@ -122,7 +70,7 @@
 
       <div class="row2">
         <div>
-          <label class="label">How should we notify you?</label>
+          <span class="label">How should we notify you?</span>
           <div class="pills">
             <label class="pill"><input type="radio" name="notify" value="email" checked> Email</label>
             <label class="pill"><input type="radio" name="notify" value="text"> Text</label>
@@ -143,7 +91,7 @@
       <div class="hr"></div>
 
       <div>
-        <label class="label">Plus one</label>
+        <span class="label">Plus one</span>
         <div class="pills">
           <label class="pill"><input type="radio" name="plusone" value="no" checked> No</label>
           <label class="pill"><input type="radio" name="plusone" value="yes"> Yes</label>
@@ -161,7 +109,7 @@
         </div>
       </div>
 
-      <button class="cta" type="submit">Confirm RSVP</button>
+      <button class="circle-btn" type="submit">Confirm</button>
       <p class="foot">This invitation is strictly personal and non-transferable.</p>
     </form>
   </div>
