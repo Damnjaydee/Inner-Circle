@@ -11,12 +11,14 @@
     <section class="card" style="text-align:center">
       <h1>Enter RSVP Code</h1>
       <p class="lead">This event is invite-only. Please enter your code.</p>
-      <form class="form" id="codeForm">
+
+      <form class="form" id="codeForm" novalidate>
         <input class="input" id="code" name="code" placeholder="e.g. INNER25" required />
-        <div style="margin-top:20px;">
-          <button class="circle-btn" type="submit">Go</button>
+        <div style="margin-top:20px">
+          <button class="circle-btn" type="submit" aria-label="Continue">Go</button>
         </div>
       </form>
+
       <div id="codeError" class="notice" style="display:none; margin-top:12px">
         Invalid code. Please try again.
       </div>
