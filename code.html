@@ -1,29 +1,27 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inner Circle — RSVP Code</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Inner Circle — Code</title>
+  <style>
+    body {margin:0; height:100vh; display:flex; flex-direction:column;
+          align-items:center; justify-content:center; background:#fff; font-family:sans-serif;}
+    input {padding:10px 14px; border:1px solid #ccc; border-radius:8px; font-size:16px;}
+    .circle-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:100px; height:100px; border-radius:50%;
+      background:#e11900; color:#fff; font-weight:bold; font-size:18px;
+      text-decoration:none; border:none; margin-top:20px; cursor:pointer;
+    }
+    .circle-btn:hover{background:#b31200}
+  </style>
 </head>
 <body>
-  <main class="container">
-    <section class="card" style="text-align:center">
-      <h1>Enter RSVP Code</h1>
-      <p class="lead">This event is invite-only. Please enter your code.</p>
-
-      <form class="form" id="codeForm" novalidate>
-        <input class="input" id="code" name="code" placeholder="e.g. INNER25" required />
-        <div style="margin-top:20px">
-          <button class="circle-btn" type="submit" aria-label="Continue">Go</button>
-        </div>
-      </form>
-
-      <div id="codeError" class="notice" style="display:none; margin-top:12px">
-        Invalid code. Please try again.
-      </div>
-    </section>
-  </main>
-  <script src="app.js"></script>
+  <h2>Enter RSVP Code</h2>
+  <form action="rsvp.html">
+    <input type="text" placeholder="Code" required />
+    <button type="submit" class="circle-btn">Go</button>
+  </form>
 </body>
 </html>
