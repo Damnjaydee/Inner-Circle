@@ -3,34 +3,47 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Inner Circle — Welcome</title>
+  <title>Inner Circle — Code</title>
   <style>
     body {
       margin:0; height:100vh;
-      display:flex; align-items:center; justify-content:center;
-      background:#fff; font-family:sans-serif;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      background:#000; color:#fff;
+      font-family:Inter, sans-serif; text-align:center;
     }
-    .card {
-      padding:40px; border:1px solid #eee;
-      border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,.08);
-      text-align:center;
+    h1 {
+      font-family:"Bodoni Moda", serif;
+      font-size:36px; margin:0 0 10px;
     }
-    h1 {margin-bottom:30px}
+    p { color:#aaa; margin:0 0 20px }
+    .input {
+      padding:14px 16px;
+      border-radius:8px;
+      border:1px solid #444;
+      font-size:16px;
+      width:260px;
+      margin-bottom:20px;
+    }
     .circle-btn {
       display:flex; align-items:center; justify-content:center;
-      width:140px; height:140px; border-radius:50%;
+      width:120px; height:120px;
+      border-radius:50%; border:none;
       background:#e11900; color:#fff;
       font-weight:bold; font-size:18px;
-      text-decoration:none; cursor:pointer;
-      margin:0 auto;
+      cursor:pointer; transition:background .2s ease;
     }
-    .circle-btn:hover{background:#b31200}
+    .circle-btn:hover { background:#b31200 }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Welcome to the Inner Circle</h1>
-    <a href="rsvp.html" class="circle-btn">Continue</a>
-  </div>
+  <h1>Welcome to the Inner Circle</h1>
+  <p>This event is invite-only. Please enter your code.</p>
+  <form action="rsvp.html">
+    <input class="input" type="text" placeholder="e.g. INNER25" required>
+    <div>
+      <button class="circle-btn" type="submit">Continue</button>
+    </div>
+  </form>
 </body>
 </html>
