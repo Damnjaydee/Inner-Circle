@@ -5,102 +5,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Private Dinner — RSVP</title>
   <meta name="color-scheme" content="dark light" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- Type: editorial serif for headings, modern grotesk for UI/body -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
+    /* ---------- Tokens (colors unchanged) ---------- */
     :root{
-      --bg:#0b0b0b;--panel:#111;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;
-      --field:#121212;--field-line:#262626;--focus:#d1bfa0;
-      --red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626
+      --bg:#0b0b0b; --panel:#111; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f;
+      --field:#121212; --field-line:#222; --focus:#d1bfa0;
+      --red:#b91c1c; --red-strong:#991b1b; --red-bright:#dc2626;
+
+      /* Type scale / spacing tuned for SAA-ish feel */
+      --h1: clamp(32px, 3.4vw, 44px);
+      --lede: 15.5px;
+      --label: 12px;
+      --radius: 16px;
+      --gap: 18px;
+      --hair: 1px;
     }
-    *{box-sizing:border-box} html,body{height:100%}
+
+    /* ---------- Base ---------- */
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin:0;background:var(--bg);color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-      display:grid;place-items:center;padding:28px;
+      margin:0; color:var(--ink); background:var(--bg);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-size:15px; line-height:1.55; letter-spacing:.01em;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      display:grid; place-items:start center; padding:28px;
       background:
         radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
         radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
     }
+
     .wrap{
-      width:min(820px,94vw);background:var(--panel);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:24px;padding:28px 24px;box-shadow:0 22px 60px rgba(0,0,0,.6)
+      width:min(860px, 94vw);
+      background:var(--panel);
+      border:var(--hair) solid rgba(255,255,255,.08);
+      border-radius:24px;
+      padding:30px 26px 26px;
+      margin-top:clamp(8px, 2vw, 24px);
+      box-shadow:0 26px 70px rgba(0,0,0,.60);
     }
-    h1,h2{font-family:"DM Serif Display",serif}
-    .meta{display:flex;gap:10px;align-items:center;justify-content:space-between}
-    .chip{font-size:12px;color:#bdb7a8;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.02)}
-    .title{margin:4px 0 4px}
-    .sub{color:var(--muted);margin-top:8px}
-    .bar{height:2px;width:100%;background:linear-gradient(90deg, rgba(255,255,255,.06), transparent 60%);border-radius:2px;margin:6px 0 10px}
 
-    .invite-note p{margin:6px 0}
-    .invite-note .lead{font-weight:600}
-    .invite-note .theme{margin-top:6px}
+    /* ---------- Type ---------- */
+    h1{
+      font-family:"DM Serif Display", serif;
+      font-size:var(--h1);
+      line-height:1.05;
+      letter-spacing:-.01em;
+      margin:8px 0 4px;
+    }
+    .lede{
+      color:var(--muted);
+      font-size:var(--lede);
+      margin: 4px 0 12px;
+    }
+    .chip{
+      font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+      color:#bdb7a8; border:1px solid rgba(255,255,255,.12);
+      padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.02);
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .bar{
+      height:1px; width:100%;
+      background:linear-gradient(90deg, rgba(255,255,255,.10), transparent 70%);
+      border-radius:2px; margin:12px 0 16px;
+    }
+    .lead-hed{font-weight:600; margin:0 0 4px}
+    .invite-copy p{margin:6px 0}
+    .invite-copy .theme{margin-top:6px}
 
+    /* ---------- Form ---------- */
     form{margin-top:10px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    @media (max-width:720px){.grid{grid-template-columns:1fr}}
-    .row{display:flex;flex-direction:column;gap:8px}
-    label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#a99f8e}
-    input,textarea{
-      width:100%;color:var(--ink);background:var(--field);
-      border:1px solid var(--field-line);border-radius:12px;padding:12px 14px;
-      font:inherit;outline:none;transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-    textarea{min-height:120px;resize:vertical}
-    input::placeholder,textarea::placeholder{color:#7c776c}
-    input:focus,textarea:focus{border-color:#3a352b;box-shadow:0 0 0 3px rgba(209,191,160,.18)}
-    .hint{color:#8c8577;font-size:12px;margin-top:2px}
-    .error{color:#ffb3b3;font-size:14px;margin:8px 2px 0;min-height:20px}
-    .hp{position:absolute;left:-5000px;opacity:0}
+    .grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--gap)}
+    @media (max-width:720px){ .grid{grid-template-columns:1fr} }
+    .row{display:flex; flex-direction:column; gap:8px}
 
-    .cta{margin-top:18px;display:flex;justify-content:center}
+    label{
+      font-size:var(--label);
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:#a99f8e;
+      font-weight:500;
+    }
+
+    input, textarea{
+      width:100%;
+      color:var(--ink);
+      background:var(--field);
+      border:1px solid var(--field-line);
+      border-radius:var(--radius);
+      padding:12px 14px;
+      font:inherit;
+      outline:none;
+      line-height:1.45;
+      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+      caret-color:#e7e1d4;
+    }
+    textarea{min-height:120px; resize:vertical}
+    input::placeholder, textarea::placeholder{color:#7c776c}
+    input:focus, textarea:focus{
+      border-color:#343027;
+      box-shadow:0 0 0 3px rgba(209,191,160,.18);
+      background:#101010;
+    }
+    .hint{color:#8c8577; font-size:12px; margin-top:1px}
+
+    .error{color:#ffb3b3; font-size:14px; margin:10px 2px 0; min-height:20px}
+    .hp{position:absolute; left:-5000px; opacity:0}
+
+    /* ---------- CTA ---------- */
+    .cta{margin-top:14px; display:flex; justify-content:center}
     .btn{
-      appearance:none;border:0;border-radius:999px;color:#fff;
-      font-family:"DM Serif Display",serif;letter-spacing:.04em;
-      padding:12px 22px;min-width:240px;cursor:pointer;
+      appearance:none; border:1px solid rgba(255,255,255,.10);
+      border-radius:999px; color:#fff; min-width:240px;
+      font-family:"DM Serif Display", serif; letter-spacing:.02em;
+      padding:12px 22px; cursor:pointer;
       background:
-        radial-gradient(200px 120px at 40% 20%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(220px 140px at 40% 18%, rgba(255,255,255,.10), transparent 60%),
         linear-gradient(180deg, var(--red), var(--red-strong));
-      box-shadow:0 18px 40px rgba(0,0,0,.55), 0 12px 55px rgba(191, 35, 35, .25), inset 0 10px 20px rgba(255,255,255,.07);
-      transition:transform .15s ease, filter .2s ease, background .2s ease;
-      border:1px solid rgba(255,255,255,.10);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.55),
+        0 12px 55px rgba(191,35,35,.24);
+      transition: filter .2s ease, transform .14s ease, background .2s ease;
     }
     .btn:hover{
-      transform:translateY(-1px);
+      transform: translateY(-1px);
       background:
-        radial-gradient(200px 120px at 40% 20%, rgba(255,255,255,.12), transparent 60%),
+        radial-gradient(220px 140px at 40% 18%, rgba(255,255,255,.12), transparent 60%),
         linear-gradient(180deg, var(--red-bright), var(--red));
     }
 
-    .foot-note{margin-top:18px;color:var(--muted);font-size:12px}
-    .page-foot{display:flex;justify-content:center;color:var(--muted);font-size:12px;margin-top:18px}
+    /* ---------- Footer ---------- */
+    .foot-note{margin-top:18px; color:var(--muted); font-size:12px}
+    .page-foot{display:flex; justify-content:center; color:var(--muted); font-size:12px; margin-top:18px}
   </style>
 </head>
 <body>
   <article class="wrap">
-    <div class="meta">
-      <div style="opacity:.85"><strong>Private Dinner</strong></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div style="opacity:.9; letter-spacing:.02em;"><strong>Private Dinner</strong></div>
       <div class="chip">Invite Only</div>
     </div>
 
-    <h1 class="title">RSVP</h1>
-    <p class="sub">A few quick details—final info will be sent privately.</p>
+    <h1>RSVP</h1>
+    <p class="lede">A few quick details—final info will be sent privately.</p>
     <div class="bar"></div>
 
-    <!-- Invite copy block -->
-    <section class="invite-note">
-      <p class="lead"><strong>You're invited.</strong></p>
+    <!-- Invite text (kept; styled more editorial) -->
+    <section class="invite-copy" aria-label="Invitation">
+      <p class="lead-hed">You're invited.</p>
       <p>
         You are cordially invited to join <strong>Circle</strong> for a dinner on the evening of
-        <strong> September 7</strong>. Chef <strong>Terry Braggs</strong> will be preparing a
+        <strong> September 6</strong>. Chef <strong>Terry Braggs</strong> will be preparing a
         Mediterranean-themed three-course dinner with a wine pairing.
       </p>
       <p class="theme">Dress theme: <strong>Earth Tones</strong></p>
     </section>
 
-    <div class="bar"></div>
+    <div class="bar" style="margin-top:14px;"></div>
 
     <!-- Honeypot (spam trap, harmless) -->
     <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -158,32 +223,38 @@
   <div class="page-foot">© <span id="y"></span> Inner Circle</div>
 
   <script>
+    // Year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    const $ = (s) => document.querySelector(s);
+    // Small helper
+    const $ = s => document.querySelector(s);
     const err = $('#err');
     const form = $('#rsvp');
 
-    function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
-    function validPhone(v){const d=(v||'').replace(/[^\d]/g,'');return d.length>=10}
-    function makeCode(data){
+    // Validation
+    const validEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    const validPhone = v => (v||'').replace(/[^\d]/g,'').length >= 10;
+
+    // Short confirmation code (front-end only; deterministic)
+    function codeFrom(data){
       const salt='IC-PRIVATE-DINNER';
-      const input=`${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
-      let h=5381; for(let i=0;i<input.length;i++){h=((h<<5)+h)+input.charCodeAt(i); h|=0;}
+      const src = `${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
+      let h=5381; for (let i=0;i<src.length;i++){ h=((h<<5)+h)+src.charCodeAt(i); h|=0; }
       return Math.abs(h).toString(36).toUpperCase().slice(-6).padStart(6,'0');
     }
 
-    form.addEventListener('submit',(e)=>{
-      e.preventDefault(); err.textContent='';
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      err.textContent='';
 
-      const data={
-        first: $('#first').value.trim(),
-        last:  $('#last').value.trim(),
-        email: $('#email').value.trim(),
-        phone: $('#phone').value.trim(),
-        plusone: $('#plusone').value.trim(),
-        diet: $('#diet').value.trim(),
-        notes: $('#notes').value.trim()
+      const data = {
+        first:  $('#first').value.trim(),
+        last:   $('#last').value.trim(),
+        email:  $('#email').value.trim(),
+        phone:  $('#phone').value.trim(),
+        plusone:$('#plusone').value.trim(),
+        diet:   $('#diet').value.trim(),
+        notes:  $('#notes').value.trim()
       };
 
       if(!data.first || !data.last){ err.textContent='Please enter your first and last name.'; return; }
@@ -191,12 +262,12 @@
       if(data.email && !validEmail(data.email)){ err.textContent='That email doesn’t look valid.'; return; }
       if(!data.email && data.phone && !validPhone(data.phone)){ err.textContent='That phone number doesn’t look valid.'; return; }
 
-      const code=makeCode(data);
+      // Persist + route to confirmation
+      const code = codeFrom(data);
       try{
         sessionStorage.setItem('innercircle_rsvp', JSON.stringify(data));
         sessionStorage.setItem('innercircle_code', code);
-      }catch(_){}
-
+      }catch(_) {}
       location.href='./confirm.html';
     });
   </script>
