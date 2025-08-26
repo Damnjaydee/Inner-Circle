@@ -1,47 +1,68 @@
-// Replace with your deployed Google Apps Script Web App URL (must end with /exec)
-const RSVP_URL = "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_EXEC_URL/exec";
+// No network. Validate, store minimal info, and go to confirm page.
 
 const form = document.getElementById("rsvpform");
 const msg  = document.getElementById("msg");
 const btn  = document.getElementById("submitBtn");
-const say  = (t="",cls="") => { if(msg){ msg.textContent=t; msg.className=`msg ${cls}`; } };
+const say  = (t="", cls="") => { if (msg){ msg.textContent=t; msg.className=`msg ${cls}`; } };
+const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||"").trim());
 
-function valid(f){
-  if (!f) return false;
-  if (f.company && f.company.value.trim()) return false; // honeypot
-  return f.checkValidity();
+function markValidity(){
+  // clear
+  [...form.querySelectorAll(".uinput")].forEach(el=>{
+    el.classList.remove("invalid");
+    el.setAttribute("aria-invalid","false");
+    el.closest(".field")?.classList.remove("has-error");
+  });
+
+  const req = [
+    {name:"first", test:v=>!!v.trim()},
+    {name:"last",  test:v=>!!v.trim()},
+    {name:"email", test:isEmail}
+  ];
+  const bad = [];
+  req.forEach(({name,test})=>{
+    const el = form.elements[name];
+    if (!el) return;
+    const ok = test(el.value);
+    if (!ok){
+      bad.push(name);
+      el.classList.add("invalid");
+      el.setAttribute("aria-invalid","true");
+      el.closest(".field")?.classList.add("has-error");
+    }
+  });
+  return bad;
 }
 
 if (form){
-  form.addEventListener("submit", async (e)=>{
-    e.preventDefault();
-    if (!valid(form)) { say("Please complete the required fields.","err"); return; }
-
-    btn.disabled = true; say("Submitting…");
-    try{
-      const body = new URLSearchParams(new FormData(form));
-      body.set("type","rsvp");
-
-      const res  = await fetch(RSVP_URL,{
-        method:"POST",
-        headers:{ "Content-Type":"application/x-www-form-urlencoded" },
-        body
-      });
-
-      const text = await res.text();
-      let json; try{ json = JSON.parse(text); }catch{ json = {}; }
-
-      if (res.ok && (json.ok===true || json.status==="ok" || json.result==="success" || !text)){
-        window.location.href = "./confirm.html";
-        return;
-      }
-      console.log("Server response:", text);
-      say(json.message || "Submission error. Please try again.","err");
-    }catch(err){
-      console.error(err);
-      say("Network error. Please try again.","err");
-    }finally{
-      btn.disabled = false;
+  form.addEventListener("input", (e)=>{
+    const el = e.target;
+    if (!el.classList.contains("uinput")) return;
+    const ok = el.name === "email" ? isEmail(el.value) : !!String(el.value||"").trim();
+    if (ok){
+      el.classList.remove("invalid");
+      el.setAttribute("aria-invalid","false");
+      el.closest(".field")?.classList.remove("has-error");
+      if (msg?.classList.contains("err")) say("");
     }
+  });
+
+  form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+
+    const bad = markValidity();
+    if (bad.length){
+      say("Please complete the required fields.", "err");
+      const firstBad = form.elements[bad[0]];
+      firstBad?.focus({preventScroll:true});
+      firstBad?.scrollIntoView({behavior:"smooth", block:"center"});
+      return;
+    }
+
+    // keep values for personalization on confirm page
+    const data = Object.fromEntries(new FormData(form).entries());
+    try { sessionStorage.setItem("innercircle_rsvp", JSON.stringify(data)); } catch {}
+
+    window.location.href = "./confirm.html";
   });
 }
