@@ -28,9 +28,9 @@
         </div>
       </div>
 
-      <!-- RSVP form -->
+      <!-- RSVP form (no backend) -->
       <form id="rsvpform" class="form--editorial" novalidate>
-        <!-- honeypot -->
+        <!-- Honeypot (spam trap, harmless here but keeps structure consistent) -->
         <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 
         <div class="grid">
@@ -102,6 +102,6 @@
     <small>© <span id="y"></span> Inner Circle</small>
   </footer>
   <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
-  <script src="./app.editorial.js" defer></script>
+  <script src="./app.frontend-only.js" defer></script>
 </body>
 </html>
