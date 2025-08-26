@@ -1,20 +1,193 @@
-@@ -28,9 +28,9 @@ <h1 class="h-title">Confirm your attendance</h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Private Dinner — RSVP</title>
+  <meta name="color-scheme" content="dark light" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0b;--panel:#111;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;
+      --field:#121212;--field-line:#262626;--focus:#d1bfa0;
+      --red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626
+    }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{
+      margin:0;background:var(--bg);color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      display:grid;place-items:center;padding:28px;
+      background:
+        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
+        radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
+    }
+    .wrap{
+      width:min(820px,94vw);background:var(--panel);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;padding:28px 24px;box-shadow:0 22px 60px rgba(0,0,0,.6)
+    }
+    h1,h2{font-family:"DM Serif Display",serif}
+    .meta{display:flex;gap:10px;align-items:center;justify-content:space-between}
+    .chip{font-size:12px;color:#bdb7a8;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:999px;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.02)}
+    .title{margin:4px 0 4px}
+    .sub{color:var(--muted);margin-top:8px}
+    .bar{height:2px;width:100%;background:linear-gradient(90deg, rgba(255,255,255,.06), transparent 60%);border-radius:2px;margin:6px 0 10px}
+
+    .invite-note p{margin:6px 0}
+    .invite-note .lead{font-weight:600}
+    .invite-note .theme{margin-top:6px}
+
+    form{margin-top:10px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    @media (max-width:720px){.grid{grid-template-columns:1fr}}
+    .row{display:flex;flex-direction:column;gap:8px}
+    label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#a99f8e}
+    input,textarea{
+      width:100%;color:var(--ink);background:var(--field);
+      border:1px solid var(--field-line);border-radius:12px;padding:12px 14px;
+      font:inherit;outline:none;transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    textarea{min-height:120px;resize:vertical}
+    input::placeholder,textarea::placeholder{color:#7c776c}
+    input:focus,textarea:focus{border-color:#3a352b;box-shadow:0 0 0 3px rgba(209,191,160,.18)}
+    .hint{color:#8c8577;font-size:12px;margin-top:2px}
+    .error{color:#ffb3b3;font-size:14px;margin:8px 2px 0;min-height:20px}
+    .hp{position:absolute;left:-5000px;opacity:0}
+
+    .cta{margin-top:18px;display:flex;justify-content:center}
+    .btn{
+      appearance:none;border:0;border-radius:999px;color:#fff;
+      font-family:"DM Serif Display",serif;letter-spacing:.04em;
+      padding:12px 22px;min-width:240px;cursor:pointer;
+      background:
+        radial-gradient(200px 120px at 40% 20%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, var(--red), var(--red-strong));
+      box-shadow:0 18px 40px rgba(0,0,0,.55), 0 12px 55px rgba(191, 35, 35, .25), inset 0 10px 20px rgba(255,255,255,.07);
+      transition:transform .15s ease, filter .2s ease, background .2s ease;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .btn:hover{
+      transform:translateY(-1px);
+      background:
+        radial-gradient(200px 120px at 40% 20%, rgba(255,255,255,.12), transparent 60%),
+        linear-gradient(180deg, var(--red-bright), var(--red));
+    }
+
+    .foot-note{margin-top:18px;color:var(--muted);font-size:12px}
+    .page-foot{display:flex;justify-content:center;color:var(--muted);font-size:12px;margin-top:18px}
+  </style>
+</head>
+<body>
+  <article class="wrap">
+    <div class="meta">
+      <div style="opacity:.85"><strong>Private Dinner</strong></div>
+      <div class="chip">Invite Only</div>
+    </div>
+
+    <h1 class="title">RSVP</h1>
+    <p class="sub">A few quick details—final info will be sent privately.</p>
+    <div class="bar"></div>
+
+    <!-- Invite copy block -->
+    <section class="invite-note">
+      <p class="lead"><strong>You're invited.</strong></p>
+      <p>
+        You are cordially invited to join <strong>Circle</strong> for a dinner on the evening of
+        <strong> September 6</strong>. Chef <strong>Terry Braggs</strong> will be preparing a
+        Mediterranean-themed three-course dinner with a wine pairing.
+      </p>
+      <p class="theme">Dress theme: <strong>Earth Tones</strong></p>
+    </section>
+
+    <div class="bar"></div>
+
+    <!-- Honeypot (spam trap, harmless) -->
+    <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <!-- Form -->
+    <form id="rsvp" novalidate>
+      <div class="grid">
+        <div class="row">
+          <label for="first">First name</label>
+          <input id="first" name="first" autocomplete="given-name" placeholder="Your first name" required>
+        </div>
+
+        <div class="row">
+          <label for="last">Last name</label>
+          <input id="last" name="last" autocomplete="family-name" placeholder="Your last name" required>
+        </div>
+
+        <div class="row">
+          <label for="email">Email (or leave blank and add phone)</label>
+          <input id="email" type="email" name="email" inputmode="email" autocomplete="email" placeholder="name@domain.com">
+        </div>
+
+        <div class="row">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="+1 555 123 4567">
+          <div class="hint">We only need one: email or phone.</div>
+        </div>
+
+        <div class="row" style="grid-column:1/-1">
+          <label for="plusone">Plus-one (guest name)</label>
+          <input id="plusone" name="plusone" placeholder="Guest’s full name (optional)">
+        </div>
+
+        <div class="row" style="grid-column:1/-1">
+          <label for="diet">Dietary restrictions</label>
+          <textarea id="diet" name="diet" placeholder="Allergies or preferences (optional)"></textarea>
+        </div>
+
+        <div class="row" style="grid-column:1/-1">
+          <label for="notes">Anything we should know?</label>
+          <textarea id="notes" name="notes" placeholder="Optional"></textarea>
         </div>
       </div>
 
-      <!-- RSVP form -->
-      <!-- RSVP form (no backend) -->
-      <form id="rsvpform" class="form--editorial" novalidate>
-        <!-- honeypot -->
-        <!-- Honeypot (spam trap, harmless here but keeps structure consistent) -->
-        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div id="err" class="error" role="alert" aria-live="polite"></div>
 
-        <div class="grid">
-@@ -102,6 +102,6 @@ <h1 class="h-title">Confirm your attendance</h1>
-    <small>© <span id="y"></span> Inner Circle</small>
-  </footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
-  <script src="./app.editorial.js" defer></script>
-  <script src="./app.frontend-only.js" defer></script>
-</body>
-</html>
+      <div class="cta">
+        <button class="btn" type="submit">Confirm RSVP</button>
+      </div>
+
+      <p class="foot-note">This invitation is strictly personal and non-transferable.</p>
+    </form>
+  </article>
+
+  <div class="page-foot">© <span id="y"></span> Inner Circle</div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    const $ = (s) => document.querySelector(s);
+    const err = $('#err');
+    const form = $('#rsvp');
+
+    function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+    function validPhone(v){const d=(v||'').replace(/[^\d]/g,'');return d.length>=10}
+    function makeCode(data){
+      // deterministic short code from guest info + salt (front-end only)
+      const salt='IC-PRIVATE-DINNER';
+      const input=`${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
+      let h=5381; for(let i=0;i<input.length;i++){h=((h<<5)+h)+input.charCodeAt(i); h|=0;}
+      return Math.abs(h).toString(36).toUpperCase().slice(-6).padStart(6,'0');
+    }
+
+    form.addEventListener('submit',(e)=>{
+      e.preventDefault(); err.textContent='';
+
+      const data={
+        first: $('#first').value.trim(),
+        last:  $('#last').value.trim(),
+        email: $('#email').value.trim(),
+        phone: $('#phone').value.trim(),
+        plusone: $('#plusone').value.trim(),
+        diet: $('#diet').value.trim(),
+        notes: $('#notes').value.trim()
+      };
+
+      // required: names + (email or phone)
+      if(!data.first || !data.last){ err.textContent='Please enter your first and last name.'; return; }
+      if(!data.email && !data.phone){ err.textContent='Please provide either an email or a phone number.'; return; }
+      if(data.email && !validEmail
