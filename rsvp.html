@@ -3,219 +3,169 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Private Dinner — RSVP</title>
+  <title>Inner Circle — Circle Dinner Invitation</title>
   <meta name="color-scheme" content="dark light" />
+  <meta name="description" content="Private dinner invitation by Inner Circle." />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <!-- Uses your existing palette & components -->
-  <link rel="stylesheet" href="./style.css" />
+  <style>
+    /* ========== Core Theme (keeps your palette) ========== */
+    :root{
+      --bg:#0b0b0b; --panel:#121212; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f;
+      --gold:#cbb686; --ok:#a7f0a0; --err:#ffbcbc;
+      --red:#b91c1c; --red-strong:#991b1b; --red-bright:#dc2626;
+
+      --r-lg:28px; --r-md:14px;
+      --shadow-lg:0 22px 60px rgba(0,0,0,.60);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+    h1,h2,h3,.brand{font-family:"DM Serif Display",serif; letter-spacing:.2px}
+    a{color:inherit; text-decoration:none}
+
+    /* Top bar */
+    .nav{
+      position:sticky; top:0; z-index:10;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:20px 28px; border-bottom:1px solid var(--line);
+      background:rgba(11,11,11,.55); backdrop-filter:saturate(140%) blur(6px);
+    }
+    .brand{font-size:22px}
+
+    /* Layout shells */
+    .shell{max-width:980px; margin:36px auto; padding:0 20px}
+
+    /* Invite band card (SAA editorial vibe) */
+    .card--invite{
+      width:min(820px,94vw);
+      margin:0 auto;
+      background:#111;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:24px;
+      padding:28px 26px 24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.55);
+    }
+    .invite{display:grid; gap:14px}
+    .invite-tag{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px; border-radius:999px; width:max-content;
+      border:1px solid rgba(255,255,255,.12);
+      color:#bdb7a8; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+      background:rgba(255,255,255,.02);
+    }
+    .invite-tag .ring{
+      width:12px; height:12px; border-radius:50%;
+      border:2px solid var(--red); box-shadow:inset 0 0 0 2px rgba(255,255,255,.02);
+    }
+    .invite-title{font-size:34px; line-height:1.1; margin:2px 0 4px}
+    .invite-copy{margin:0; max-width:68ch}
+    .invite-brand{font-weight:600}
+    .invite-meta{color:var(--muted); margin:6px 0 0}
+    .invite-meta .label{color:#9b9486; letter-spacing:.04em}
+    @media (max-width:560px){ .invite-title{font-size:28px} }
+
+    /* Hero with red circle CTA */
+    .hero{
+      min-height:calc(100vh - 280px);
+      display:grid; place-items:center; gap:16px;
+      padding:48px 16px; text-align:center;
+      background:
+        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.10), transparent 60%),
+        radial-gradient(950px 540px at -10% 110%, rgba(203,182,134,.08), transparent 60%);
+    }
+    .circle-btn{
+      display:flex; align-items:center; justify-content:center;
+      width:210px; height:210px; border-radius:50%;
+      color:#fff; font-family:"DM Serif Display",serif; font-size:20px; letter-spacing:.4px;
+      background:
+        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
+        linear-gradient(180deg, var(--red), var(--red-strong));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 22px 60px rgba(0,0,0,.65), inset 0 10px 20px rgba(255,255,255,.06);
+      transition:transform .2s ease, box-shadow .25s ease, background .25s ease, filter .25s ease;
+      animation:pulse 3.2s ease-in-out infinite;
+    }
+    .circle-btn:hover{
+      transform:scale(1.06);
+      background:
+        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.10), transparent 50%),
+        linear-gradient(180deg, var(--red-bright), var(--red));
+      box-shadow:0 28px 80px rgba(0,0,0,.75), inset 0 12px 24px rgba(255,255,255,.10);
+    }
+    .circle-btn:active{transform:scale(.97)}
+    @keyframes pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.08)}}
+    @media (prefers-reduced-motion:reduce){ .circle-btn{animation:none} }
+    .hero-caption{color:var(--muted); font-size:14px}
+
+    /* Footer */
+    .foot{
+      display:flex; justify-content:center; padding:30px; color:var(--muted);
+      border-top:1px solid var(--line)
+    }
+
+    /* Accessiblity focus */
+    :focus-visible{ outline:2px solid rgba(203,182,134,.65); outline-offset:2px }
+  </style>
 </head>
 <body>
   <header class="nav">
-    <a class="brand" href="./index.html">Inner Circle</a>
+    <div class="brand">Inner Circle</div>
   </header>
 
-  <main class="shell">
-    <section class="card tf-card" role="form" aria-labelledby="tf-title">
-      <header class="tf-head">
-        <div>
-          <p class="tf-eyebrow">Private Dinner</p>
-          <h1 id="tf-title" class="tf-title">RSVP</h1>
-          <p class="tf-sub">A few quick details—final info will be sent privately.</p>
-        </div>
-        <span class="tf-badge">INVITE ONLY</span>
-      </header>
-
-      <!-- Progress bar (fills as you type) -->
-      <div class="tf-progress" aria-hidden="true">
-        <div class="tf-progress__bar" id="tfProgressBar" style="width: 0%"></div>
+  <!-- Invite band -->
+  <section class="shell">
+    <article class="invite card--invite">
+      <div class="invite-tag">
+        <span class="ring" aria-hidden="true"></span>
+        Circle Dinner
       </div>
 
-      <form id="rsvpform" class="tf-form" novalidate>
-        <!-- honeypot -->
-        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <h1 class="invite-title">You’re invited.</h1>
 
-        <!-- First / Last -->
-        <div class="tf-field">
-          <label class="tf-label">First name</label>
-          <input class="tf-input uinput" type="text" name="first" autocomplete="given-name" placeholder="Your first name" required>
-        </div>
+      <p class="invite-copy">
+        You are cordially invited to join <span class="invite-brand" id="brandName">Circle</span>
+        for a dinner on the evening of <strong class="invite-date" id="inviteDate">September 6</strong>.
+        Chef <strong class="invite-chef" id="inviteChef">Terry Braggs</strong> will be preparing a
+        Mediterranean-themed three-course dinner with a wine pairing.
+      </p>
 
-        <div class="tf-field">
-          <label class="tf-label">Last name</label>
-          <input class="tf-input uinput" type="text" name="last" autocomplete="family-name" placeholder="Your last name" required>
-        </div>
+      <p class="invite-meta">
+        <span class="label">Dress theme:</span> <strong class="invite-theme" id="inviteTheme">Earth Tones</strong>
+      </p>
+    </article>
+  </section>
 
-        <!-- Email OR Phone -->
-        <div class="tf-field">
-          <label class="tf-label">Email <span class="tf-or">or</span> Phone</label>
-          <input class="tf-input uinput" type="email" name="email" autocomplete="email" placeholder="name@domain.com (or leave blank and add phone)" inputmode="email">
-        </div>
-
-        <div class="tf-field">
-          <label class="tf-label">Phone</label>
-          <input class="tf-input uinput" type="tel" name="phone" autocomplete="tel" placeholder="+1 555 123 4567" inputmode="tel">
-          <small class="tf-hint">We only need one: email <em>or</em> phone.</small>
-        </div>
-
-        <!-- Plus-one name -->
-        <div class="tf-field">
-          <label class="tf-label">Plus-one (guest name)</label>
-          <input class="tf-input uinput" type="text" name="plusone_name" placeholder="Guest’s full name (optional)">
-        </div>
-
-        <!-- Dietary -->
-        <div class="tf-field">
-          <label class="tf-label">Dietary restrictions</label>
-          <textarea class="tf-input tf-textarea uinput" name="diet" rows="3" placeholder="Allergies or preferences (optional)"></textarea>
-        </div>
-
-        <!-- Notes -->
-        <div class="tf-field">
-          <label class="tf-label">Anything we should know?</label>
-          <textarea class="tf-input tf-textarea uinput" name="notes" rows="3" placeholder="Optional"></textarea>
-        </div>
-
-        <!-- CTA + message -->
-        <button id="submitBtn" type="submit" class="btn btn-primary btn--full">Confirm RSVP</button>
-        <p id="msg" class="msg" role="status" aria-live="polite"></p>
-
-        <p class="tf-disclaimer">This invitation is strictly personal and non-transferable.</p>
-      </form>
-    </section>
+  <!-- CTA section -->
+  <main class="hero">
+    <a class="circle-btn" href="./rsvp.html" aria-label="Confirm RSVP">
+      <span>Confirm RSVP</span>
+    </a>
+    <p class="hero-caption">Invitation-only · Limited seats</p>
   </main>
 
   <footer class="foot">
     <small>© <span id="y"></span> Inner Circle</small>
   </footer>
 
-  <!-- Typeform-style polish (scoped to this page) -->
-  <style>
-    /* container */
-    .tf-card{ width:min(760px, 94vw); padding:30px 26px }
-    .tf-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:12px }
-    .tf-eyebrow{ font-family:"DM Serif Display",serif; font-size:20px; margin:0 0 6px }
-    .tf-title{ font-size:26px; margin:0 0 6px }
-    .tf-sub{ margin:0 0 8px; color:var(--muted) }
-    .tf-badge{ border:1px solid rgba(255,255,255,.12); color:#bdb7a8; padding:6px 10px; border-radius:999px; font-size:12px; letter-spacing:.12em; text-transform:uppercase }
-
-    /* progress */
-    .tf-progress{ height:4px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; margin:10px 0 16px }
-    .tf-progress__bar{ height:100%; background:var(--gold); width:0%; transition:width .25s ease }
-
-    /* fields */
-    .tf-form{ display:grid; gap:16px }
-    .tf-field{ display:grid; gap:8px }
-    .tf-label{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#a99f8e }
-    .tf-or{ font-weight:400; text-transform:none; letter-spacing:.02em; color:var(--muted) }
-    .tf-input{
-      width:100%; border:none; outline:none;
-      border-bottom:1px solid rgba(255,255,255,.18);
-      background:transparent; color:var(--ink);
-      padding:12px 2px 10px; border-radius:0;
-      transition:border-color .2s ease, background .2s ease;
-    }
-    .tf-input:focus{ border-color:var(--gold); background:rgba(255,255,255,.02) }
-    .tf-textarea{ resize:vertical }
-    .tf-hint{ color:var(--muted); font-size:12px }
-    .tf-disclaimer{ color:#8f8a7a; font-size:12px; margin-top:8px }
-
-    /* invalid */
-    .tf-input.invalid{ border-color:#e2a7a7 !important; box-shadow:0 1px 0 0 #e2a7a7 }
-
-    /* responsive */
-    @media (max-width:560px){
-      .tf-title{ font-size:22px }
-      .tf-eyebrow{ font-size:19px }
-    }
-  </style>
-
+  <!-- Optional: set details from one place -->
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    // front-end only validation + progress + redirect
-    const form = document.getElementById('rsvpform');
-    const msg  = document.getElementById('msg');
-    const bar  = document.getElementById('tfProgressBar');
-
-    const say = (t='', cls='') => { msg.textContent=t; msg.className = 'msg ' + cls; };
-    const isEmail = v => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(v||'').trim());
-    const isPhone = v => /[0-9+()\\-\\s]{7,}/.test(String(v||'').trim());
-
-    function updateProgress(){
-      // Required pieces: first, last, (email OR phone)
-      const data = new FormData(form);
-      let score = 0, total = 3;
-
-      if (String(data.get('first')||'').trim()) score++;
-      if (String(data.get('last')||'').trim())  score++;
-
-      const e = String(data.get('email')||'').trim();
-      const p = String(data.get('phone')||'').trim();
-      if (isEmail(e) || isPhone(p)) score++;
-
-      const pct = Math.round((score/total)*100);
-      bar.style.width = pct + '%';
-    }
-
-    function validate(){
-      // clear
-      [...form.querySelectorAll('.tf-input')].forEach(el=>{
-        el.classList.remove('invalid'); el.setAttribute('aria-invalid','false');
-      });
-
-      const f = form.elements;
-      let bad = null;
-
-      const first = f.first.value.trim();
-      const last  = f.last.value.trim();
-      const email = f.email.value.trim();
-      const phone = f.phone.value.trim();
-
-      if (!first){ f.first.classList.add('invalid'); f.first.setAttribute('aria-invalid','true'); bad = bad || f.first; }
-      if (!last){  f.last.classList.add('invalid');  f.last.setAttribute('aria-invalid','true');   bad = bad || f.last; }
-
-      if (!(isEmail(email) || isPhone(phone))){
-        // mark both so it’s clear one is needed
-        f.email.classList.add('invalid');  f.email.setAttribute('aria-invalid','true');
-        f.phone.classList.add('invalid');  f.phone.setAttribute('aria-invalid','true');
-        bad = bad || f.email;
-      }
-      return bad;
-    }
-
-    form.addEventListener('input', (e)=>{
-      const el = e.target;
-      if (!el.classList.contains('tf-input')) return;
-
-      // live clean
-      if (el.name === 'email'){
-        if (isEmail(el.value)) { el.classList.remove('invalid'); el.setAttribute('aria-invalid','false'); }
-      } else if (el.name === 'phone'){
-        if (isPhone(el.value)) { el.classList.remove('invalid'); el.setAttribute('aria-invalid','false'); }
-      } else {
-        if (String(el.value).trim()) { el.classList.remove('invalid'); el.setAttribute('aria-invalid','false'); }
-      }
-      if (msg.classList.contains('err')) say('');
-      updateProgress();
-    });
-
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const bad = validate();
-      if (bad){
-        say('Please complete the required fields.', 'err');
-        bad.focus({preventScroll:true});
-        bad.scrollIntoView({behavior:'smooth', block:'center'});
-        return;
-      }
-      // store for confirm page
-      const data = Object.fromEntries(new FormData(form).entries());
-      try { sessionStorage.setItem('innercircle_rsvp', JSON.stringify(data)); } catch(_){}
-      window.location.href = './confirm.html';
-    });
-
-    // init progress
-    updateProgress();
+    // Update these in one spot to change the copy site-wide
+    const INVITE = {
+      brand: "Circle",
+      date: "September 6",
+      chef: "Terry Braggs",
+      theme: "Earth Tones"
+    };
+    document.getElementById('brandName').textContent  = INVITE.brand;
+    document.getElementById('inviteDate').textContent = INVITE.date;
+    document.getElementById('inviteChef').textContent = INVITE.chef;
+    document.getElementById('inviteTheme').textContent = INVITE.theme;
   </script>
 </body>
 </html>
