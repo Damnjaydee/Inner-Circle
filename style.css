@@ -1,57 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
 :root{
-  --bg:#ffffff;
-  --ink:#0a0a0a;
-  --muted:#6b7280;
-  --line:#e5e7eb;
-  --red:#e11900;
-  --red-press:#b31200;
+  --bg:#0b0b0b; --ink:#eae7df; --muted:#bcb7a6; --line:#2a2a2a; --gold:#cbb686; --ok:#9be49b; --err:#ffbcbc;
 }
-
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0; background:var(--bg); color:var(--ink);
-  font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", sans-serif;
 }
+h1,h2,h3,.brand{font-family:"DM Serif Display", serif; letter-spacing:.2px}
+a{color:var(--ink); text-decoration:none}
+.muted{color:var(--muted)}
 
-.container{
-  min-height:100dvh; display:grid; place-items:center; padding:48px 20px;
+.nav{
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; gap:16px;
+  padding:18px 24px; border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(140%) blur(6px); background:rgba(11,11,11,.6);
 }
+.brand{font-size:20px}
 
+.hero{
+  min-height:calc(100vh - 120px);
+  display:grid; place-items:center; padding:48px 16px;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(203,182,134,.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgba(203,182,134,.10), transparent 60%);
+}
+.hero-card{
+  width:min(720px, 92vw);
+  border:1px solid var(--line); border-radius:20px; padding:40px 28px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45); text-align:center;
+}
+.hero-card h1{font-size:40px; margin:0 0 8px}
+.sub{color:var(--muted); margin:0 0 20px}
+
+.content{max-width:860px; margin:40px auto; padding:0 16px}
 .card{
-  width:min(640px, 100%);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:32px;
-  box-shadow:0 8px 24px rgba(0,0,0,.06);
-  background:#fff;
+  border:1px solid var(--line); border-radius:20px; padding:28px;
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.02));
+  box-shadow:0 6px 20px rgba(0,0,0,.35);
 }
 
-h1{font-size:28px; margin:0 0 8px}
-.lead{color:var(--muted); margin:0 0 20px}
-.helper{font-size:12px; color:var(--muted)}
-.form{display:grid; gap:16px}
-.row{display:grid; gap:16px}
-@media(min-width:640px){ .row{grid-template-columns:1fr 1fr} }
-.input,.select,.textarea{width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:12px; font:inherit}
-.textarea{min-height:100px; resize:vertical}
-.notice{background:#f9fafb; border:1px dashed var(--line); padding:12px 14px; border-radius:12px; color:var(--muted); font-size:14px}
+form{display:grid; gap:16px; margin-top:8px}
+.grid{display:grid; gap:16px; grid-template-columns:repeat(2, minmax(0,1fr))}
+@media (max-width:720px){ .grid{grid-template-columns:1fr} }
 
-/* Full-page centered circle (Home) */
-.circle-container{
-  min-height:100vh; display:flex; align-items:center; justify-content:center; background:#fff;
+label{display:grid; gap:8px; font-size:14px}
+input, textarea{
+  width:100%; padding:12px 14px; border-radius:12px;
+  border:1px solid var(--line); background:#111; color:var(--ink);
+  outline:none; transition:border .2s ease, box-shadow .2s ease;
 }
+input:focus, textarea:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(203,182,134,.18)}
+.hp{position:absolute !important; left:-9999px !important; opacity:0 !important}
 
-/* Red circular CTA used everywhere */
-.circle-btn{
-  display:flex; align-items:center; justify-content:center;
-  width:120px; height:120px; border-radius:50%;
-  background:var(--red); color:#fff; font-weight:700; font-size:18px;
-  text-decoration:none; border:0; cursor:pointer;
-  transition:transform .15s ease, background .2s ease, box-shadow .2s ease;
-  box-shadow:0 6px 18px rgba(225,25,0,.25);
+.btn{
+  display:inline-block; padding:12px 18px; border-radius:999px;
+  border:1px solid var(--line); background:#141414; color:var(--ink);
 }
-.circle-btn:hover{ background:var(--red-press); transform:scale(1.08) }
-.circle-btn:active{ transform:scale(0.95) }
+.btn:hover{border-color:var(--gold)}
+.btn-primary{background:linear-gradient(180deg, #1a1a1a, #0f0f0f); border:1px solid var(--gold)}
+.btn-primary:disabled{opacity:.6; cursor:not-allowed}
+
+.msg{min-height:20px}
+.msg.ok{color:var(--ok)}
+.msg.err{color:var(--err)}
+
+.foot{display:flex; justify-content:center; padding:26px; color:var(--muted); border-top:1px solid var(--line)}
