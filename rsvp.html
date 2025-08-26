@@ -5,18 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Private Dinner — RSVP</title>
   <meta name="color-scheme" content="dark light" />
-
-  <!-- Type: editorial serif for headings, modern grotesk for UI/body -->
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ---------- Tokens (colors unchanged) ---------- */
     :root{
       --bg:#0b0b0b; --panel:#111; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f;
       --field:#121212; --field-line:#222; --focus:#d1bfa0;
       --red:#b91c1c; --red-strong:#991b1b; --red-bright:#dc2626;
 
-      /* Type scale / spacing tuned for SAA-ish feel */
       --h1: clamp(32px, 3.4vw, 44px);
       --lede: 15.5px;
       --label: 12px;
@@ -25,7 +21,6 @@
       --hair: 1px;
     }
 
-    /* ---------- Base ---------- */
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -49,7 +44,6 @@
       box-shadow:0 26px 70px rgba(0,0,0,.60);
     }
 
-    /* ---------- Type ---------- */
     h1{
       font-family:"DM Serif Display", serif;
       font-size:var(--h1);
@@ -77,7 +71,6 @@
     .invite-copy p{margin:6px 0}
     .invite-copy .theme{margin-top:6px}
 
-    /* ---------- Form ---------- */
     form{margin-top:10px}
     .grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--gap)}
     @media (max-width:720px){ .grid{grid-template-columns:1fr} }
@@ -116,7 +109,6 @@
     .error{color:#ffb3b3; font-size:14px; margin:10px 2px 0; min-height:20px}
     .hp{position:absolute; left:-5000px; opacity:0}
 
-    /* ---------- CTA ---------- */
     .cta{margin-top:14px; display:flex; justify-content:center}
     .btn{
       appearance:none; border:1px solid rgba(255,255,255,.10);
@@ -137,8 +129,8 @@
         radial-gradient(220px 140px at 40% 18%, rgba(255,255,255,.12), transparent 60%),
         linear-gradient(180deg, var(--red-bright), var(--red));
     }
+    .btn[disabled]{opacity:.65; cursor:progress}
 
-    /* ---------- Footer ---------- */
     .foot-note{margin-top:18px; color:var(--muted); font-size:12px}
     .page-foot{display:flex; justify-content:center; color:var(--muted); font-size:12px; margin-top:18px}
   </style>
@@ -154,12 +146,12 @@
     <p class="lede">A few quick details—final info will be sent privately.</p>
     <div class="bar"></div>
 
-    <!-- Invite text (kept; styled more editorial) -->
+    <!-- Invite text -->
     <section class="invite-copy" aria-label="Invitation">
       <p class="lead-hed">You're invited.</p>
       <p>
         You are cordially invited to join <strong>Circle</strong> for a dinner on the evening of
-        <strong> September 7</strong>. Chef <strong>Terry Braggs</strong> will be preparing a
+        <strong> September 6</strong>. Chef <strong>Terry Braggs</strong> will be preparing a
         Mediterranean-themed three-course dinner with a wine pairing.
       </p>
       <p class="theme">Dress theme: <strong>Earth Tones</strong></p>
@@ -167,10 +159,9 @@
 
     <div class="bar" style="margin-top:14px;"></div>
 
-    <!-- Honeypot (spam trap, harmless) -->
+    <!-- Honeypot -->
     <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-    <!-- Form -->
     <form id="rsvp" novalidate>
       <div class="grid">
         <div class="row">
@@ -213,7 +204,7 @@
       <div id="err" class="error" role="alert" aria-live="polite"></div>
 
       <div class="cta">
-        <button class="btn" type="submit">Confirm RSVP</button>
+        <button class="btn" id="submitBtn" type="submit">Confirm RSVP</button>
       </div>
 
       <p class="foot-note">This invitation is strictly personal and non-transferable.</p>
@@ -223,19 +214,23 @@
   <div class="page-foot">© <span id="y"></span> Inner Circle</div>
 
   <script>
-    // Year
+    // ----- config -----
+    const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwwOll8x0Z29GjWDQSHSR01CvrIFrRyMYwHna9h9tHKyI1kNNHKz9-T5mtL8r4jn1_iHA/exec';
+
+    // year
     document.getElementById('y').textContent = new Date().getFullYear();
 
-    // Small helper
+    // helpers
     const $ = s => document.querySelector(s);
     const err = $('#err');
     const form = $('#rsvp');
+    const btn  = $('#submitBtn');
 
-    // Validation
     const validEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-    const validPhone = v => (v||'').replace(/[^\d]/g,'').length >= 10;
+    const digits = v => (v||'').replace(/[^\d]/g,'');
+    const validPhone = v => digits(v).length >= 10;
 
-    // Short confirmation code (front-end only; deterministic)
+    // small deterministic code generator (front-end only)
     function codeFrom(data){
       const salt='IC-PRIVATE-DINNER';
       const src = `${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
@@ -243,7 +238,7 @@
       return Math.abs(h).toString(36).toUpperCase().slice(-6).padStart(6,'0');
     }
 
-    form.addEventListener('submit', (e)=>{
+    form.addEventListener('submit', async (e)=>{
       e.preventDefault();
       err.textContent='';
 
@@ -257,18 +252,40 @@
         notes:  $('#notes').value.trim()
       };
 
+      // simple validation
       if(!data.first || !data.last){ err.textContent='Please enter your first and last name.'; return; }
       if(!data.email && !data.phone){ err.textContent='Please provide either an email or a phone number.'; return; }
       if(data.email && !validEmail(data.email)){ err.textContent='That email doesn’t look valid.'; return; }
       if(!data.email && data.phone && !validPhone(data.phone)){ err.textContent='That phone number doesn’t look valid.'; return; }
 
-      // Persist + route to confirmation
+      // persist + generate code for confirm.html
       const code = codeFrom(data);
       try{
         sessionStorage.setItem('innercircle_rsvp', JSON.stringify(data));
         sessionStorage.setItem('innercircle_code', code);
-      }catch(_) {}
-      location.href='./confirm.html';
+      }catch(_){}
+
+      // send to Apps Script (email to host)
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = 'Submitting…';
+
+      try{
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type:'rsvp', ...data })
+        });
+
+        // Even if the email fails, we continue to confirmation so guests don't get stuck
+        // You can inspect res.ok if you want to branch.
+      }catch(_){
+        // Network error — continue anyway
+      }finally{
+        btn.textContent = original;
+        btn.disabled = false;
+        location.href = './confirm.html';
+      }
     });
   </script>
 </body>
