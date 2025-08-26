@@ -6,30 +6,59 @@
   <title>RSVP Confirmed — Inner Circle</title>
   <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css" />
+  <style>
+    :root{--bg:#0b0b0b; --panel:#121212; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f; --gold:#cbb686}
+    *{box-sizing:border-box} html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.5;
+      display:grid; place-items:center; padding:28px;
+      background:
+        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
+        radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
+    }
+    h1{font-family:"DM Serif Display",serif}
+    .card{width:min(720px,94vw); background:#111; border:1px solid rgba(255,255,255,.08); border-radius:24px; padding:28px 24px; text-align:center; box-shadow:0 22px 60px rgba(0,0,0,.6)}
+    .sub{color:var(--muted); margin-top:8px}
+    .code-wrap{margin:14px 0 18px}
+    .code-label{color:#a99f8e; font-size:12px; letter-spacing:.12em; text-transform:uppercase; margin:0 0 6px}
+    .code-value{display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:22px; letter-spacing:.25em; padding:10px 14px; border-radius:12px; border:1px dashed rgba(255,255,255,.18); background:rgba(255,255,255,.03)}
+    .btn{display:inline-flex; align-items:center; justify-content:center; padding:10px 18px; border-radius:999px; border:1px solid var(--line); background:#151515; color:var(--ink); text-decoration:none}
+    .foot{position:fixed; bottom:12px; left:0; right:0; display:flex; justify-content:center; color:var(--muted); font-size:13px}
+  </style>
 </head>
 <body>
-  <header class="nav">
-    <a class="brand" href="./index.html">Inner Circle</a>
-  </header>
+  <article class="card">
+    <h1 id="thanksTitle">RSVP Confirmed</h1>
+    <p class="sub" id="thanksCopy">You’re on the list. Final details will be shared privately closer to the date.</p>
 
-  <main class="hero hero--with-glow">
-    <article class="card card--center">
-      <h1 id="thanksTitle">RSVP Confirmed</h1>
-      <p class="sub">You’re on the list. Final details will be shared privately closer to the date.</p>
-      <a class="btn" href="./index.html">Back to Home</a>
-    </article>
-  </main>
+    <div id="codeWrap" class="code-wrap" hidden>
+      <p class="code-label">Your check-in code</p>
+      <p class="code-value" id="codeValue">———</p>
+    </div>
 
-  <footer class="foot">
-    <small>© <span id="y"></span> Inner Circle</small>
-  </footer>
+    <a class="btn" href="./index.html">Back to Home</a>
+  </article>
+
+  <div class="foot">© <span id="y"></span> Inner Circle</div>
+
   <script>
-    document.getElementById('y').textContent=new Date().getFullYear();
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    function makeClientCode(data){
+      const salt='IC-EVENT-2025';
+      const input = `${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
+      let h=5381; for(let i=0;i<input.length;i++){ h=((h<<5)+h)+input.charCodeAt(i); h|=0; }
+      return Math.abs(h).toString(36).toUpperCase().slice(-6).padStart(6,'0');
+    }
+
     try{
-      const d = JSON.parse(sessionStorage.getItem('innercircle_rsvp')||'{}');
-      const first = (d.first||'').trim();
-      if (first) document.getElementById('thanksTitle').textContent = `Thank you, ${first}`;
+      const raw = sessionStorage.getItem('innercircle_rsvp');
+      const data = raw ? JSON.parse(raw) : {};
+      const code = sessionStorage.getItem('innercircle_code') || (raw ? makeClientCode(data) : '');
+      if (data.first) document.getElementById('thanksTitle').textContent = `Thank you, ${data.first}`;
+      if (code){ document.getElementById('codeWrap').hidden = false; document.getElementById('codeValue').textContent = code; }
     }catch(_){}
   </script>
 </body>
