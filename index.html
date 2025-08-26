@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inner Circle — Private Dinner</title>
-  <meta name="description" content="Invite-only private dinner by Inner Circle." />
+  <title>Inner Circle — Circle Dinner Invitation</title>
+  <meta name="description" content="Private dinner invitation by Inner Circle." />
   <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
@@ -14,14 +14,49 @@
     <div class="brand">Inner Circle</div>
   </header>
 
-  <main class="hero hero--with-glow">
-    <a class="circle-btn" href="./rsvp.html" aria-label="Confirm RSVP"><span>Confirm RSVP</span></a>
+  <!-- Invite band -->
+  <section class="shell">
+    <article class="invite card--invite">
+      <div class="invite-tag">
+        <span class="ring" aria-hidden="true"></span>
+        Circle Dinner
+      </div>
+
+      <h1 class="invite-title">You’re invited.</h1>
+
+      <p class="invite-copy">
+        You are cordially invited to join <span class="invite-brand" id="brandName">Circle</span>
+        for a dinner on the evening of <strong class="invite-date" id="inviteDate">September 6</strong>.
+        Chef <strong class="invite-chef" id="inviteChef">Terry Braggs</strong> will be preparing a
+        Mediterranean-themed three-course dinner with a wine pairing.
+      </p>
+
+      <p class="invite-meta">
+        <span class="label">Dress theme:</span> <strong class="invite-theme" id="inviteTheme">Earth Tones</strong>
+      </p>
+    </article>
+  </section>
+
+  <!-- CTA -->
+  <main class="hero">
+    <a class="circle-btn" href="./rsvp.html" aria-label="Confirm RSVP">
+      <span>Confirm RSVP</span>
+    </a>
     <p class="hero-caption">Invitation-only · Limited seats</p>
   </main>
 
   <footer class="foot">
     <small>© <span id="y"></span> Inner Circle</small>
   </footer>
-  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
+
+  <!-- Optional central place to change details -->
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const INVITE = { brand:"Circle", date:"September 6", chef:"Terry Braggs", theme:"Earth Tones" };
+    brandName.textContent  = INVITE.brand;
+    inviteDate.textContent = INVITE.date;
+    inviteChef.textContent = INVITE.chef;
+    inviteTheme.textContent= INVITE.theme;
+  </script>
 </body>
 </html>
