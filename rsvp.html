@@ -3,42 +3,58 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inner Circle — RSVP</title>
-  <link rel="stylesheet" href="./style.css" />
+  <title>RSVP — Inner Circle</title>
+  <meta name="description" content="RSVP for the Inner Circle private dinner." />
   <meta name="color-scheme" content="dark light" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <main class="wrap">
-    <h1>Inner Circle — Private Dinner RSVP</h1>
+  <header class="nav">
+    <a class="brand" href="./index.html">Inner Circle</a>
+  </header>
 
-    <form id="rsvpform" autocomplete="on">
-      <label>
-        Full name
-        <input name="name" type="text" required />
-      </label>
-      <label>
-        Email
-        <input name="email" type="email" required />
-      </label>
-      <label>
-        Phone
-        <input name="phone" type="tel" inputmode="tel" />
-      </label>
-      <label>
-        Party size
-        <input name="party" type="number" min="1" max="6" value="1" required />
-      </label>
-      <label>
-        Notes / Dietary
-        <textarea name="notes" rows="3" placeholder="Optional"></textarea>
-      </label>
+  <main class="content">
+    <section class="card">
+      <h1>Confirm RSVP</h1>
+      <p class="muted">Kindly complete the details below. You’ll receive directions via email/SMS after confirmation.</p>
 
-      <button id="submitBtn" type="submit">Confirm RSVP</button>
-      <p id="msg" role="status" aria-live="polite"></p>
-    </form>
+      <form id="rsvpform" novalidate>
+        <!-- Honeypot (spam trap) -->
+        <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="grid">
+          <label>Full name
+            <input name="name" type="text" autocomplete="name" required />
+          </label>
+
+          <label>Email
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+
+          <label>Phone
+            <input name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+          </label>
+
+          <label>Party size
+            <input name="party" type="number" min="1" max="6" value="1" required />
+          </label>
+        </div>
+
+        <label>Notes / Dietary requests
+          <textarea name="notes" rows="3" placeholder="Optional"></textarea>
+        </label>
+
+        <button id="submitBtn" type="submit" class="btn btn-primary">Confirm RSVP</button>
+        <p id="msg" role="status" aria-live="polite" class="msg"></p>
+      </form>
+    </section>
   </main>
 
-  <noscript>Please enable JavaScript to submit your RSVP.</noscript>
+  <footer class="foot">
+    <small>© <span id="y"></span> Inner Circle</small>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
   <script src="./app.js" defer></script>
 </body>
 </html>
