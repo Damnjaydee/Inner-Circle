@@ -1,53 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inner Circle — Dinner Invitation</title>
-  <meta name="color-scheme" content="dark light" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0b0b0b;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626}
-    *{box-sizing:border-box}html,body{height:100%}
-    body{margin:0;color:var(--ink);background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-      background:radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.10), transparent 60%),
-                 radial-gradient(950px 540px at -10% 110%, rgba(203,182,134,.08), transparent 60%);}
-    h1,.brand{font-family:"DM Serif Display",serif}
-    .nav{padding:20px 28px;border-bottom:1px solid var(--line)}
-    .brand{font-size:22px}
-    .shell{max-width:980px;margin:26px auto 0;padding:0 20px}
-    .invite{background:#111;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:26px 24px;box-shadow:0 22px 60px rgba(0,0,0,.6)}
-    .invite-tag{display:inline-flex;gap:10px;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);
-      color:#bdb7a8;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.02)}
-    .invite-tag .ring{width:12px;height:12px;border-radius:50%;border:2px solid #b91c1c}
-    .invite h1{margin:8px 0 6px}
-    .invite p{margin:6px 0 0;max-width:68ch}
-    .hero{min-height:58vh;display:grid;place-items:center;gap:12px;padding:42px 16px;text-align:center}
-    .circle-btn{display:flex;align-items:center;justify-content:center;width:210px;height:210px;border-radius:50%;color:#fff;
-      font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:.4px;text-decoration:none;
-      background:radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
-                 linear-gradient(180deg, var(--red), var(--red-strong));
-      border:1px solid rgba(255,255,255,.08);box-shadow:0 22px 60px rgba(0,0,0,.65), inset 0 10px 20px rgba(255,255,255,.06);
-      transition:transform .2s ease, box-shadow .25s ease, background .25s ease, filter .25s ease}
-    .circle-btn:hover{transform:scale(1.06);background:
-      radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.10), transparent 50%),
-      linear-gradient(180deg, var(--red-bright), var(--red));}
-    .foot{display:flex;justify-content:center;color:#bdb7a8;border-top:1px solid var(--line);padding:24px}
-  </style>
-</head>
-<body>
-  <header class="nav"><div class="brand">Inner Circle</div></header>
+@@ -28,9 +28,9 @@ <h1 class="h-title">Confirm your attendance</h1>
+        </div>
+      </div>
 
-  <section class="shell">
-    <article class="invite">
-      <div class="invite-tag"><span class="ring" aria-hidden="true"></span>Circle Dinner</div>
-  <main class="hero">
-    <a class="circle-btn" href="./rsvp.html">Confirm RSVP</a>
-    <p style="color:#bdb7a8;font-size:14px;margin:0">Invitation-only · Limited seats</p>
-  </main>
+      <!-- RSVP form -->
+      <!-- RSVP form (no backend) -->
+      <form id="rsvpform" class="form--editorial" novalidate>
+        <!-- honeypot -->
+        <!-- Honeypot (spam trap, harmless here but keeps structure consistent) -->
+        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-  <footer class="foot">© <span id="y"></span> Inner Circle</footer>
+        <div class="grid">
+@@ -102,6 +102,6 @@ <h1 class="h-title">Confirm your attendance</h1>
+    <small>© <span id="y"></span> Inner Circle</small>
+  </footer>
   <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+  <script src="./app.editorial.js" defer></script>
+  <script src="./app.frontend-only.js" defer></script>
 </body>
 </html>
