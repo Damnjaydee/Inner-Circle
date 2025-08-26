@@ -1,16 +1,30 @@
-/* ===== Tokens ===== */
+/* =========================
+   Inner Circle — Global UI
+   ========================= */
+
+/* ---- Design tokens ---- */
 :root{
-  --bg:#0b0b0b;         /* ink-on-black */
-  --ink:#eceae4;        /* warm white */
-  --muted:#bdb7a8;
-  --line:#1f1f1f;       /* hairline borders */
-  --gold:#cbb686;       /* champagne */
-  --panel:#121212;
-  --ok:#a7f0a0;
-  --err:#ffbcbc;
+  --bg:#0b0b0b;          /* ink-on-black background */
+  --panel:#121212;       /* card glass */
+  --ink:#eceae4;         /* warm white text */
+  --muted:#bdb7a8;       /* captions / secondary */
+  --line:#1f1f1f;        /* hairline borders */
+  --gold:#cbb686;        /* champagne accent */
+  --ok:#a7f0a0;          /* success text */
+  --err:#ffbcbc;         /* hard error (rare) */
+
+  --red:#b91c1c;         /* CTA red base */
+  --red-strong:#991b1b;  /* CTA red deep */
+  --red-bright:#dc2626;  /* CTA red hover */
+
+  --radius-lg:28px;
+  --radius-md:14px;
+
+  --shadow-lg:0 22px 60px rgba(0,0,0,.60);
+  --shadow-md:0 14px 36px rgba(0,0,0,.45);
 }
 
-/* ===== Base ===== */
+/* ---- Reset / base ---- */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
@@ -20,8 +34,9 @@ body{
 }
 h1,h2,h3,.brand{font-family:"DM Serif Display",serif; letter-spacing:.2px}
 a{color:inherit; text-decoration:none}
+img{max-width:100%; display:block}
 
-/* ===== Layout ===== */
+/* ---- Top nav ---- */
 .nav{
   position:sticky; top:0; z-index:10;
   display:flex; align-items:center; justify-content:space-between;
@@ -31,6 +46,7 @@ a{color:inherit; text-decoration:none}
 }
 .brand{font-size:22px}
 
+/* ---- Layout shells ---- */
 .shell{max-width:980px; margin:48px auto; padding:0 20px}
 
 .hero{
@@ -47,62 +63,92 @@ a{color:inherit; text-decoration:none}
   font-size:14px;
 }
 
+/* ---- Card ---- */
 .card{
   width:min(840px,94vw);
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.02));
-  border:1px solid var(--line); border-radius:28px;
+  background:rgba(18,18,18,.85);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:var(--radius-lg);
   padding:36px 28px;
-  box-shadow:0 20px 60px rgba(0,0,0,.45);
+  box-shadow:var(--shadow-lg);
+  backdrop-filter:blur(8px) saturate(120%);
 }
 .card--center{text-align:center}
 
-/* ===== Type ===== */
+/* ---- Typography ---- */
 h1{font-size:42px; margin:0 0 10px}
 .sub{color:var(--muted); margin:0 0 26px}
 
-/* ===== Form ===== */
-form{display:grid; gap:18px}
+/* =========================
+   Forms & Controls (RSVP)
+   ========================= */
+
+form{display:grid; gap:18px; margin-top:6px}
 .grid{display:grid; gap:18px; grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (max-width:760px){ .grid{grid-template-columns:1fr} }
 
 label{display:grid; gap:8px; font-size:14px}
-input,textarea,select{
-  width:100%; padding:14px 14px; border-radius:14px;
-  border:1px solid var(--line); background:#111; color:var(--ink);
-  transition:border-color .2s ease, box-shadow .2s ease;
+
+input, textarea, select{
+  width:100%; padding:14px 14px; border-radius:var(--radius-md);
+  border:1px solid var(--line); background:#101010; color:var(--ink);
+  transition:border-color .25s ease, box-shadow .25s ease, background .25s ease;
   outline:none;
 }
-input:focus,textarea:focus,select:focus{
+input:focus, textarea:focus, select:focus{
   border-color:var(--gold);
+  background:#141414;
   box-shadow:0 0 0 3px rgba(203,182,134,.18);
 }
 textarea{resize:vertical}
+
+/* spam trap (hidden) */
 .hp{position:absolute !important; left:-9999px !important; opacity:0 !important}
 
-/* ===== Buttons ===== */
+/* Buttons */
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
   padding:12px 22px; border-radius:999px; cursor:pointer;
   border:1px solid var(--line); background:#151515; color:var(--ink);
-  transition:transform .08s ease, border-color .2s ease;
+  transition:transform .08s ease, border-color .2s ease, box-shadow .25s ease;
 }
 .btn:hover{border-color:var(--gold)}
 .btn:active{transform:translateY(1px)}
+
 .btn-primary{
-  background:linear-gradient(180deg,#1a1a1a,#0f0f0f);
-  border:1px solid var(--gold);
+  background:linear-gradient(180deg, var(--red), var(--red-strong));
+  border:none; color:#fff;
+  font-family:"DM Serif Display",serif; font-size:16px; letter-spacing:.4px;
+  padding:14px 26px;
+  box-shadow:0 12px 28px rgba(185,28,28,.40);
 }
-.btn-primary:disabled{opacity:.6; cursor:not-allowed}
+.btn-primary:hover{
+  background:linear-gradient(180deg, var(--red-bright), var(--red));
+  transform:scale(1.03);
+  box-shadow:0 16px 36px rgba(185,28,28,.55);
+}
+.btn-primary:active{transform:scale(.97)}
+.btn-primary:disabled{opacity:.65; cursor:not-allowed}
 
 /* Messaging */
-.msg{min-height:20px; color:var(--muted)}
+.msg{min-height:20px; color:var(--muted); margin-top:4px}
 .msg.ok{color:var(--ok)}
-.msg.err{color:var(--err)}
+.msg.err{
+  color:var(--gold);
+  font-size:13px;
+  font-style:italic;
+}
 
 /* Footer */
-.foot{display:flex; justify-content:center; padding:30px; color:var(--muted); border-top:1px solid var(--line)}
+.foot{
+  display:flex; justify-content:center; padding:30px;
+  color:var(--muted); border-top:1px solid var(--line)
+}
 
-/* ===== Circle CTA ===== */
+/* =========================
+   Center Red Circle CTA
+   ========================= */
+
 .circle-cta{
   display:flex; align-items:center; justify-content:center;
   min-height:calc(100vh - 200px); width:100%;
@@ -110,20 +156,56 @@ textarea{resize:vertical}
 .circle-btn{
   display:flex; align-items:center; justify-content:center;
   width:210px; height:210px; border-radius:50%;
-  background:#b91c1c;            /* deep red */
   color:#fff; text-align:center;
   font-family:"DM Serif Display",serif; font-size:20px; letter-spacing:.4px;
-  box-shadow:
-    0 22px 60px rgba(0,0,0,.55),
-    inset 0 10px 20px rgba(255,255,255,.06);
-  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  background:radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
+             linear-gradient(180deg, var(--red), var(--red-strong));
   border:1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.65),
+    inset 0 10px 20px rgba(255,255,255,.06);
+  transition:transform .2s ease, box-shadow .25s ease, filter .25s ease, background .25s ease;
+  animation:pulse 3.2s ease-in-out infinite;
 }
 .circle-btn:hover{
   transform:scale(1.06);
-  background:#dc2626;            /* brighter red on hover */
+  background:radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.10), transparent 50%),
+             linear-gradient(180deg, var(--red-bright), var(--red));
   box-shadow:
     0 28px 80px rgba(0,0,0,.75),
-    inset 0 10px 24px rgba(255,255,255,.10);
+    inset 0 12px 24px rgba(255,255,255,.10);
 }
 .circle-btn:active{ transform:scale(.97) }
+
+/* pulse animation (respect accessibility) */
+@keyframes pulse{
+  0%,100%{ filter:brightness(1) }
+  50%    { filter:brightness(1.08) }
+}
+@media (prefers-reduced-motion: reduce){
+  .circle-btn{ animation:none }
+}
+
+/* =========================
+   Small refinements
+   ========================= */
+
+/* Improve focus visibility for keyboard users */
+:focus-visible{
+  outline:2px solid rgba(203,182,134,.65);
+  outline-offset:2px;
+}
+
+/* Responsive type sizing */
+@media (max-width:540px){
+  h1{font-size:34px}
+  .brand{font-size:20px}
+  .circle-btn{width:180px; height:180px; font-size:18px}
+}
+
+/* Subtle separators for sections if needed */
+.hr{
+  height:1px; width:100%;
+  background:linear-gradient(90deg, transparent, var(--line), transparent);
+  margin:24px 0;
+}
