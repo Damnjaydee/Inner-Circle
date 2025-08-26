@@ -1,23 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>RSVP Confirmed</title>
-  <style>
-    html, body { margin:0; height:100%; background:#000; color:#fff; font-family:Inter, system-ui, sans-serif; display:flex; align-items:center; justify-content:center; }
-    .container { text-align:center; padding:24px; }
-    h1 { font-size:28px; margin-bottom:8px; }
-    p { color:#aaa; margin:0 0 24px; }
-    .circle-btn { display:flex; align-items:center; justify-content:center; width:120px; height:120px; margin:0 auto; border-radius:50%; background:#e11900; color:#fff; font-weight:700; font-size:18px; text-decoration:none; box-shadow:0 10px 30px rgba(0,0,0,.45); transition:background .2s ease, transform .1s ease; }
-    .circle-btn:hover { background:#b31200; } .circle-btn:active { transform:scale(.96); }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RSVP Confirmed — Inner Circle</title>
+  <meta name="color-scheme" content="dark light" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>RSVP Confirmed</h1>
-    <p>We’ll send details to your email/SMS.</p>
-    <a class="circle-btn" href="index.html">Done</a>
-  </div>
+  <header class="nav">
+    <a class="brand" href="./index.html">Inner Circle</a>
+  </header>
+
+  <main class="hero">
+    <div class="hero-card">
+      <h1>RSVP Confirmed</h1>
+      <p class="sub">You’re on the list. We’ll send exact address & directions closer to the event.</p>
+      <a class="btn" href="./index.html">Back to Home</a>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <small>© <span id="y"></span> Inner Circle</small>
+  </footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
 </body>
 </html>
