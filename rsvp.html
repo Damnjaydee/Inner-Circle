@@ -1,20 +1,270 @@
-@@ -28,9 +28,9 @@ <h1 class="h-title">Confirm your attendance</h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Private Dinner — RSVP</title>
+  <meta name="color-scheme" content="dark light" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b0b0b; --panel:#121212; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f;
+      --gold:#cbb686; --error:#e2a7a7;
+      --red:#b91c1c; --red-strong:#991b1b; --red-bright:#dc2626;
+      --r-lg:26px; --shadow-lg:0 22px 60px rgba(0,0,0,.6);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      line-height:1.5; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      background:
+        radial-gradient(1200px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
+        radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
+    }
+    h1,h2,h3{font-family:"DM Serif Display",serif; letter-spacing:.2px}
+
+    /* Layout */
+    .wrap{max-width:980px; margin:48px auto 28px; padding:0 20px}
+    .card{
+      width:min(820px,94vw); margin:0 auto;
+      background:#111; border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--r-lg); padding:26px 22px 22px; box-shadow:var(--shadow-lg);
+    }
+
+    /* Header row */
+    .head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px}
+    .eyebrow{margin:0 0 8px; font-weight:600; color:#ddd}
+    .title{margin:0 0 6px; font-size:26px}
+    .sub{margin:0; color:#c9c3b6}
+    .badge{
+      border:1px solid rgba(255,255,255,.12); color:#bdb7a8;
+      padding:6px 10px; border-radius:999px; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+      white-space:nowrap; align-self:flex-start;
+    }
+
+    /* Invite copy block (editorial) */
+    .invite-copy{ margin:8px 0 18px; }
+    .invite-paragraph{ margin:0 0 6px; color:var(--ink); max-width:68ch }
+    .invite-brand{ font-weight:600 }
+    .invite-date, .invite-chef, .invite-theme{ font-weight:700; color:var(--ink) }
+    .invite-meta{ margin:0; color:var(--muted) }
+    .invite-label{ color:#9b9486; letter-spacing:.04em }
+
+    /* Progress */
+    .progress{height:6px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; margin:12px 0 18px}
+    .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--gold),#e8d9b6); transition:width .25s ease}
+
+    /* Form */
+    form{display:grid; gap:18px}
+    .field{display:grid; gap:6px}
+    .label{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#a99f8e}
+    .hint{color:#8f8878; font-size:12px; margin-top:6px}
+    .input,.textarea{
+      width:100%; border:none; outline:none; color:var(--ink); background:transparent;
+      padding:12px 2px 10px; border-bottom:1px solid rgba(255,255,255,.15);
+      transition:border-color .2s ease, background .2s ease;
+    }
+    .input:focus,.textarea:focus{border-color:var(--gold); background:rgba(255,255,255,.02)}
+    .textarea{resize:vertical}
+    .invalid{border-color:var(--error)!important; box-shadow:0 1px 0 0 var(--error)}
+    .msg{min-height:18px; color:#bdb7a8}
+    .msg.err{color:var(--gold); font-size:13px; font-style:italic}
+
+    /* CTA (red pill + glow) */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; width:100%;
+      padding:14px 22px; border-radius:999px; border:0; cursor:pointer; color:#fff;
+      font-family:"DM Serif Display",serif; letter-spacing:.4px; font-size:16px;
+      background:linear-gradient(180deg,var(--red),var(--red-strong));
+      box-shadow:0 18px 46px rgba(185,28,28,.30), inset 0 8px 14px rgba(255,255,255,.10);
+      position:relative; transition:transform .08s ease, filter .2s ease, box-shadow .25s ease;
+    }
+    .btn::after{
+      content:""; position:absolute; left:6%; right:6%; bottom:-16px; height:22px; border-radius:999px;
+      background:radial-gradient(60% 100% at 50% 0%, rgba(185,28,28,.55), transparent 70%);
+      filter:blur(8px); pointer-events:none;
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(1.05); box-shadow:0 22px 54px rgba(185,28,28,.38), inset 0 10px 16px rgba(255,255,255,.12)}
+    .btn:active{transform:translateY(0)}
+
+    .foot{display:flex; justify-content:center; color:#bdb7a8; font-size:13px; padding:22px 16px}
+    :focus-visible{outline:2px solid rgba(203,182,134,.65); outline-offset:2px}
+
+    @media (max-width:560px){
+      .title{font-size:22px}
+      .wrap{margin-top:34px}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" aria-labelledby="rsvpTitle">
+      <header class="head">
+        <div>
+          <p class="eyebrow">Private Dinner</p>
+          <h1 id="rsvpTitle" class="title">RSVP</h1>
+          <p class="sub">A few quick details—final info will be sent privately.</p>
         </div>
-      </div>
+        <span class="badge">INVITE ONLY</span>
+      </header>
 
-      <!-- RSVP form -->
-      <!-- RSVP form (no backend) -->
-      <form id="rsvpform" class="form--editorial" novalidate>
-        <!-- honeypot -->
-        <!-- Honeypot (spam trap, harmless here but keeps structure consistent) -->
-        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <!-- Invite copy (editorial) -->
+      <section class="invite-copy">
+        <p class="invite-paragraph">
+          You are cordially invited to join <span class="invite-brand">Circle</span> for a dinner on the evening of
+          <strong class="invite-date">September 6</strong>. Chef <strong class="invite-chef">Terry Braggs</strong>
+          will be preparing a Mediterranean-themed three-course dinner with a wine pairing.
+        </p>
+        <p class="invite-meta">
+          <span class="invite-label">Dress theme:</span>
+          <strong class="invite-theme">Earth Tones</strong>
+        </p>
+      </section>
 
-        <div class="grid">
-@@ -102,6 +102,6 @@ <h1 class="h-title">Confirm your attendance</h1>
-    <small>© <span id="y"></span> Inner Circle</small>
-  </footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
-  <script src="./app.editorial.js" defer></script>
-  <script src="./app.frontend-only.js" defer></script>
+      <!-- Thin progress bar -->
+      <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+
+      <!-- RSVP form (front-end only) -->
+      <form id="form" novalidate>
+        <!-- Honeypot -->
+        <input type="text" name="company" tabindex="-1" autocomplete="off" style="position:absolute;left:-5000px;opacity:0" aria-hidden="true">
+
+        <div class="field">
+          <label class="label">First name</label>
+          <input class="input" type="text" name="first" placeholder="Your first name" autocomplete="given-name" required>
+        </div>
+
+        <div class="field">
+          <label class="label">Last name</label>
+          <input class="input" type="text" name="last" placeholder="Your last name" autocomplete="family-name" required>
+        </div>
+
+        <div class="field">
+          <label class="label">Email or phone</label>
+          <input class="input" type="email" name="email" placeholder="name@domain.com (or leave blank and add phone)" autocomplete="email" inputmode="email">
+        </div>
+
+        <div class="field">
+          <label class="label">Phone</label>
+          <input class="input" type="tel" name="phone" placeholder="+1 555 123 4567" autocomplete="tel" inputmode="tel">
+          <p class="hint">We only need one: email or phone.</p>
+        </div>
+
+        <div class="field">
+          <label class="label">Plus-one (guest name)</label>
+          <input class="input" type="text" name="plusone_name" placeholder="Guest’s full name (optional)">
+        </div>
+
+        <div class="field">
+          <label class="label">Dietary restrictions</label>
+          <textarea class="textarea" name="diet" rows="3" placeholder="Allergies or preferences (optional)"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="label">Anything we should know?</label>
+          <textarea class="textarea" name="notes" rows="3" placeholder="Optional"></textarea>
+        </div>
+
+        <button class="btn" type="submit">Confirm RSVP</button>
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+
+        <p class="sub" style="color:#9f988a;margin-top:4px">This invitation is strictly personal and non-transferable.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="foot">© <span id="year"></span> Inner Circle</footer>
+
+  <script>
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Elements
+    const form = document.getElementById('form');
+    const msg  = document.getElementById('msg');
+    const bar  = document.getElementById('bar');
+
+    const say = (t='', cls='') => { msg.textContent=t; msg.className = 'msg ' + cls; };
+    const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v||'').trim());
+    const isPhone = v => /[0-9+()\-\\s]{7,}/.test(String(v||'').trim());
+
+    // Deterministic 6-char code (client-side only)
+    function makeClientCode(data){
+      const salt = 'IC-EVENT-2025'; // change per event/date if you want a fresh space
+      const input = `${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
+      let h = 5381; for (let i=0;i<input.length;i++){ h=((h<<5)+h)+input.charCodeAt(i); h|=0; }
+      return Math.abs(h).toString(36).toUpperCase().slice(-6).padStart(6,'0'); // e.g. 9F7K3Q
+    }
+
+    function updateProgress(){
+      const fd = new FormData(form);
+      let score = 0, total = 3;
+      if ((fd.get('first')||'').trim()) score++;
+      if ((fd.get('last')||'').trim())  score++;
+      const e = (fd.get('email')||'').trim();
+      const p = (fd.get('phone')||'').trim();
+      if (isEmail(e) || isPhone(p)) score++;
+      bar.style.width = Math.round((score/total)*100) + '%';
+    }
+
+    function validate(){
+      form.querySelectorAll('.input,.textarea').forEach(el=>{
+        el.classList.remove('invalid'); el.setAttribute('aria-invalid','false');
+      });
+      const f = form.elements;
+      let bad = null;
+
+      const first = f.first.value.trim();
+      const last  = f.last.value.trim();
+      const email = f.email.value.trim();
+      const phone = f.phone.value.trim();
+
+      if (!first){ f.first.classList.add('invalid'); f.first.setAttribute('aria-invalid','true'); bad = bad || f.first; }
+      if (!last){  f.last.classList.add('invalid');  f.last.setAttribute('aria-invalid','true');  bad = bad || f.last; }
+      if (!(isEmail(email) || isPhone(phone))){
+        f.email.classList.add('invalid'); f.email.setAttribute('aria-invalid','true');
+        f.phone.classList.add('invalid'); f.phone.setAttribute('aria-invalid','true');
+        bad = bad || f.email;
+      }
+      return bad;
+    }
+
+    // Live cleanup + progress
+    form.addEventListener('input', e=>{
+      const el = e.target;
+      if (!el.matches('.input,.textarea')) return;
+      const ok = el.name==='email' ? isEmail(el.value)
+                : el.name==='phone' ? isPhone(el.value)
+                : !!String(el.value).trim();
+      if (ok){ el.classList.remove('invalid'); el.setAttribute('aria-invalid','false'); if (msg.classList.contains('err')) say(''); }
+      updateProgress();
+    });
+
+    // Submit
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      if (form.company && form.company.value) return; // honeypot
+      const bad = validate();
+      if (bad){
+        say('Please complete the required fields.', 'err');
+        bad.focus({preventScroll:true});
+        bad.scrollIntoView({behavior:'smooth', block:'center'});
+        return;
+      }
+      const data = Object.fromEntries(new FormData(form).entries());
+      const code = makeClientCode(data);
+      try{
+        sessionStorage.setItem('innercircle_rsvp', JSON.stringify(data));
+        sessionStorage.setItem('innercircle_code', code);
+      }catch(_){}
+      window.location.href = './confirm.html';
+    });
+
+    // Init
+    updateProgress();
+  </script>
 </body>
 </html>
