@@ -167,7 +167,6 @@
     function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
     function validPhone(v){const d=(v||'').replace(/[^\d]/g,'');return d.length>=10}
     function makeCode(data){
-      // deterministic short code from guest info + salt (front-end only)
       const salt='IC-PRIVATE-DINNER';
       const input=`${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
       let h=5381; for(let i=0;i<input.length;i++){h=((h<<5)+h)+input.charCodeAt(i); h|=0;}
@@ -187,7 +186,19 @@
         notes: $('#notes').value.trim()
       };
 
-      // required: names + (email or phone)
       if(!data.first || !data.last){ err.textContent='Please enter your first and last name.'; return; }
       if(!data.email && !data.phone){ err.textContent='Please provide either an email or a phone number.'; return; }
-      if(data.email && !validEmail
+      if(data.email && !validEmail(data.email)){ err.textContent='That email doesn’t look valid.'; return; }
+      if(!data.email && data.phone && !validPhone(data.phone)){ err.textContent='That phone number doesn’t look valid.'; return; }
+
+      const code=makeCode(data);
+      try{
+        sessionStorage.setItem('innercircle_rsvp', JSON.stringify(data));
+        sessionStorage.setItem('innercircle_code', code);
+      }catch(_){}
+
+      location.href='./confirm.html';
+    });
+  </script>
+</body>
+</html>
