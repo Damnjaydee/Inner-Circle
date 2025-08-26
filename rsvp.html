@@ -1,37 +1,44 @@
- <script>
-  const RSVP_URL = "https://script.google.com/macros/s/XXXXX/exec"; // your Web App URL ending with /exec
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inner Circle — RSVP</title>
+  <link rel="stylesheet" href="./style.css" />
+  <meta name="color-scheme" content="dark light" />
+</head>
+<body>
+  <main class="wrap">
+    <h1>Inner Circle — Private Dinner RSVP</h1>
 
-  const form = document.getElementById('rsvpform');
-  const msg  = document.getElementById('msg');
-  const btn  = document.getElementById('submitBtn');
+    <form id="rsvpform" autocomplete="on">
+      <label>
+        Full name
+        <input name="name" type="text" required />
+      </label>
+      <label>
+        Email
+        <input name="email" type="email" required />
+      </label>
+      <label>
+        Phone
+        <input name="phone" type="tel" inputmode="tel" />
+      </label>
+      <label>
+        Party size
+        <input name="party" type="number" min="1" max="6" value="1" required />
+      </label>
+      <label>
+        Notes / Dietary
+        <textarea name="notes" rows="3" placeholder="Optional"></textarea>
+      </label>
 
-  const say = (t) => { msg.textContent = t || ''; };
+      <button id="submitBtn" type="submit">Confirm RSVP</button>
+      <p id="msg" role="status" aria-live="polite"></p>
+    </form>
+  </main>
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    say('');
-    btn.disabled = true;
-
-    try {
-      // Send as URL-encoded form (no custom headers)
-      const body = new URLSearchParams(new FormData(form));
-      body.set('type','rsvp'); // so backend knows this is a form
-
-      const res  = await fetch(RSVP_URL, { method: 'POST', body });
-      const text = await res.text();
-      let json; try { json = JSON.parse(text); } catch { json = {}; }
-
-      if (json.ok) {
-        window.location.href = 'confirm.html';
-      } else {
-        say('Submission error. Please try again.');
-        console.log('Server response:', text);
-      }
-    } catch (err) {
-      say('Network error. Please try again.');
-      console.error(err);
-    } finally {
-      btn.disabled = false;
-    }
-  });
-</script>
+  <noscript>Please enable JavaScript to submit your RSVP.</noscript>
+  <script src="./app.js" defer></script>
+</body>
+</html>
