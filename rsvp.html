@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RSVP — Inner Circle</title>
-  <meta name="description" content="RSVP for the Inner Circle private dinner." />
   <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css" />
@@ -14,14 +13,14 @@
     <a class="brand" href="./index.html">Inner Circle</a>
   </header>
 
-  <main class="content">
+  <main class="shell">
     <section class="card">
       <h1>Confirm RSVP</h1>
-      <p class="muted">Kindly complete the details below. You’ll receive directions via email/SMS after confirmation.</p>
+      <p class="sub">Share your details below. Exact address & directions will be shared privately.</p>
 
       <form id="rsvpform" novalidate>
         <!-- Honeypot (spam trap) -->
-        <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 
         <div class="grid">
           <label>Full name
@@ -46,7 +45,7 @@
         </label>
 
         <button id="submitBtn" type="submit" class="btn btn-primary">Confirm RSVP</button>
-        <p id="msg" role="status" aria-live="polite" class="msg"></p>
+        <p id="msg" class="msg" role="status" aria-live="polite"></p>
       </form>
     </section>
   </main>
@@ -54,7 +53,7 @@
   <footer class="foot">
     <small>© <span id="y"></span> Inner Circle</small>
   </footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
   <script src="./app.js" defer></script>
 </body>
 </html>
