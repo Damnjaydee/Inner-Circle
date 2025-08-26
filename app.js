@@ -4,10 +4,11 @@ const RSVP_URL = "https://script.google.com/macros/s/YOUR_APPS_SCRIPT_EXEC_URL/e
 const form = document.getElementById("rsvpform");
 const msg  = document.getElementById("msg");
 const btn  = document.getElementById("submitBtn");
-const say  = (t="",cls="") => { msg.textContent=t; msg.className=`msg ${cls}`; };
+const say  = (t="",cls="") => { if(msg){ msg.textContent=t; msg.className=`msg ${cls}`; } };
 
 function valid(f){
-  if (f.company && f.company.value.trim()) return false; // honeypot → spam
+  if (!f) return false;
+  if (f.company && f.company.value.trim()) return false; // honeypot
   return f.checkValidity();
 }
 
@@ -21,7 +22,7 @@ if (form){
       const body = new URLSearchParams(new FormData(form));
       body.set("type","rsvp");
 
-      const res = await fetch(RSVP_URL,{
+      const res  = await fetch(RSVP_URL,{
         method:"POST",
         headers:{ "Content-Type":"application/x-www-form-urlencoded" },
         body
