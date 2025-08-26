@@ -1,24 +1,36 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Inner Circle — Home</title>
-  <style>
-    html,body{margin:0;height:100%;background:#000}
-    body{display:flex;align-items:center;justify-content:center}
-    .circle-btn{
-      display:flex;align-items:center;justify-content:center;
-      width:140px;height:140px;border-radius:50%;
-      background:#e11900;color:#fff;font:700 20px/1 system-ui, sans-serif;
-      text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.6);
-      transition:transform .15s ease, background .2s ease
-    }
-    .circle-btn:hover{background:#b31200;transform:scale(1.05)}
-    .circle-btn:active{transform:scale(.95)}
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inner Circle — Private Dinner</title>
+  <meta name="description" content="Invite-only private dinner series by Inner Circle." />
+  <meta name="color-scheme" content="dark light" />
+  <meta property="og:title" content="Inner Circle — Private Dinner" />
+  <meta property="og:description" content="Invite-only private dinner series by Inner Circle." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <a href="rsvp.html" class="circle-btn">RSVP</a>
+  <header class="nav">
+    <div class="brand">Inner Circle</div>
+  </header>
+
+  <main class="hero">
+    <div class="hero-card">
+      <h1>Private Dinner</h1>
+      <p class="sub">Invitation-only. Limited seats.</p>
+      <a class="btn btn-primary" href="./rsvp.html" aria-label="Confirm your RSVP">Confirm RSVP</a>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <small>© <span id="y"></span> Inner Circle</small>
+  </footer>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
