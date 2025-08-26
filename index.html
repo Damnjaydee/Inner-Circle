@@ -7,8 +7,8 @@
   <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0b0b0b;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626}
-    *{box-sizing:border-box}html,body{height:100%}
+    :root{--bg:#0b0b0b;--panel:#111;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626}
+    *{box-sizing:border-box} html,body{height:100%}
     body{
       margin:0;color:var(--ink);background:var(--bg);
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;
@@ -20,15 +20,15 @@
     h1,.brand{font-family:"DM Serif Display",serif}
     .nav{padding:20px 28px;border-bottom:1px solid var(--line)}
     .brand{font-size:22px}
-
     .hero{
-      min-height:80vh;display:grid;place-items:center;gap:12px;
-      padding:42px 16px;text-align:center
+      min-height:80vh;display:grid;place-items:center;gap:12px;padding:42px 16px;text-align:center;
+      position:relative;z-index:0
     }
+    /* ensure button is always clickable */
     .circle-btn{
+      position:relative;z-index:9999;cursor:pointer;
       display:flex;align-items:center;justify-content:center;
-      width:210px;height:210px;border-radius:50%;
-      color:#fff;text-decoration:none;
+      width:210px;height:210px;border-radius:50%;color:#fff;text-decoration:none;
       font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:.4px;
       background:
         radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
@@ -45,13 +45,16 @@
     }
     .muted{color:var(--muted);font-size:14px;margin:0}
     .foot{display:flex;justify-content:center;color:var(--muted);border-top:1px solid var(--line);padding:24px}
+
+    /* nuke any legacy invite elements so they never block the CTA */
+    .shell,.invite{display:none!important}
   </style>
 </head>
 <body>
   <header class="nav"><div class="brand">Inner Circle</div></header>
 
-  <!-- invite card removed -->
   <main class="hero">
+    <!-- Use relative link. If you prefer absolute, swap href to your full Pages URL -->
     <a class="circle-btn" href="./rsvp.html">Confirm RSVP</a>
     <p class="muted">Invitation-only · Limited seats</p>
   </main>
