@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Private RSVP — Inner Circle</title>
+  <title>Private Dinner — RSVP</title>
   <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Uses your existing palette & components -->
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
@@ -14,75 +15,71 @@
   </header>
 
   <main class="shell">
-    <section class="card card--editorial">
-      <header class="card-head">
+    <section class="card tf-card" role="form" aria-labelledby="tf-title">
+      <header class="tf-head">
         <div>
-          <p class="eyebrow">Inner Circle</p>
-          <h1 class="h-title">Confirm your attendance</h1>
-          <p class="sub">Final details are shared privately upon confirmation.</p>
-          <p class="sub sub--muted">Guest — Access code —</p>
+          <p class="tf-eyebrow">Private Dinner</p>
+          <h1 id="tf-title" class="tf-title">RSVP</h1>
+          <p class="tf-sub">A few quick details—final info will be sent privately.</p>
         </div>
-        <span class="badge">PRIVATE RSVP</span>
+        <span class="tf-badge">INVITE ONLY</span>
       </header>
 
-      <form id="rsvpform" class="form--editorial" novalidate>
-        <!-- honeypot (harmless) -->
+      <!-- Progress bar (fills as you type) -->
+      <div class="tf-progress" aria-hidden="true">
+        <div class="tf-progress__bar" id="tfProgressBar" style="width: 0%"></div>
+      </div>
+
+      <form id="rsvpform" class="tf-form" novalidate>
+        <!-- honeypot -->
         <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-        <fieldset class="grid group">
-          <legend class="legend">Guest</legend>
-          <label class="field">First name
-            <input class="uinput" name="first" autocomplete="given-name" required />
-          </label>
-          <label class="field">Last name
-            <input class="uinput" name="last" autocomplete="family-name" required />
-          </label>
-        </fieldset>
+        <!-- First / Last -->
+        <div class="tf-field">
+          <label class="tf-label">First name</label>
+          <input class="tf-input uinput" type="text" name="first" autocomplete="given-name" placeholder="Your first name" required>
+        </div>
 
-        <fieldset class="group">
-          <legend class="legend">How should we notify you?</legend>
-          <div class="pill-group">
-            <input type="radio" id="notify-email" name="notify" value="email" checked />
-            <label for="notify-email" class="pill">Email</label>
-            <input type="radio" id="notify-text" name="notify" value="text" />
-            <label for="notify-text" class="pill">Text</label>
-            <input type="radio" id="notify-both" name="notify" value="both" />
-            <label for="notify-both" class="pill">Both</label>
-          </div>
-        </fieldset>
+        <div class="tf-field">
+          <label class="tf-label">Last name</label>
+          <input class="tf-input uinput" type="text" name="last" autocomplete="family-name" placeholder="Your last name" required>
+        </div>
 
-        <fieldset class="grid group">
-          <legend class="legend">Contact</legend>
-          <label class="field">Email
-            <input class="uinput" name="email" type="email" autocomplete="email" required />
-          </label>
-          <label class="field">Phone
-            <input class="uinput" name="phone" type="tel" inputmode="tel" placeholder="+1 555 123 4567" />
-          </label>
-        </fieldset>
+        <!-- Email OR Phone -->
+        <div class="tf-field">
+          <label class="tf-label">Email <span class="tf-or">or</span> Phone</label>
+          <input class="tf-input uinput" type="email" name="email" autocomplete="email" placeholder="name@domain.com (or leave blank and add phone)" inputmode="email">
+        </div>
 
-        <fieldset class="group">
-          <legend class="legend">Plus one</legend>
-          <div class="pill-group">
-            <input type="radio" id="plus-no"  name="plusone" value="no" checked />
-            <label for="plus-no" class="pill">No</label>
-            <input type="radio" id="plus-yes" name="plusone" value="yes" />
-            <label for="plus-yes" class="pill">Yes</label>
-          </div>
-        </fieldset>
+        <div class="tf-field">
+          <label class="tf-label">Phone</label>
+          <input class="tf-input uinput" type="tel" name="phone" autocomplete="tel" placeholder="+1 555 123 4567" inputmode="tel">
+          <small class="tf-hint">We only need one: email <em>or</em> phone.</small>
+        </div>
 
-        <label class="field">Dietary notes
-          <textarea class="uinput" name="diet" rows="3" placeholder="Allergies or preferences (optional)"></textarea>
-        </label>
+        <!-- Plus-one name -->
+        <div class="tf-field">
+          <label class="tf-label">Plus-one (guest name)</label>
+          <input class="tf-input uinput" type="text" name="plusone_name" placeholder="Guest’s full name (optional)">
+        </div>
 
-        <label class="field">Notes
-          <textarea class="uinput" name="notes" rows="3" placeholder="Anything else we should know? (optional)"></textarea>
-        </label>
+        <!-- Dietary -->
+        <div class="tf-field">
+          <label class="tf-label">Dietary restrictions</label>
+          <textarea class="tf-input tf-textarea uinput" name="diet" rows="3" placeholder="Allergies or preferences (optional)"></textarea>
+        </div>
 
+        <!-- Notes -->
+        <div class="tf-field">
+          <label class="tf-label">Anything we should know?</label>
+          <textarea class="tf-input tf-textarea uinput" name="notes" rows="3" placeholder="Optional"></textarea>
+        </div>
+
+        <!-- CTA + message -->
         <button id="submitBtn" type="submit" class="btn btn-primary btn--full">Confirm RSVP</button>
         <p id="msg" class="msg" role="status" aria-live="polite"></p>
 
-        <p class="disclaimer">This invitation is strictly personal and non-transferable.</p>
+        <p class="tf-disclaimer">This invitation is strictly personal and non-transferable.</p>
       </form>
     </section>
   </main>
@@ -90,7 +87,135 @@
   <footer class="foot">
     <small>© <span id="y"></span> Inner Circle</small>
   </footer>
-  <script>document.getElementById('y').textContent=new Date().getFullYear()</script>
-  <script src="./app.js" defer></script>
+
+  <!-- Typeform-style polish (scoped to this page) -->
+  <style>
+    /* container */
+    .tf-card{ width:min(760px, 94vw); padding:30px 26px }
+    .tf-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:12px }
+    .tf-eyebrow{ font-family:"DM Serif Display",serif; font-size:20px; margin:0 0 6px }
+    .tf-title{ font-size:26px; margin:0 0 6px }
+    .tf-sub{ margin:0 0 8px; color:var(--muted) }
+    .tf-badge{ border:1px solid rgba(255,255,255,.12); color:#bdb7a8; padding:6px 10px; border-radius:999px; font-size:12px; letter-spacing:.12em; text-transform:uppercase }
+
+    /* progress */
+    .tf-progress{ height:4px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; margin:10px 0 16px }
+    .tf-progress__bar{ height:100%; background:var(--gold); width:0%; transition:width .25s ease }
+
+    /* fields */
+    .tf-form{ display:grid; gap:16px }
+    .tf-field{ display:grid; gap:8px }
+    .tf-label{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#a99f8e }
+    .tf-or{ font-weight:400; text-transform:none; letter-spacing:.02em; color:var(--muted) }
+    .tf-input{
+      width:100%; border:none; outline:none;
+      border-bottom:1px solid rgba(255,255,255,.18);
+      background:transparent; color:var(--ink);
+      padding:12px 2px 10px; border-radius:0;
+      transition:border-color .2s ease, background .2s ease;
+    }
+    .tf-input:focus{ border-color:var(--gold); background:rgba(255,255,255,.02) }
+    .tf-textarea{ resize:vertical }
+    .tf-hint{ color:var(--muted); font-size:12px }
+    .tf-disclaimer{ color:#8f8a7a; font-size:12px; margin-top:8px }
+
+    /* invalid */
+    .tf-input.invalid{ border-color:#e2a7a7 !important; box-shadow:0 1px 0 0 #e2a7a7 }
+
+    /* responsive */
+    @media (max-width:560px){
+      .tf-title{ font-size:22px }
+      .tf-eyebrow{ font-size:19px }
+    }
+  </style>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // front-end only validation + progress + redirect
+    const form = document.getElementById('rsvpform');
+    const msg  = document.getElementById('msg');
+    const bar  = document.getElementById('tfProgressBar');
+
+    const say = (t='', cls='') => { msg.textContent=t; msg.className = 'msg ' + cls; };
+    const isEmail = v => /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(String(v||'').trim());
+    const isPhone = v => /[0-9+()\\-\\s]{7,}/.test(String(v||'').trim());
+
+    function updateProgress(){
+      // Required pieces: first, last, (email OR phone)
+      const data = new FormData(form);
+      let score = 0, total = 3;
+
+      if (String(data.get('first')||'').trim()) score++;
+      if (String(data.get('last')||'').trim())  score++;
+
+      const e = String(data.get('email')||'').trim();
+      const p = String(data.get('phone')||'').trim();
+      if (isEmail(e) || isPhone(p)) score++;
+
+      const pct = Math.round((score/total)*100);
+      bar.style.width = pct + '%';
+    }
+
+    function validate(){
+      // clear
+      [...form.querySelectorAll('.tf-input')].forEach(el=>{
+        el.classList.remove('invalid'); el.setAttribute('aria-invalid','false');
+      });
+
+      const f = form.elements;
+      let bad = null;
+
+      const first = f.first.value.trim();
+      const last  = f.last.value.trim();
+      const email = f.email.value.trim();
+      const phone = f.phone.value.trim();
+
+      if (!first){ f.first.classList.add('invalid'); f.first.setAttribute('aria-invalid','true'); bad = bad || f.first; }
+      if (!last){  f.last.classList.add('invalid');  f.last.setAttribute('aria-invalid','true');   bad = bad || f.last; }
+
+      if (!(isEmail(email) || isPhone(phone))){
+        // mark both so it’s clear one is needed
+        f.email.classList.add('invalid');  f.email.setAttribute('aria-invalid','true');
+        f.phone.classList.add('invalid');  f.phone.setAttribute('aria-invalid','true');
+        bad = bad || f.email;
+      }
+      return bad;
+    }
+
+    form.addEventListener('input', (e)=>{
+      const el = e.target;
+      if (!el.classList.contains('tf-input')) return;
+
+      // live clean
+      if (el.name === 'email'){
+        if (isEmail(el.value)) { el.classList.remove('invalid'); el.setAttribute('aria-invalid','false'); }
+      } else if (el.name === 'phone'){
+        if (isPhone(el.value)) { el.classList.remove('invalid'); el.setAttribute('aria-invalid','false'); }
+      } else {
+        if (String(el.value).trim()) { el.classList.remove('invalid'); el.setAttribute('aria-invalid','false'); }
+      }
+      if (msg.classList.contains('err')) say('');
+      updateProgress();
+    });
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const bad = validate();
+      if (bad){
+        say('Please complete the required fields.', 'err');
+        bad.focus({preventScroll:true});
+        bad.scrollIntoView({behavior:'smooth', block:'center'});
+        return;
+      }
+      // store for confirm page
+      const data = Object.fromEntries(new FormData(form).entries());
+      try { sessionStorage.setItem('innercircle_rsvp', JSON.stringify(data)); } catch(_){}
+      window.location.href = './confirm.html';
+    });
+
+    // init progress
+    updateProgress();
+  </script>
 </body>
 </html>
