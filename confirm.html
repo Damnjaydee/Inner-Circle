@@ -15,8 +15,10 @@
 
   <main class="hero hero--with-glow">
     <div class="card card--center">
-      <h1>RSVP Confirmed</h1>
-      <p class="sub">You’re on the list. Directions will arrive via email/SMS closer to the date.</p>
+      <h1 id="thanksTitle">RSVP Confirmed</h1>
+      <p class="sub" id="thanksCopy">
+        You’re on the list. Final details will be shared privately closer to the date.
+      </p>
       <a class="btn" href="./index.html">Back to Home</a>
     </div>
   </main>
@@ -24,6 +26,19 @@
   <footer class="foot">
     <small>© <span id="y"></span> Inner Circle</small>
   </footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+  <script>
+    document.getElementById('y').textContent=new Date().getFullYear();
+    // Personalize with the first name if available
+    try{
+      const raw = sessionStorage.getItem('innercircle_rsvp');
+      if (raw){
+        const d = JSON.parse(raw||'{}');
+        const first = (d.first||'').trim();
+        if (first){
+          document.getElementById('thanksTitle').textContent = `Thank you, ${first}`;
+        }
+      }
+    }catch(_){}
+  </script>
 </body>
 </html>
