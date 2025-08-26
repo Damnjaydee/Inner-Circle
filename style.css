@@ -11,7 +11,7 @@
   --line:#1f1f1f;        /* hairline borders */
   --gold:#cbb686;        /* champagne accent */
   --ok:#a7f0a0;          /* success text */
-  --err:#ffbcbc;         /* hard error (rare) */
+  --err:#ffbcbc;         /* not used loudly */
 
   --red:#b91c1c;         /* CTA red base */
   --red-strong:#991b1b;  /* CTA red deep */
@@ -22,6 +22,8 @@
 
   --shadow-lg:0 22px 60px rgba(0,0,0,.60);
   --shadow-md:0 14px 36px rgba(0,0,0,.45);
+
+  --error:#e2a7a7;       /* soft rose underline */
 }
 
 /* ---- Reset / base ---- */
@@ -89,6 +91,7 @@ form{display:grid; gap:18px; margin-top:6px}
 
 label{display:grid; gap:8px; font-size:14px}
 
+/* Classic inputs */
 input, textarea, select{
   width:100%; padding:14px 14px; border-radius:var(--radius-md);
   border:1px solid var(--line); background:#101010; color:var(--ink);
@@ -114,7 +117,6 @@ textarea{resize:vertical}
 }
 .btn:hover{border-color:var(--gold)}
 .btn:active{transform:translateY(1px)}
-
 .btn-primary{
   background:linear-gradient(180deg, var(--red), var(--red-strong));
   border:none; color:#fff;
@@ -129,14 +131,16 @@ textarea{resize:vertical}
 }
 .btn-primary:active{transform:scale(.97)}
 .btn-primary:disabled{opacity:.65; cursor:not-allowed}
+.btn--full{ width:100%; margin-top:12px }
 
 /* Messaging */
-.msg{min-height:20px; color:var(--muted); margin-top:4px}
+.msg{min-height:18px; margin-top:10px; color:var(--muted)}
 .msg.ok{color:var(--ok)}
 .msg.err{
   color:var(--gold);
   font-size:13px;
   font-style:italic;
+  letter-spacing:.02em;
 }
 
 /* Footer */
@@ -176,36 +180,84 @@ textarea{resize:vertical}
     inset 0 12px 24px rgba(255,255,255,.10);
 }
 .circle-btn:active{ transform:scale(.97) }
-
-/* pulse animation (respect accessibility) */
-@keyframes pulse{
-  0%,100%{ filter:brightness(1) }
-  50%    { filter:brightness(1.08) }
-}
-@media (prefers-reduced-motion: reduce){
-  .circle-btn{ animation:none }
-}
+@keyframes pulse{ 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.08)} }
+@media (prefers-reduced-motion:reduce){ .circle-btn{animation:none} }
 
 /* =========================
-   Small refinements
+   Editorial RSVP (first-image look)
    ========================= */
 
-/* Improve focus visibility for keyboard users */
-:focus-visible{
-  outline:2px solid rgba(203,182,134,.65);
-  outline-offset:2px;
+.card--editorial{
+  width:min(820px, 94vw);
+  background:#111;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;
+  padding:36px 28px 30px;
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+}
+.card-head{
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:16px; margin-bottom:18px;
+}
+.eyebrow{ font-family:"DM Serif Display",serif; font-size:22px; margin:0 0 10px }
+.h-title{ font-size:22px; margin:2px 0 6px }
+.sub--muted{ color:#8f8a7a }
+.badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  padding:8px 10px; border-radius:999px; white-space:nowrap;
+  border:1px solid rgba(255,255,255,.12); color:#bdb7a8;
 }
 
-/* Responsive type sizing */
+/* Underlined editorial inputs */
+.form--editorial .field{
+  display:grid; gap:8px; margin-bottom:6px; font-size:13px; letter-spacing:.06em;
+  text-transform:uppercase; color:#a99f8e;
+}
+.uinput{
+  background:transparent; border:none; outline:none;
+  border-bottom:1px solid rgba(255,255,255,.14);
+  padding:12px 2px 10px; color:var(--ink);
+  transition:border-color .2s ease, background .2s ease;
+}
+.uinput:focus{
+  border-color:var(--gold); background:rgba(255,255,255,.02);
+}
+
+/* Radio pills */
+.field--pills legend{
+  font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:#a99f8e;
+  margin-bottom:10px;
+}
+.pill-group{ display:flex; gap:10px; flex-wrap:wrap }
+.pill-group input[type="radio"]{ position:absolute; opacity:0; pointer-events:none }
+.pill{
+  padding:8px 14px; border-radius:999px; cursor:pointer;
+  border:1px solid rgba(255,255,255,.16); color:#cfc9bb;
+  transition:background .2s ease, border-color .2s ease, color .2s ease;
+}
+.pill-group input[type="radio"]:checked + .pill{
+  background:#1a1a1a; border-color:var(--gold); color:#fff;
+}
+
+/* Disclaimer */
+.disclaimer{ margin-top:16px; color:#8f8a7a; font-size:12px; letter-spacing:.02em }
+
+/* Polished validation look */
+.uinput.invalid{ border-color:var(--error) !important; box-shadow:0 1px 0 0 var(--error) }
+.field .error-tag{ display:none; margin-top:6px; color:var(--error); font-size:12px }
+.field.has-error .error-tag{ display:block }
+
+/* Accessibility focus */
+:focus-visible{ outline:2px solid rgba(203,182,134,.65); outline-offset:2px }
+
+/* Responsive tweaks */
+@media (max-width:700px){
+  .card-head{ flex-direction:column; gap:8px }
+  .badge{ align-self:flex-start }
+}
 @media (max-width:540px){
   h1{font-size:34px}
   .brand{font-size:20px}
   .circle-btn{width:180px; height:180px; font-size:18px}
-}
-
-/* Subtle separators for sections if needed */
-.hr{
-  height:1px; width:100%;
-  background:linear-gradient(90deg, transparent, var(--line), transparent);
-  margin:24px 0;
 }
