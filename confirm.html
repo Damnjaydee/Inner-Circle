@@ -7,59 +7,64 @@
   <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0b0b0b; --panel:#121212; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f; --gold:#cbb686}
+    :root{--bg:#0b0b0b;--panel:#111;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--focus:#d1bfa0}
     *{box-sizing:border-box} html,body{height:100%}
-    body{
-      margin:0; background:var(--bg); color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.5;
-      display:grid; place-items:center; padding:28px;
-      background:
-        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
-        radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
-    }
-    h1{font-family:"DM Serif Display",serif}
-    .card{width:min(720px,94vw); background:#111; border:1px solid rgba(255,255,255,.08); border-radius:24px; padding:28px 24px; text-align:center; box-shadow:0 22px 60px rgba(0,0,0,.6)}
-    .sub{color:var(--muted); margin-top:8px}
-    .code-wrap{margin:14px 0 18px}
-    .code-label{color:#a99f8e; font-size:12px; letter-spacing:.12em; text-transform:uppercase; margin:0 0 6px}
-    .code-value{display:inline-block; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:22px; letter-spacing:.25em; padding:10px 14px; border-radius:12px; border:1px dashed rgba(255,255,255,.18); background:rgba(255,255,255,.03)}
-    .btn{display:inline-flex; align-items:center; justify-content:center; padding:10px 18px; border-radius:999px; border:1px solid var(--line); background:#151515; color:var(--ink); text-decoration:none}
-    .foot{position:fixed; bottom:12px; left:0; right:0; display:flex; justify-content:center; color:var(--muted); font-size:13px}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;display:grid;place-items:center;padding:28px}
+    .wrap{width:min(720px,94vw);background:#111;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:28px 24px;box-shadow:0 22px 60px rgba(0,0,0,.6)}
+    h1,h2{font-family:"DM Serif Display",serif;margin:0 0 8px}
+    .sub{color:var(--muted)}
+    .bar{height:2px;width:100%;background:linear-gradient(90deg, rgba(255,255,255,.06), transparent 60%);border-radius:2px;margin:10px 0 16px}
+    .row{display:grid;grid-template-columns:140px 1fr;gap:12px;margin:6px 0}
+    .k{color:#a99f8e;text-transform:uppercase;font-size:12px;letter-spacing:.12em}
+    .v{color:#eceae4}
+    .code{display:inline-block;margin-top:6px;padding:8px 12px;border:1px dashed rgba(255,255,255,.2);border-radius:10px;background:#121212}
+    .foot{display:flex;justify-content:center;color:#bdb7a8;font-size:12px;margin-top:18px}
+    .btn{margin-top:16px;display:inline-block;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:10px 16px}
   </style>
 </head>
 <body>
-  <article class="card">
-    <h1 id="thanksTitle">RSVP Confirmed</h1>
-    <p class="sub" id="thanksCopy">You’re on the list. Final details will be shared privately closer to the date.</p>
+  <article class="wrap">
+    <h1>RSVP Received</h1>
+    <p class="sub">Thanks <span id="who"></span>. We’ve saved your details.</p>
+    <div class="bar"></div>
 
-    <div id="codeWrap" class="code-wrap" hidden>
-      <p class="code-label">Your check-in code</p>
-      <p class="code-value" id="codeValue">———</p>
+    <div id="details">
+      <div class="row"><div class="k">Name</div><div class="v" id="name"></div></div>
+      <div class="row"><div class="k">Email</div><div class="v" id="email"></div></div>
+      <div class="row"><div class="k">Phone</div><div class="v" id="phone"></div></div>
+      <div class="row"><div class="k">Plus-one</div><div class="v" id="plus"></div></div>
+      <div class="row"><div class="k">Diet</div><div class="v" id="diet"></div></div>
+      <div class="row"><div class="k">Notes</div><div class="v" id="notes"></div></div>
+      <div class="row"><div class="k">Check-in Code</div><div class="v"><span class="code" id="code"></span></div></div>
     </div>
 
-    <a class="btn" href="./index.html">Back to Home</a>
+    <a class="btn" href="./rsvp.html">Edit details</a>
   </article>
 
   <div class="foot">© <span id="y"></span> Inner Circle</div>
 
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
-
-    function makeClientCode(data){
-      const salt='IC-EVENT-2025';
-      const input = `${(data.first||'').trim().toUpperCase()}|${(data.last||'').trim().toUpperCase()}|${(data.email||data.phone||'').trim()}|${salt}`;
-      let h=5381; for(let i=0;i<input.length;i++){ h=((h<<5)+h)+input.charCodeAt(i); h|=0; }
-      return Math.abs(h).toString(36).toUpperCase().slice(-6).padStart(6,'0');
+    const dataJSON = sessionStorage.getItem('innercircle_rsvp');
+    const code = sessionStorage.getItem('innercircle_code') || '———';
+    if(!dataJSON){
+      document.querySelector('.wrap').innerHTML = `
+        <h1>No RSVP found</h1>
+        <p class="sub">Please submit your details first.</p>
+        <div class="bar"></div>
+        <a class="btn" href="./rsvp.html">Go to RSVP</a>`;
+    }else{
+      const d = JSON.parse(dataJSON);
+      const name = `${d.first||''} ${d.last||''}`.trim();
+      document.getElementById('who').textContent = d.first || 'there';
+      document.getElementById('name').textContent = name || '—';
+      document.getElementById('email').textContent = d.email || '—';
+      document.getElementById('phone').textContent = d.phone || '—';
+      document.getElementById('plus').textContent  = d.plusone || '—';
+      document.getElementById('diet').textContent  = d.diet || '—';
+      document.getElementById('notes').textContent = d.notes || '—';
+      document.getElementById('code').textContent  = code;
     }
-
-    try{
-      const raw = sessionStorage.getItem('innercircle_rsvp');
-      const data = raw ? JSON.parse(raw) : {};
-      const code = sessionStorage.getItem('innercircle_code') || (raw ? makeClientCode(data) : '');
-      if (data.first) document.getElementById('thanksTitle').textContent = `Thank you, ${data.first}`;
-      if (code){ document.getElementById('codeWrap').hidden = false; document.getElementById('codeValue').textContent = code; }
-    }catch(_){}
   </script>
 </body>
 </html>
