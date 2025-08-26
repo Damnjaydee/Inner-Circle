@@ -1,69 +1,129 @@
+/* ===== Tokens ===== */
 :root{
-  --bg:#0b0b0b; --ink:#eae7df; --muted:#bcb7a6; --line:#2a2a2a; --gold:#cbb686; --ok:#9be49b; --err:#ffbcbc;
+  --bg:#0b0b0b;         /* ink-on-black */
+  --ink:#eceae4;        /* warm white */
+  --muted:#bdb7a8;
+  --line:#1f1f1f;       /* hairline borders */
+  --gold:#cbb686;       /* champagne */
+  --panel:#121212;
+  --ok:#a7f0a0;
+  --err:#ffbcbc;
 }
+
+/* ===== Base ===== */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji", sans-serif;
+  margin:0; color:var(--ink); background:var(--bg);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
 }
-h1,h2,h3,.brand{font-family:"DM Serif Display", serif; letter-spacing:.2px}
-a{color:var(--ink); text-decoration:none}
-.muted{color:var(--muted)}
+h1,h2,h3,.brand{font-family:"DM Serif Display",serif; letter-spacing:.2px}
+a{color:inherit; text-decoration:none}
 
+/* ===== Layout ===== */
 .nav{
   position:sticky; top:0; z-index:10;
-  display:flex; align-items:center; gap:16px;
-  padding:18px 24px; border-bottom:1px solid var(--line);
-  backdrop-filter:saturate(140%) blur(6px); background:rgba(11,11,11,.6);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:22px 28px; border-bottom:1px solid var(--line);
+  backdrop-filter:saturate(140%) blur(6px);
+  background:rgba(11,11,11,.55);
 }
-.brand{font-size:20px}
+.brand{font-size:22px}
+
+.shell{max-width:980px; margin:48px auto; padding:0 20px}
 
 .hero{
-  min-height:calc(100vh - 120px);
+  min-height:calc(100vh - 140px);
   display:grid; place-items:center; padding:48px 16px;
+}
+.hero--with-glow{
   background:
-    radial-gradient(1200px 600px at 80% -10%, rgba(203,182,134,.12), transparent 60%),
-    radial-gradient(900px 500px at -10% 110%, rgba(203,182,134,.10), transparent 60%);
+    radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.10), transparent 60%),
+    radial-gradient(950px 540px at -10% 110%, rgba(203,182,134,.08), transparent 60%);
 }
-.hero-card{
-  width:min(720px, 92vw);
-  border:1px solid var(--line); border-radius:20px; padding:40px 28px;
-  box-shadow:0 10px 30px rgba(0,0,0,.45); text-align:center;
+.hero-caption{
+  margin-top:18px; text-align:center; color:var(--muted);
+  font-size:14px;
 }
-.hero-card h1{font-size:40px; margin:0 0 8px}
-.sub{color:var(--muted); margin:0 0 20px}
 
-.content{max-width:860px; margin:40px auto; padding:0 16px}
 .card{
-  border:1px solid var(--line); border-radius:20px; padding:28px;
+  width:min(840px,94vw);
   background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.02));
-  box-shadow:0 6px 20px rgba(0,0,0,.35);
+  border:1px solid var(--line); border-radius:28px;
+  padding:36px 28px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
 }
+.card--center{text-align:center}
 
-form{display:grid; gap:16px; margin-top:8px}
-.grid{display:grid; gap:16px; grid-template-columns:repeat(2, minmax(0,1fr))}
-@media (max-width:720px){ .grid{grid-template-columns:1fr} }
+/* ===== Type ===== */
+h1{font-size:42px; margin:0 0 10px}
+.sub{color:var(--muted); margin:0 0 26px}
+
+/* ===== Form ===== */
+form{display:grid; gap:18px}
+.grid{display:grid; gap:18px; grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:760px){ .grid{grid-template-columns:1fr} }
 
 label{display:grid; gap:8px; font-size:14px}
-input, textarea{
-  width:100%; padding:12px 14px; border-radius:12px;
+input,textarea,select{
+  width:100%; padding:14px 14px; border-radius:14px;
   border:1px solid var(--line); background:#111; color:var(--ink);
-  outline:none; transition:border .2s ease, box-shadow .2s ease;
+  transition:border-color .2s ease, box-shadow .2s ease;
+  outline:none;
 }
-input:focus, textarea:focus{border-color:var(--gold); box-shadow:0 0 0 3px rgba(203,182,134,.18)}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(203,182,134,.18);
+}
+textarea{resize:vertical}
 .hp{position:absolute !important; left:-9999px !important; opacity:0 !important}
 
+/* ===== Buttons ===== */
 .btn{
-  display:inline-block; padding:12px 18px; border-radius:999px;
-  border:1px solid var(--line); background:#141414; color:var(--ink);
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:12px 22px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--line); background:#151515; color:var(--ink);
+  transition:transform .08s ease, border-color .2s ease;
 }
 .btn:hover{border-color:var(--gold)}
-.btn-primary{background:linear-gradient(180deg, #1a1a1a, #0f0f0f); border:1px solid var(--gold)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{
+  background:linear-gradient(180deg,#1a1a1a,#0f0f0f);
+  border:1px solid var(--gold);
+}
 .btn-primary:disabled{opacity:.6; cursor:not-allowed}
 
-.msg{min-height:20px}
+/* Messaging */
+.msg{min-height:20px; color:var(--muted)}
 .msg.ok{color:var(--ok)}
 .msg.err{color:var(--err)}
 
-.foot{display:flex; justify-content:center; padding:26px; color:var(--muted); border-top:1px solid var(--line)}
+/* Footer */
+.foot{display:flex; justify-content:center; padding:30px; color:var(--muted); border-top:1px solid var(--line)}
+
+/* ===== Circle CTA ===== */
+.circle-cta{
+  display:flex; align-items:center; justify-content:center;
+  min-height:calc(100vh - 200px); width:100%;
+}
+.circle-btn{
+  display:flex; align-items:center; justify-content:center;
+  width:210px; height:210px; border-radius:50%;
+  background:#b91c1c;            /* deep red */
+  color:#fff; text-align:center;
+  font-family:"DM Serif Display",serif; font-size:20px; letter-spacing:.4px;
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.55),
+    inset 0 10px 20px rgba(255,255,255,.06);
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  border:1px solid rgba(255,255,255,.08);
+}
+.circle-btn:hover{
+  transform:scale(1.06);
+  background:#dc2626;            /* brighter red on hover */
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.75),
+    inset 0 10px 24px rgba(255,255,255,.10);
+}
+.circle-btn:active{ transform:scale(.97) }
