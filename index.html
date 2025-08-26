@@ -3,89 +3,67 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Private Dinner — RSVP</title>
+  <title>Inner Circle — Dinner Invitation</title>
   <meta name="color-scheme" content="dark light" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
   <style>
-    :root{
-      --bg:#0b0b0b; --panel:#121212; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f;
-      --gold:#cbb686; --error:#e2a7a7;
-      --red:#b91c1c; --red-strong:#991b1b; --red-bright:#dc2626;
-      --r-lg:26px;
-      --shadow-lg:0 22px 60px rgba(0,0,0,.6);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    :root{--bg:#0b0b0b;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626}
+    *{box-sizing:border-box}html,body{height:100%}
     body{
-      margin:0; background:var(--bg); color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      line-height:1.5;
+      margin:0;color:var(--ink);background:var(--bg);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
       background:
-        radial-gradient(1200px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
-        radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
+        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.10), transparent 60%),
+        radial-gradient(950px 540px at -10% 110%, rgba(203,182,134,.08), transparent 60%);
     }
-    h1,h2,h3,.brand{font-family:"DM Serif Display",serif; letter-spacing:.2px}
-    a{color:inherit; text-decoration:none}
-
-    /* top bar */
-    .nav{
-      position:sticky; top:0; z-index:10;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:18px 24px; border-bottom:1px solid var(--line);
-      background:rgba(11,11,11,.55); backdrop-filter:saturate(140%) blur(6px);
-    }
-    .brand{font-size:20px}
-
-    /* layout */
-    .wrap{max-width:980px; margin:34px auto; padding:0 18px}
-    .card{
-      width:min(820px,94vw);
-      margin-inline:auto;
-      background:#111;
+    h1,.brand{font-family:"DM Serif Display",serif}
+    .nav{padding:20px 28px;border-bottom:1px solid var(--line)}
+    .brand{font-size:22px}
+    .shell{max-width:980px;margin:26px auto 0;padding:0 20px}
+    .invite{background:#111;border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:26px 24px;box-shadow:0 22px 60px rgba(0,0,0,.6)}
+    .invite-tag{display:inline-flex;gap:10px;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);color:#bdb7a8;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.02)}
+    .invite-tag .ring{width:12px;height:12px;border-radius:50%;border:2px solid #b91c1c}
+    .invite h1{margin:8px 0 6px}
+    .invite p{margin:6px 0 0;max-width:68ch}
+    .hero{min-height:58vh;display:grid;place-items:center;gap:12px;padding:42px 16px;text-align:center}
+    .circle-btn{
+      display:flex;align-items:center;justify-content:center;width:210px;height:210px;border-radius:50%;color:#fff;
+      font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:.4px;
+      background:
+        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
+        linear-gradient(180deg, var(--red), var(--red-strong));
       border:1px solid rgba(255,255,255,.08);
-      border-radius:var(--r-lg);
-      padding:26px 22px 22px;
-      box-shadow:var(--shadow-lg);
+      box-shadow:0 22px 60px rgba(0,0,0,.65), inset 0 10px 20px rgba(255,255,255,.06);
+      transition:transform .2s ease, box-shadow .25s ease, background .25s ease, filter .25s ease;
+      text-decoration:none;
     }
+    .circle-btn:hover{transform:scale(1.06);background:
+      radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.10), transparent 50%),
+      linear-gradient(180deg, var(--red-bright), var(--red));}
+    .foot{display:flex;justify-content:center;color:#bdb7a8;border-top:1px solid var(--line);padding:24px}
+  </style>
+</head>
+<body>
+  <header class="nav"><div class="brand">Inner Circle</div></header>
 
-    /* header row */
-    .head{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px;
-    }
-    .eyebrow{ margin:0 0 8px; font-weight:600; color:#ddd; }
-    .title{ margin:0 0 6px; font-size:24px }
-    .sub{ margin:0; color:#c9c3b6 }
-    .badge{
-      border:1px solid rgba(255,255,255,.12); color:#bdb7a8;
-      padding:6px 10px; border-radius:999px; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
-      white-space:nowrap;
-    }
+  <section class="shell">
+    <article class="invite">
+      <div class="invite-tag"><span class="ring" aria-hidden="true"></span>Circle Dinner</div>
+      <h1>You’re invited.</h1>
+      <p>You are cordially invited to join <strong>Circle</strong> for a dinner on the evening of
+        <strong>September 6</strong>. Chef <strong>Terry Braggs</strong> will be preparing a
+        Mediterranean-themed three-course dinner with a wine pairing.</p>
+      <p style="color:#bdb7a8;margin-top:8px"><span style="color:#9b9486;letter-spacing:.04em">Dress theme:</span> <strong>Earth Tones</strong></p>
+    </article>
+  </section>
 
-    /* progress */
-    .progress{ height:6px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; margin:12px 0 18px }
-    .bar{ height:100%; width:0%; background:linear-gradient(90deg,var(--gold),#e8d9b6); transition:width .25s ease }
+  <main class="hero">
+    <a class="circle-btn" href="./rsvp.html">Confirm RSVP</a>
+    <p style="color:#bdb7a8;font-size:14px;margin:0">Invitation-only · Limited seats</p>
+  </main>
 
-    /* fields */
-    form{ display:grid; gap:16px }
-    .field{ display:grid; gap:6px }
-    .label{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#a99f8e }
-    .hint{ color:#888172; font-size:12px; margin-top:6px }
-    .input, .textarea{
-      width:100%; border:none; outline:none; color:var(--ink);
-      background:transparent; padding:12px 2px 10px;
-      border-bottom:1px solid rgba(255,255,255,.15);
-      transition:border-color .2s ease, background .2s ease;
-    }
-    .input:focus, .textarea:focus{ border-color:var(--gold); background:rgba(255,255,255,.02) }
-    .textarea{ resize:vertical }
-
-    .invalid{ border-color:var(--error) !important; box-shadow:0 1px 0 0 var(--error) }
-    .msg{ min-height:18px; color:#bdb7a8; }
-    .msg.err{ color:var(--gold); font-size:13px; font-style:italic }
-
-    /* CTA */
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      width
+  <footer class="foot">© <span id="y"></span> Inner Circle</footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+</body>
+</html>
