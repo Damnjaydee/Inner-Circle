@@ -3,19 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inner Circle — Circle Dinner Invitation</title>
+  <title>Private Dinner — RSVP</title>
   <meta name="color-scheme" content="dark light" />
-  <meta name="description" content="Private dinner invitation by Inner Circle." />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
-    /* ========== Core Theme (keeps your palette) ========== */
     :root{
       --bg:#0b0b0b; --panel:#121212; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f;
-      --gold:#cbb686; --ok:#a7f0a0; --err:#ffbcbc;
+      --gold:#cbb686; --error:#e2a7a7;
       --red:#b91c1c; --red-strong:#991b1b; --red-bright:#dc2626;
-
-      --r-lg:28px; --r-md:14px;
-      --shadow-lg:0 22px 60px rgba(0,0,0,.60);
+      --r-lg:26px;
+      --shadow-lg:0 22px 60px rgba(0,0,0,.6);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -24,148 +22,70 @@
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
       line-height:1.5;
+      background:
+        radial-gradient(1200px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
+        radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
     }
     h1,h2,h3,.brand{font-family:"DM Serif Display",serif; letter-spacing:.2px}
     a{color:inherit; text-decoration:none}
 
-    /* Top bar */
+    /* top bar */
     .nav{
       position:sticky; top:0; z-index:10;
       display:flex; align-items:center; justify-content:space-between;
-      padding:20px 28px; border-bottom:1px solid var(--line);
+      padding:18px 24px; border-bottom:1px solid var(--line);
       background:rgba(11,11,11,.55); backdrop-filter:saturate(140%) blur(6px);
     }
-    .brand{font-size:22px}
+    .brand{font-size:20px}
 
-    /* Layout shells */
-    .shell{max-width:980px; margin:36px auto; padding:0 20px}
-
-    /* Invite band card (SAA editorial vibe) */
-    .card--invite{
+    /* layout */
+    .wrap{max-width:980px; margin:34px auto; padding:0 18px}
+    .card{
       width:min(820px,94vw);
-      margin:0 auto;
+      margin-inline:auto;
       background:#111;
       border:1px solid rgba(255,255,255,.08);
-      border-radius:24px;
-      padding:28px 26px 24px;
-      box-shadow:0 20px 60px rgba(0,0,0,.55);
-    }
-    .invite{display:grid; gap:14px}
-    .invite-tag{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:8px 12px; border-radius:999px; width:max-content;
-      border:1px solid rgba(255,255,255,.12);
-      color:#bdb7a8; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
-      background:rgba(255,255,255,.02);
-    }
-    .invite-tag .ring{
-      width:12px; height:12px; border-radius:50%;
-      border:2px solid var(--red); box-shadow:inset 0 0 0 2px rgba(255,255,255,.02);
-    }
-    .invite-title{font-size:34px; line-height:1.1; margin:2px 0 4px}
-    .invite-copy{margin:0; max-width:68ch}
-    .invite-brand{font-weight:600}
-    .invite-meta{color:var(--muted); margin:6px 0 0}
-    .invite-meta .label{color:#9b9486; letter-spacing:.04em}
-    @media (max-width:560px){ .invite-title{font-size:28px} }
-
-    /* Hero with red circle CTA */
-    .hero{
-      min-height:calc(100vh - 280px);
-      display:grid; place-items:center; gap:16px;
-      padding:48px 16px; text-align:center;
-      background:
-        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.10), transparent 60%),
-        radial-gradient(950px 540px at -10% 110%, rgba(203,182,134,.08), transparent 60%);
-    }
-    .circle-btn{
-      display:flex; align-items:center; justify-content:center;
-      width:210px; height:210px; border-radius:50%;
-      color:#fff; font-family:"DM Serif Display",serif; font-size:20px; letter-spacing:.4px;
-      background:
-        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
-        linear-gradient(180deg, var(--red), var(--red-strong));
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 22px 60px rgba(0,0,0,.65), inset 0 10px 20px rgba(255,255,255,.06);
-      transition:transform .2s ease, box-shadow .25s ease, background .25s ease, filter .25s ease;
-      animation:pulse 3.2s ease-in-out infinite;
-    }
-    .circle-btn:hover{
-      transform:scale(1.06);
-      background:
-        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.10), transparent 50%),
-        linear-gradient(180deg, var(--red-bright), var(--red));
-      box-shadow:0 28px 80px rgba(0,0,0,.75), inset 0 12px 24px rgba(255,255,255,.10);
-    }
-    .circle-btn:active{transform:scale(.97)}
-    @keyframes pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.08)}}
-    @media (prefers-reduced-motion:reduce){ .circle-btn{animation:none} }
-    .hero-caption{color:var(--muted); font-size:14px}
-
-    /* Footer */
-    .foot{
-      display:flex; justify-content:center; padding:30px; color:var(--muted);
-      border-top:1px solid var(--line)
+      border-radius:var(--r-lg);
+      padding:26px 22px 22px;
+      box-shadow:var(--shadow-lg);
     }
 
-    /* Accessiblity focus */
-    :focus-visible{ outline:2px solid rgba(203,182,134,.65); outline-offset:2px }
-  </style>
-</head>
-<body>
-  <header class="nav">
-    <div class="brand">Inner Circle</div>
-  </header>
+    /* header row */
+    .head{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px;
+    }
+    .eyebrow{ margin:0 0 8px; font-weight:600; color:#ddd; }
+    .title{ margin:0 0 6px; font-size:24px }
+    .sub{ margin:0; color:#c9c3b6 }
+    .badge{
+      border:1px solid rgba(255,255,255,.12); color:#bdb7a8;
+      padding:6px 10px; border-radius:999px; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+      white-space:nowrap;
+    }
 
-  <!-- Invite band -->
-  <section class="shell">
-    <article class="invite card--invite">
-      <div class="invite-tag">
-        <span class="ring" aria-hidden="true"></span>
-        Circle Dinner
-      </div>
+    /* progress */
+    .progress{ height:6px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; margin:12px 0 18px }
+    .bar{ height:100%; width:0%; background:linear-gradient(90deg,var(--gold),#e8d9b6); transition:width .25s ease }
 
-      <h1 class="invite-title">You’re invited.</h1>
+    /* fields */
+    form{ display:grid; gap:16px }
+    .field{ display:grid; gap:6px }
+    .label{ font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#a99f8e }
+    .hint{ color:#888172; font-size:12px; margin-top:6px }
+    .input, .textarea{
+      width:100%; border:none; outline:none; color:var(--ink);
+      background:transparent; padding:12px 2px 10px;
+      border-bottom:1px solid rgba(255,255,255,.15);
+      transition:border-color .2s ease, background .2s ease;
+    }
+    .input:focus, .textarea:focus{ border-color:var(--gold); background:rgba(255,255,255,.02) }
+    .textarea{ resize:vertical }
 
-      <p class="invite-copy">
-        You are cordially invited to join <span class="invite-brand" id="brandName">Circle</span>
-        for a dinner on the evening of <strong class="invite-date" id="inviteDate">September 6</strong>.
-        Chef <strong class="invite-chef" id="inviteChef">Terry Braggs</strong> will be preparing a
-        Mediterranean-themed three-course dinner with a wine pairing.
-      </p>
+    .invalid{ border-color:var(--error) !important; box-shadow:0 1px 0 0 var(--error) }
+    .msg{ min-height:18px; color:#bdb7a8; }
+    .msg.err{ color:var(--gold); font-size:13px; font-style:italic }
 
-      <p class="invite-meta">
-        <span class="label">Dress theme:</span> <strong class="invite-theme" id="inviteTheme">Earth Tones</strong>
-      </p>
-    </article>
-  </section>
-
-  <!-- CTA section -->
-  <main class="hero">
-    <a class="circle-btn" href="./rsvp.html" aria-label="Confirm RSVP">
-      <span>Confirm RSVP</span>
-    </a>
-    <p class="hero-caption">Invitation-only · Limited seats</p>
-  </main>
-
-  <footer class="foot">
-    <small>© <span id="y"></span> Inner Circle</small>
-  </footer>
-
-  <!-- Optional: set details from one place -->
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-    // Update these in one spot to change the copy site-wide
-    const INVITE = {
-      brand: "Circle",
-      date: "September 6",
-      chef: "Terry Braggs",
-      theme: "Earth Tones"
-    };
-    document.getElementById('brandName').textContent  = INVITE.brand;
-    document.getElementById('inviteDate').textContent = INVITE.date;
-    document.getElementById('inviteChef').textContent = INVITE.chef;
-    document.getElementById('inviteTheme').textContent = INVITE.theme;
-  </script>
-</body>
-</html>
+    /* CTA */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      width
