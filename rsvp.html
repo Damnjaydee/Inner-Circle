@@ -284,7 +284,7 @@
       }finally{
         btn.textContent = original;
         btn.disabled = false;
-        location.href = './confirm.html';
+        location.href = './confirm.html?code=' + encodeURIComponent(code);
       }
     });
   </script>
