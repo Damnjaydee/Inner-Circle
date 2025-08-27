@@ -3,63 +3,132 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inner Circle — Dinner Invitation</title>
+  <title>Inner Circle — Access</title>
   <meta name="color-scheme" content="dark light" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0b0b0b;--panel:#111;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626}
+    :root{ --paper:#0a0a0a; --ink:#e8e6e2; --muted:rgba(232,230,226,.75); --line:rgba(232,230,226,.25) }
     *{box-sizing:border-box} html,body{height:100%}
     body{
-      margin:0;color:var(--ink);background:var(--bg);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      display:grid; place-items:center; padding:28px;
+    }
+    .card{ width:min(780px,92vw); padding:clamp(28px,4vw,56px); border:1px solid var(--line); position:relative; }
+    .frame{ position:absolute; inset:12px; border:1px solid var(--line); pointer-events:none; }
+    .eyebrow{
+      font-family:"DM Serif Display",Georgia,serif; letter-spacing:.14em; text-transform:uppercase;
+      font-size:clamp(12px,1.6vw,14px); opacity:.9; text-align:center; margin:0
+    }
+    .rule{ height:1px; background:var(--line); width:100%; margin:22px 0 28px }
+    .title{
+      font-family:"DM Serif Display",Georgia,serif; font-size:clamp(36px,6vw,56px);
+      line-height:1.04; text-align:center; letter-spacing:.02em; font-weight:400; margin:0
+    }
+    .sub{ text-align:center; opacity:.8; font-size:clamp(13px,1.6vw,14px); margin:10px 0 0 }
+    .gate{
+      margin:24px auto 0; width:min(520px,92%); display:grid; gap:10px;
+    }
+    label{
+      font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+    }
+    .row{ display:flex; gap:10px; }
+    input{
+      flex:1; background:#0f0f0f; color:var(--ink);
+      border:1px solid rgba(232,230,226,.22); border-radius:14px;
+      padding:12px 14px; font:inherit; letter-spacing:.16em; text-transform:uppercase;
+      outline:none; transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    input:focus{ border-color:rgba(232,230,226,.4); box-shadow:0 0 0 3px rgba(232,230,226,.12); }
+    button{
+      appearance:none; cursor:pointer; border-radius:999px; border:1px solid rgba(255,255,255,.10);
+      padding:12px 18px; min-width:140px; color:#fff; font-family:"DM Serif Display",serif; letter-spacing:.02em;
       background:
-        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.10), transparent 60%),
-        radial-gradient(950px 540px at -10% 110%, rgba(203,182,134,.08), transparent 60%);
+        radial-gradient(220px 140px at 40% 18%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, #b91c1c, #991b1b);
+      box-shadow:0 18px 40px rgba(0,0,0,.55), 0 12px 55px rgba(191,35,35,.24);
+      transition: transform .14s ease, background .2s ease, opacity .2s ease;
     }
-    h1,.brand{font-family:"DM Serif Display",serif}
-    .nav{padding:20px 28px;border-bottom:1px solid var(--line)}
-    .brand{font-size:22px}
-    .hero{
-      min-height:80vh;display:grid;place-items:center;gap:12px;padding:42px 16px;text-align:center;
-      position:relative;z-index:0
-    }
-    /* ensure button is always clickable */
-    .circle-btn{
-      position:relative;z-index:9999;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      width:210px;height:210px;border-radius:50%;color:#fff;text-decoration:none;
-      font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:.4px;
-      background:
-        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
-        linear-gradient(180deg, var(--red), var(--red-strong));
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 22px 60px rgba(0,0,0,.65), inset 0 10px 20px rgba(255,255,255,.06);
-      transition:transform .2s ease, box-shadow .25s ease, background .25s ease, filter .25s ease;
-    }
-    .circle-btn:hover{
-      transform:scale(1.06);
-      background:
-        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.10), transparent 50%),
-        linear-gradient(180deg, var(--red-bright), var(--red));
-    }
-    .muted{color:var(--muted);font-size:14px;margin:0}
-    .foot{display:flex;justify-content:center;color:var(--muted);border-top:1px solid var(--line);padding:24px}
-
-    /* nuke any legacy invite elements so they never block the CTA */
-    .shell,.invite{display:none!important}
+    button:hover{ transform:translateY(-1px); background:
+        radial-gradient(220px 140px at 40% 18%, rgba(255,255,255,.12), transparent 60%),
+        linear-gradient(180deg, #dc2626, #b91c1c);}
+    button[disabled]{ opacity:.6; cursor:progress }
+    .err{ min-height:18px; color:#ffb3b3; text-align:center; font-size:14px; margin-top:6px }
+    .footnote{ text-align:center; color:rgba(232,230,226,.6); font-size:12px; margin-top:14px; }
   </style>
 </head>
 <body>
-  <header class="nav"><div class="brand">Inner Circle</div></header>
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="frame" aria-hidden="true"></div>
 
-  <main class="hero">
-    <!-- Use relative link. If you prefer absolute, swap href to your full Pages URL -->
-    <a class="circle-btn" href="./rsvp.html">Confirm RSVP</a>
-    <p class="muted">Invitation-only · Limited seats</p>
+    <p class="eyebrow">You’re Invited</p>
+    <div class="rule"></div>
+
+    <h1 id="title" class="title">Inner&nbsp;Circle</h1>
+    <p class="sub">Enter your check-in code to access the RSVP.</p>
+
+    <form class="gate" id="gate" autocomplete="off">
+      <label for="code">Your Check-in Code</label>
+      <div class="row">
+        <input id="code" name="code" placeholder="e.g., YS1CD3" inputmode="text" maxlength="24" required />
+        <button id="go" type="submit">Unlock</button>
+      </div>
+      <div id="err" class="err"></div>
+    </form>
+
+    <div class="footnote">If you need help, reply to your invitation.</div>
   </main>
 
-  <footer class="foot">© <span id="y"></span> Inner Circle</footer>
-  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+  <script>
+    // ==== Configuration: put approved codes here (UPPERCASE). ====
+    // Add one code per line, e.g.: 'YS1CD3','K7A2Q9','MARCH25', ...
+    const CODE_WHITELIST = new Set([
+      'YS1CD3' // sample — add real codes here
+    ]);
+
+    // Optional: allow a single master code that always passes (leave '' to disable)
+    const MASTER_CODE = '';
+
+    // Normalize user input (ignore case, spaces, dashes)
+    const normalize = v => (v||'').toUpperCase().replace(/[\s\-]+/g,'');
+
+    // Accept code via URL like ?code=YS1CD3 and auto-forward
+    (function bootstrap(){
+      const params = new URLSearchParams(location.search);
+      const q = normalize(params.get('code'));
+      if (q && (CODE_WHITELIST.has(q) || (MASTER_CODE && q === MASTER_CODE))) {
+        allowAndGo(q);
+      }
+    })();
+
+    const form = document.getElementById('gate');
+    const input = document.getElementById('code');
+    const btn = document.getElementById('go');
+    const err = document.getElementById('err');
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      err.textContent = '';
+      const code = normalize(input.value);
+      if (!code) { err.textContent = 'Please enter your code.'; return; }
+
+      if (CODE_WHITELIST.has(code) || (MASTER_CODE && code === MASTER_CODE)) {
+        allowAndGo(code);
+      } else {
+        err.textContent = 'That code wasn’t recognized.';
+        input.focus();
+      }
+    });
+
+    function allowAndGo(code){
+      try {
+        // mark gate passed + keep code for later display
+        sessionStorage.setItem('ic_gate', '1');
+        sessionStorage.setItem('innercircle_code', code);
+      } catch(_) {}
+      // go to RSVP
+      location.href = 'rsvp.html';
+    }
+  </script>
 </body>
 </html>
