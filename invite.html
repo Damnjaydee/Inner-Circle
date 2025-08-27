@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inner Circle — Invitation</title>
+
+  <!-- Typefaces similar to SAA vibe -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --paper:#0a0a0a;         /* near-black */
+      --ink:#e8e6e2;           /* soft off-white */
+      --line:rgba(232,230,226,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      display:grid; place-items:center;
+    }
+    .card{
+      width:min(780px, 92vw);
+      padding:clamp(28px, 4vw, 56px);
+      border:1px solid var(--line);
+      position:relative;
+    }
+    .rule{ height:1px; background:var(--line); width:100%; margin:22px 0 28px }
+    h1, h2, p{ margin:0 }
+    .eyebrow{
+      font-family:"DM Serif Display", Georgia, serif;
+      letter-spacing:.14em; text-transform:uppercase;
+      font-size:clamp(12px, 1.6vw, 14px); opacity:.9;
+      text-align:center;
+    }
+    .title{
+      font-family:"DM Serif Display", Georgia, serif;
+      font-size:clamp(36px, 6vw, 56px);
+      line-height:1.04; text-align:center;
+      letter-spacing:.02em; font-weight:400;
+    }
+    .sub{
+      text-align:center; opacity:.8;
+      font-size:clamp(13px, 1.6vw, 14px);
+    }
+    .cta{
+      margin:32px auto 6px;
+      display:inline-block; text-decoration:none; outline:none;
+    }
+    .cta img{ display:block; width:clamp(108px, 14vw, 160px); height:auto; transition:transform .18s ease }
+    .cta:focus img, .cta:hover img{ transform:scale(1.04) }
+    .footnote{
+      text-align:center; color:rgba(232,230,226,.6);
+      font-size:12px; margin-top:10px;
+    }
+    .frame{
+      position:absolute; inset:12px;
+      border:1px solid var(--line); pointer-events:none;
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="invite-title">
+    <div class="frame" aria-hidden="true"></div>
+
+    <div class="eyebrow">You’re Invited</div>
+    <div class="rule"></div>
+
+    <h1 id="invite-title" class="title">Inner&nbsp;Circle</h1>
+
+    <p class="sub" style="margin-top:10px;">
+      An evening. Location disclosed upon RSVP.
+    </p>
+
+    <!-- Wax-seal CTA (link to your RSVP page) -->
+    <a href="https://damnjaydee.github.io/Inner-Circle/" class="cta" aria-label="Request Access">
+      <img
+        src="assets/invite/wax-seal-request-access.png"
+        srcset="assets/invite/wax-seal-request-access.png 1x,
+                assets/invite/wax-seal-request-access@2x.png 2x"
+        alt="Request Access — Wax Seal">
+    </a>
+
+    <div class="footnote">
+      If the button doesn’t load, visit <span style="text-decoration:underline">innercircle.events/rsvp</span>
+    </div>
+  </main>
+</body>
+</html>
