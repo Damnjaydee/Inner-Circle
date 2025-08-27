@@ -4,18 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Inner Circle — Invitation</title>
+  <meta name="description" content="Private invitation to Inner Circle. Location disclosed upon RSVP." />
   <meta name="color-scheme" content="dark light" />
+  <!-- Perf: warm up Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
   <style>
-    :root{ --paper:#0a0a0a; --ink:#e8e6e2; --muted:rgba(232,230,226,.75); --line:rgba(232,230,226,.22) }
-    *{box-sizing:border-box} html,body{height:100%}
+    :root{
+      --paper:#0a0a0a; --ink:#e8e6e2; --muted:rgba(232,230,226,.75); --line:rgba(232,230,226,.22);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0; background:var(--paper); color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       display:grid; place-items:center; padding:28px;
     }
-    .card{ width:min(780px,92vw); padding:clamp(28px,4vw,56px); border:1px solid var(--line); position:relative; }
-    .frame{ position:absolute; inset:12px; border:1px solid var(--line); pointer-events:none; }
+
+    .card{
+      width:min(780px,92vw); padding:clamp(28px,4vw,56px);
+      border:1px solid var(--line); position:relative; border-radius:2px;
+      box-shadow:0 26px 70px rgba(0,0,0,.6);
+    }
+    /* Decorative frame must never block clicks */
+    .frame{ position:absolute; inset:12px; border:1px solid var(--line); pointer-events:none; z-index:0; }
+    /* Real content sits above the frame */
+    .content{ position:relative; z-index:5; }
+
     .rule{ height:1px; background:var(--line); width:100%; margin:22px 0 28px }
 
     .eyebrow{
@@ -41,56 +57,68 @@
       font-size:28px; letter-spacing:.18em; color:var(--ink);
     }
 
+    /* CTA */
+    .cta{ display:flex; justify-content:center; margin:28px 0 12px; }
+    .cta a{ display:inline-block; position:relative; z-index:10; pointer-events:auto; }
+    .cta img{ display:block; width:160px; height:auto; }
+
     .footnote{ text-align:center; color:rgba(232,230,226,.6); font-size:12px; margin-top:12px; }
+    .footnote a{ color:inherit; text-decoration:underline; }
   </style>
 </head>
 <body>
   <main class="card" role="main" aria-labelledby="invite-title">
     <div class="frame" aria-hidden="true"></div>
 
-    <p class="eyebrow">You’re Invited</p>
-    <div class="rule"></div>
+    <div class="content">
+      <p class="eyebrow">You’re Invited</p>
+      <div class="rule"></div>
 
-    <h1 id="invite-title" class="title">Inner&nbsp;Circle</h1>
-    <p class="sub">An evening. Location disclosed upon RSVP.</p>
+      <h1 id="invite-title" class="title">Inner&nbsp;Circle</h1>
+      <p class="sub">An evening. Location disclosed upon RSVP.</p>
 
-    <!-- Check-in code (auto-shows if ?code= or sessionStorage has one) -->
-    <div id="checkin">
-      <div class="label">Your Check-in Code</div>
-      <div id="checkin-code" class="code"></div>
-    </div>
+      <!-- Check-in code (auto-shows if ?code= or sessionStorage has one) -->
+      <div id="checkin" aria-live="polite">
+        <div class="label">Your Check-in Code</div>
+        <div id="checkin-code" class="code"></div>
+      </div>
 
-    <!-- Wax-seal CTA (goes to your gate at /Inner-Circle) -->
-    <div style="display:flex; justify-content:center; margin:28px 0 12px;">
-      <a href="https://damnjaydee.github.io/Inner-Circle" aria-label="Enter" style="display:inline-block; text-decoration:none;">
-        <img
-          src="assets/invite/wax-seal-enter.png?v=3"
-          srcset="assets/invite/wax-seal-enter.png 1x,
-                  assets/invite/wax-seal-enter@2x.png 2x"
-          alt="Enter"
-          style="display:block; width:160px; height:auto;">
-      </a>
-    </div>
+      <!-- Wax-seal CTA → your gate at /Inner-Circle -->
+      <div class="cta">
+        <a href="https://damnjaydee.github.io/Inner-Circle" aria-label="Enter" rel="noopener">
+          <img
+            src="assets/invite/wax-seal-enter.png?v=5"
+            srcset="assets/invite/wax-seal-enter.png 1x,
+                    assets/invite/wax-seal-enter@2x.png 2x"
+            alt="Enter Inner Circle"
+            decoding="async" fetchpriority="high">
+        </a>
+      </div>
 
-    <div class="footnote">
-      If the button doesn’t load, visit <span style="text-decoration:underline;">innercircle.events/rsvp</span>
+      <div class="footnote">
+        If the button doesn’t load, visit <a href="https://innercircle.events/rsvp">innercircle.events/rsvp</a>
+      </div>
     </div>
   </main>
 
   <script>
-    // Show code from ?code= or sessionStorage (set after RSVP/confirm or the gate)
+    // Reveal code from ?code= or sessionStorage (set by the gate or after RSVP/confirm)
     (function () {
       const params = new URLSearchParams(location.search);
       let code = params.get('code') || sessionStorage.getItem('innercircle_code');
       if (!code) return;
 
       code = String(code).toUpperCase().replace(/\s+/g,'').slice(0,24);
-      try { sessionStorage.setItem('innercircle_code', code); } catch(_){}
+      try { sessionStorage.setItem('innercircle_code', code); } catch(_) {}
 
-      document.getElementById('checkin-code').textContent = code;
-      document.getElementById('checkin').style.display = 'block';
+      const codeEl = document.getElementById('checkin-code');
+      const wrapEl = document.getElementById('checkin');
+      if (codeEl && wrapEl) {
+        codeEl.textContent = code;
+        wrapEl.style.display = 'block';
+      }
 
-      // Clean URL (remove ?code=…)
+      // Clean URL (?code=…) for a polished look
       if (params.has('code')) history.replaceState(null, '', location.pathname + location.hash);
     })();
   </script>
