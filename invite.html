@@ -6,6 +6,7 @@
   <title>Inner Circle — Invitation</title>
   <meta name="description" content="Private invitation to Inner Circle. Location disclosed upon RSVP." />
   <meta name="color-scheme" content="dark light" />
+
   <!-- Perf: warm up Google Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -59,7 +60,11 @@
 
     /* CTA */
     .cta{ display:flex; justify-content:center; margin:28px 0 12px; }
-    .cta a{ display:inline-block; position:relative; z-index:10; pointer-events:auto; }
+    .cta a{
+      display:inline-block; position:relative; z-index:10; pointer-events:auto;
+      outline-offset:4px;
+    }
+    .cta a:focus-visible{ outline:2px solid rgba(232,230,226,.6); border-radius:999px; }
     .cta img{ display:block; width:160px; height:auto; }
 
     .footnote{ text-align:center; color:rgba(232,230,226,.6); font-size:12px; margin-top:12px; }
@@ -71,32 +76,33 @@
     <div class="frame" aria-hidden="true"></div>
 
     <div class="content">
-      <p class="eyebrow">You’re Invited To</p>
+      <p class="eyebrow">You’re Invited</p>
       <div class="rule"></div>
 
       <h1 id="invite-title" class="title">Inner&nbsp;Circle</h1>
-      <p class="sub">Location disclosed upon RSVP.</p>
+      <p class="sub">An evening. Location disclosed upon RSVP.</p>
 
       <!-- Check-in code (auto-shows if ?code= or sessionStorage has one) -->
       <div id="checkin" aria-live="polite">
-        <div class="label">Your personal Code</div>
+        <div class="label">Your Check-in Code</div>
         <div id="checkin-code" class="code"></div>
       </div>
 
       <!-- Wax-seal CTA → your gate at /Inner-Circle -->
       <div class="cta">
-        <a href="https://damnjaydee.github.io/Inner-Circle" aria-label="Enter" rel="noopener">
+        <a href="https://damnjaydee.github.io/Inner-Circle" aria-label="Enter Inner Circle" rel="noopener">
           <img
-            src="assets/invite/wax-seal-enter.png?v=5"
+            src="assets/invite/wax-seal-enter.png?v=6"
             srcset="assets/invite/wax-seal-enter.png 1x,
                     assets/invite/wax-seal-enter@2x.png 2x"
-            alt="Enter Inner Circle"
+            alt="Enter"
             decoding="async" fetchpriority="high">
         </a>
       </div>
 
       <div class="footnote">
-        If the button doesn’t load, visit <a href="https://innercircle.events/rsvp">innercircle.events/rsvp</a>
+        If the button doesn’t load, visit
+        <a href="https://innercircle.events/rsvp">innercircle.events/rsvp</a>
       </div>
     </div>
   </main>
