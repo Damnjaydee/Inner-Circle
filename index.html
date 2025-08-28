@@ -1,49 +1,125 @@
-<meta name="color-scheme" content="dark light" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inner Circle — Gate</title>
+  <meta name="color-scheme" content="dark light" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0b0b0b;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626}
-    *{box-sizing:border-box}html,body{height:100%}
-    :root{--bg:#0b0b0b;--panel:#111;--ink:#eceae4;--muted:#bdb7a8;--line:#1f1f1f;--red:#b91c1c;--red-strong:#991b1b;--red-bright:#dc2626}
-    *{box-sizing:border-box} html,body{height:100%}
+    :root{
+      --bg:#0b0b0b; --panel:#111; --ink:#eceae4; --muted:#bdb7a8; --line:#1f1f1f;
+      --field:#121212; --field-line:#222; --focus:#d1bfa0; --red:#b91c1c; --red-strong:#991b1b;
+      --hair:1px; --r:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin:0;color:var(--ink);background:var(--bg);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;
-@@ -20,15 +20,15 @@
-    h1,.brand{font-family:"DM Serif Display",serif}
-    .nav{padding:20px 28px;border-bottom:1px solid var(--line)}
-    .brand{font-size:22px}
-
-    .hero{
-      min-height:80vh;display:grid;place-items:center;gap:12px;
-      padding:42px 16px;text-align:center
-      min-height:80vh;display:grid;place-items:center;gap:12px;padding:42px 16px;text-align:center;
-      position:relative;z-index:0
-    }
-    /* ensure button is always clickable */
-    .circle-btn{
-      position:relative;z-index:9999;cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      width:210px;height:210px;border-radius:50%;
-      color:#fff;text-decoration:none;
-      width:210px;height:210px;border-radius:50%;color:#fff;text-decoration:none;
-      font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:.4px;
+      margin:0; background:var(--bg); color:var(--ink);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      display:grid; place-items:center; padding:28px;
       background:
-        radial-gradient(120px 120px at 35% 30%, rgba(255,255,255,.08), transparent 50%),
-@@ -45,13 +45,16 @@
+        radial-gradient(1100px 520px at 85% -10%, rgba(203,182,134,.08), transparent 60%),
+        radial-gradient(1000px 540px at -10% 110%, rgba(203,182,134,.06), transparent 60%);
     }
-    .muted{color:var(--muted);font-size:14px;margin:0}
-    .foot{display:flex;justify-content:center;color:var(--muted);border-top:1px solid var(--line);padding:24px}
-
-    /* nuke any legacy invite elements so they never block the CTA */
-    .shell,.invite{display:none!important}
+    .wrap{
+      width:min(860px,94vw); background:var(--panel); border:var(--hair) solid rgba(255,255,255,.08);
+      border-radius:24px; padding:30px 26px 26px; box-shadow:0 26px 70px rgba(0,0,0,.6);
+    }
+    .frame{border:1px solid rgba(255,255,255,.1); border-radius:18px; padding:26px}
+    h1{
+      font-family:"DM Serif Display",serif; font-weight:400; letter-spacing:.02em;
+      font-size:clamp(36px,5.6vw,58px); line-height:1.05; margin:6px 0 2px;
+    }
+    .lede{color:var(--muted); margin:4px 0 18px}
+    .label{
+      font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:#a99f8e; margin:0 0 8px;
+    }
+    .row{display:flex; gap:10px; align-items:center}
+    input{
+      flex:1; background:var(--field); border:1px solid var(--field-line); color:var(--ink);
+      border-radius:var(--r); padding:12px 14px; font:600 18px/1.2 "DM Serif Display", serif; letter-spacing:.18em;
+      text-transform:uppercase; outline:none;
+    }
+    input:focus{border-color:#343027; box-shadow:0 0 0 3px rgba(209,191,160,.18)}
+    .btn{
+      appearance:none; background:linear-gradient(180deg,var(--red),var(--red-strong)); color:#fff;
+      border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:12px 18px; cursor:pointer;
+      font-family:"DM Serif Display",serif; letter-spacing:.02em; min-width:130px;
+      box-shadow:0 18px 40px rgba(0,0,0,.55),0 12px 55px rgba(191,35,35,.24);
+    }
+    .hint{color:#8c8577; font-size:12px; margin-top:10px}
+    .err{color:#ffb3b3; font-size:14px; min-height:20px; margin-top:12px}
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px
+    }
+    .chip{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#bdb7a8;
+      border:1px solid rgba(255,255,255,.12); padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.02)}
+    .bar{height:1px; background:linear-gradient(90deg, rgba(255,255,255,.10), transparent 70%); border-radius:2px; margin:12px 0 16px}
+    .foot{display:flex; justify-content:center; color:#bdb7a8; font-size:12px; margin-top:18px}
   </style>
 </head>
 <body>
-  <header class="nav"><div class="brand">Inner Circle</div></header>
+  <article class="wrap">
+    <div class="frame">
+      <div class="top">
+        <div style="opacity:.9; letter-spacing:.02em;"><strong>Inner Circle</strong></div>
+        <div class="chip">Invite Only</div>
+      </div>
+      <div class="bar"></div>
 
-  <!-- invite card removed -->
-  <main class="hero">
-    <!-- Use relative link. If you prefer absolute, swap href to your full Pages URL -->
-    <a class="circle-btn" href="./rsvp.html">Confirm RSVP</a>
-    <p class="muted">Invitation-only · Limited seats</p>
-  </main>
+      <h1>Enter Code</h1>
+      <p class="lede">Please enter your <em>check-in code</em> to proceed to RSVP.</p>
+
+      <form id="gate" novalidate>
+        <p class="label">Check-in Code</p>
+        <div class="row">
+          <input id="code" name="code" inputmode="latin-prose" autocomplete="one-time-code"
+                 placeholder="e.g. YS1CD3" maxlength="24" autofocus>
+          <button class="btn" type="submit">Continue</button>
+        </div>
+        <div id="err" class="err"></div>
+        <div class="hint">Tip: If you opened from the e-card link, your code is also visible on that card.</div>
+      </form>
+
+      <div class="foot">© <span id="y"></span> Inner Circle</div>
+    </div>
+  </article>
+
+  <script>
+    const byId = (s)=>document.getElementById(s);
+    const err = byId('err'), input = byId('code');
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // OPTIONAL strict list (leave empty to accept any 5+ char A-Z0-9)
+    const ALLOWED = []; // e.g., ["YS1CD3","ZK8TQ2"]
+
+    // Pre-fill from ?code= or session
+    (function(){
+      const p = new URLSearchParams(location.search);
+      const fromURL = (p.get('code')||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+      const fromStore = (sessionStorage.getItem('innercircle_code')||'').toUpperCase();
+      const code = fromURL || fromStore;
+      if(code){ input.value = code; }
+      // Clean URL
+      if(fromURL){ history.replaceState(null,'',location.pathname+location.hash); }
+    })();
+
+    function valid(code){
+      if(!code) return false;
+      if(ALLOWED.length) return ALLOWED.includes(code);
+      return /^[A-Z0-9]{5,24}$/.test(code);
+    }
+
+    document.getElementById('gate').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const code = (input.value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+      if(!valid(code)){ err.textContent = 'That code doesn’t look right.'; input.focus(); return; }
+      err.textContent = '';
+      try{ sessionStorage.setItem('innercircle_code', code); }catch(_){}
+      location.href = 'rsvp.html?code=' + encodeURIComponent(code);
+    });
+  </script>
+</body>
+</html>
