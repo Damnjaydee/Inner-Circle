@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>LAPS — Private After Party</title>
+
+  <!-- Dark theme & iOS fullbleed -->
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <style>
+    :root{
+      --w: min(92vw, 420px);
+      --h: calc(var(--w) * 16 / 9);
+      --r: 18px;
+      --shadow: 0 30px 80px rgba(0,0,0,.55);
+      --bg:#000;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); display: grid; place-items: center;
+      overscroll-behavior: none; touch-action: manipulation; user-select: none;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    .stage {
+      position: fixed; inset: 0; display:grid; place-items:center;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+    .ecard { width: var(--w); height: calc(var(--w) * 16 / 9);
+      perspective: 1600px; filter: drop-shadow(var(--shadow)); }
+    .inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d; transition: transform .9s cubic-bezier(.2,.7,.1,1);
+      border-radius: var(--r); overflow: hidden;
+    }
+    .ecard.is-flipped .inner { transform: rotateY(180deg); }
+    .face {
+      position:absolute; inset:0; backface-visibility: hidden;
+      background: #000 center/cover no-repeat;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .front { background-image: url('./front.jpg'); }
+    .back  { background-image: url('./back.jpg'); transform: rotateY(180deg); }
+    .hint {
+      position: absolute; bottom: 10px; left: 0; right: 0; text-align: center;
+      color: rgba(255,255,255,.35); font-size: 12px; letter-spacing: .12em;
+      text-transform: uppercase; opacity: 1; transition: opacity .6s ease 1.2s;
+      pointer-events: none;
+    }
+    .ecard.touched .hint { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { .inner { transition: none; } }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div id="ecard" class="ecard" role="button" aria-label="Flip card">
+      <div class="inner">
+        <div class="face front" aria-hidden="false"></div>
+        <div class="face back"  aria-hidden="true"></div>
+      </div>
+      <div class="hint">tap to flip</div>
+    </div>
+  </div>
+
+  <script>
+    const card = document.getElementById('ecard');
+    let touched = false;
+    function flip() {
+      card.classList.toggle('is-flipped');
+      if(!touched){ card.classList.add('touched'); touched = true; }
+    }
+    card.addEventListener('click', flip);
+    card.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') flip(); });
+    card.tabIndex = 0;
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    }
+  </script>
+</body>
+</html>
