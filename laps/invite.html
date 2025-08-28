@@ -17,9 +17,6 @@
     :root{
       --bg:#0a0a0a; --ink:#eceae4; --muted:#bdb7a8;
       --shadow:0 22px 60px rgba(0,0,0,.55);
-      --panel:rgba(12,12,12,.72);
-      --line:rgba(255,255,255,.10);
-      --radius:14px;
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
@@ -44,6 +41,8 @@
       transform-style:preserve-3d;
       transition:transform .75s cubic-bezier(.2,.6,.2,1);
       min-height: clamp(420px, 60vw, 560px);
+      border-radius:12px; overflow:hidden;
+      box-shadow:var(--shadow);
     }
     .flip.flipped{ transform:rotateY(180deg); }
 
@@ -53,49 +52,55 @@
       backface-visibility:hidden; -webkit-backface-visibility:hidden;
     }
 
-    /* FRONT — just the poster */
-    .front .poster{
-      width:min(680px, 100%);
-      border-radius:12px;
-      display:block; height:auto;
-      box-shadow:var(--shadow);
+    /* FRONT — full poster */
+    .front img{
+      display:block; width:100%; height:auto; object-fit:cover;
       user-select:none;
     }
 
-    /* BACK — subtle textured background with info panel */
+    /* BACK — full image with bottom details (no box) */
     .back{
       transform:rotateY(180deg);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.38), rgba(0,0,0,.62)),
-        url('./back.jpg') center/cover no-repeat;
-      border-radius:12px;
-      overflow:hidden;
-      padding:clamp(14px, 3.6vw, 22px);
+      background: url('./back.jpg') center/cover no-repeat;
+      position:relative;
     }
-    .panel{
-      width:min(640px, 100%);
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:clamp(16px, 3.6vw, 22px);
-      box-shadow:0 16px 44px rgba(0,0,0,.55);
-      backdrop-filter:saturate(1.05) blur(4px);
+
+    /* Soft bottom gradient for readability */
+    .overlay{
+      position:absolute; left:0; right:0; bottom:0; height:46%;
+      background:linear-gradient(180deg, rgba(0,0,0,0) 0%,
+                                         rgba(0,0,0,.38) 45%,
+                                         rgba(0,0,0,.72) 100%);
+      pointer-events:none;
     }
+
+    .details{
+      position:absolute; left:0; right:0; bottom:0;
+      padding: clamp(16px, 4vw, 28px);
+      padding-bottom: calc(clamp(16px, 4vw, 28px) + env(safe-area-inset-bottom));
+      display:flex; flex-direction:column; align-items:center; text-align:center;
+    }
+
     h1{
       font-family:"DM Serif Display", serif;
       font-size:clamp(26px, 4vw, 34px);
-      line-height:1.12; letter-spacing:.01em; margin:0 0 6px;
-      font-weight:400;
+      line-height:1.12; letter-spacing:.01em; margin:0 0 6px; font-weight:400;
+      text-shadow:0 2px 12px rgba(0,0,0,.6);
     }
-    .sub{ color:var(--muted); font-size:14px; margin:2px 0 14px; }
-    .row{ display:flex; gap:12px; margin:8px 0; align-items:flex-start; }
-    .k{ color:#a99f8e; text-transform:uppercase; letter-spacing:.16em; font-size:11px; min-width:90px; }
-    .v{ color:var(--ink); font-size:15px; }
-    .map a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+    .sub{ color:var(--muted); font-size:14px; margin:2px 0 10px; text-shadow:0 2px 8px rgba(0,0,0,.6); }
 
-    /* Optional hint (visually subtle) */
+    .grid{
+      display:grid; grid-template-columns:auto 1fr; gap:8px 12px;
+      align-items:start; max-width:min(640px, 92%);
+      text-shadow:0 2px 8px rgba(0,0,0,.65);
+    }
+    .k{ color:#a99f8e; text-transform:uppercase; letter-spacing:.16em; font-size:11px; }
+    .v{ color:var(--ink); font-size:15px; }
+    .v a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+
     .hint{
-      margin-top:12px; text-align:center; color:rgba(232,230,226,.65); font-size:12px;
+      margin-top:10px; color:rgba(232,230,226,.7); font-size:12px;
+      text-shadow:0 2px 8px rgba(0,0,0,.7);
     }
 
     /* Reduced motion */
@@ -109,19 +114,21 @@
     <div id="card" class="flip" aria-live="polite">
       <!-- FRONT -->
       <div class="face front" aria-label="Front of card (tap to flip)">
-        <img class="poster" src="./Front.jpeg" alt="LAPS — Private After Party poster" loading="eager" decoding="async" fetchpriority="high">
+        <img src="./Front.jpeg" alt="LAPS — Private After Party poster" loading="eager" decoding="async" fetchpriority="high">
       </div>
 
       <!-- BACK -->
       <div class="face back" aria-label="Back of card (tap to flip back)">
-        <div class="panel" role="group" aria-label="Event details">
+        <div class="overlay" aria-hidden="true"></div>
+        <div class="details">
           <h1>LAPS After Party</h1>
           <div class="sub">An intimate after-hours gathering</div>
 
-          <!-- Fill from the EVENT object below -->
-          <div class="row"><div class="k">Date</div>     <div class="v" id="dt"></div></div>
-          <div class="row"><div class="k">Time</div>     <div class="v" id="tm"></div></div>
-          <div class="row map"><div class="k">Location</div><div class="v"><span id="loc"></span> · <a id="map" href="#" target="_blank" rel="noopener">Open map</a></div></div>
+          <div class="grid">
+            <div class="k">Date</div>     <div class="v" id="dt"></div>
+            <div class="k">Time</div>     <div class="v" id="tm"></div>
+            <div class="k">Location</div> <div class="v"><span id="loc"></span> — <a id="map" href="#" target="_blank" rel="noopener">Open map</a></div>
+          </div>
 
           <div class="hint">Tap anywhere to flip back.</div>
         </div>
@@ -146,7 +153,7 @@
     map.href        = EVENT.mapUrl;
 
     // Flip interactions
-    const card = document.getElementById('card');
+    const card  = document.getElementById('card');
     const front = document.querySelector('.front');
     const back  = document.querySelector('.back');
 
@@ -156,12 +163,8 @@
       card.classList.toggle('flipped', to === 'back');
     };
 
-    // Tap/click front to flip to back
     front.addEventListener('click', () => flip('back'), {passive:true});
-    // Tap/click back to flip to front
     back.addEventListener('click',  () => flip('front'), {passive:true});
-
-    // ESC to flip back to front (keyboard)
     document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') flip('front'); });
   </script>
 </body>
