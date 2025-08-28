@@ -18,16 +18,25 @@
       display:grid; place-items:center; padding:28px;
     }
     .card{
-      width:min(780px,92vw); padding:clamp(28px,4vw,56px);
-      border:1px solid var(--line); background:var(--panel); position:relative;
-      box-shadow:0 26px 70px rgba(0,0,0,.6); border-radius:14px;
+      width:min(780px,92vw);
+      padding:clamp(28px,4vw,56px);
+      border:1px solid var(--line);
+      background:var(--panel);
+      position:relative;
+      box-shadow:0 26px 70px rgba(0,0,0,.6);
+      border-radius:14px;
     }
     .frame{ position:absolute; inset:12px; border:1px solid var(--line); border-radius:10px; pointer-events:none; }
     .rule{ height:1px; background:var(--line); width:100%; margin:18px 0 14px; }
 
     .eyebrow{
-      font-family:"DM Serif Display",serif; letter-spacing:.16em; text-transform:uppercase;
-      opacity:.9; text-align:center; margin:0; font-size:clamp(12px,1.6vw,14px);
+      font-family:"DM Serif Display",serif;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      opacity:.9;
+      text-align:center;
+      margin:0;
+      font-size:clamp(12px,1.6vw,14px);
     }
 
     /* Poster artwork */
@@ -37,10 +46,16 @@
       border-radius:10px; box-shadow:0 20px 60px rgba(0,0,0,.55);
     }
 
-    /* Optional code reveal (if ?code= or sessionStorage has one) */
+    /* Optional code reveal */
     #checkin{ display:none; text-align:center; margin:10px 0 0; }
-    #checkin .label{ font:12px/1 Inter, system-ui, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:var(--muted) }
-    #checkin .code{ margin-top:8px; font-family:"DM Serif Display",serif; font-size:28px; letter-spacing:.18em; color:var(--ink) }
+    #checkin .label{
+      font:12px/1 Inter, system-ui, sans-serif;
+      letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+    }
+    #checkin .code{
+      margin-top:8px; font-family:"DM Serif Display",serif;
+      font-size:28px; letter-spacing:.18em; color:var(--ink);
+    }
 
     /* Wax-seal CTA */
     .cta{ display:flex; justify-content:center; margin:22px 0 8px; }
@@ -59,11 +74,10 @@
     <p class="eyebrow">You’re invited to the</p>
     <div class="rule"></div>
 
-    <!-- Your poster artwork -->
+    <!-- Your poster artwork (lives in the same /laps folder) -->
     <div class="hero">
       <img
-        src="../assets/laps/Front.jpg"
-        srcset="../assets/laps/Front.jpg 1x"
+        src="./Front.jpeg"
         alt="LAPS — Private After Party">
     </div>
 
@@ -105,7 +119,7 @@
       const link = document.getElementById('enter');
       link.href = code ? ('./index.html?code=' + encodeURIComponent(code)) : './index.html';
 
-      // Clean ?code= from the URL (keeps the page pretty)
+      // Clean ?code= from the URL
       if (params.has('code')) {
         history.replaceState(null, '', location.pathname + location.hash);
       }
