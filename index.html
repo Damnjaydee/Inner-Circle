@@ -1,133 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inner Circle — Access</title>
-  <meta name="color-scheme" content="dark light" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>LAPS — Private After Party</title>
+
+  <!-- Dark theme & iOS fullbleed -->
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.webmanifest">
+
   <style>
-    :root{ --paper:#0a0a0a; --ink:#e8e6e2; --muted:rgba(232,230,226,.75); --line:rgba(232,230,226,.25) }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{
-      margin:0; background:var(--paper); color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      display:grid; place-items:center; padding:28px;
+    :root{
+      --w: min(92vw, 420px);
+      --h: calc(var(--w) * 16 / 9);
+      --r: 18px;
+      --shadow: 0 30px 80px rgba(0,0,0,.55);
+      --bg:#000;
     }
-    .card{ width:min(780px,92vw); padding:clamp(28px,4vw,56px); border:1px solid var(--line); position:relative; }
-    .frame{ position:absolute; inset:12px; border:1px solid var(--line); pointer-events:none; }
-    .eyebrow{
-      font-family:"DM Serif Display",Georgia,serif; letter-spacing:.14em; text-transform:uppercase;
-      font-size:clamp(12px,1.6vw,14px); opacity:.9; text-align:center; margin:0
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); display: grid; place-items: center;
+      overscroll-behavior: none; touch-action: manipulation; user-select: none;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
-    .rule{ height:1px; background:var(--line); width:100%; margin:22px 0 28px }
-    .title{
-      font-family:"DM Serif Display",Georgia,serif; font-size:clamp(36px,6vw,56px);
-      line-height:1.04; text-align:center; letter-spacing:.02em; font-weight:400; margin:0
+    .stage {
+      position: fixed; inset: 0; display:grid; place-items:center;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     }
-    .sub{ text-align:center; opacity:.8; font-size:clamp(13px,1.6vw,14px); margin:10px 0 0 }
-    .gate{
-      margin:24px auto 0; width:min(520px,92%); display:grid; gap:10px;
+    .ecard { width: var(--w); height: calc(var(--w) * 16 / 9);
+      perspective: 1600px; filter: drop-shadow(var(--shadow)); }
+    .inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d; transition: transform .9s cubic-bezier(.2,.7,.1,1);
+      border-radius: var(--r); overflow: hidden;
     }
-    label{
-      font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+    .ecard.is-flipped .inner { transform: rotateY(180deg); }
+    .face {
+      position:absolute; inset:0; backface-visibility: hidden;
+      background: #000 center/cover no-repeat;
+      border: 1px solid rgba(255,255,255,.06);
     }
-    .row{ display:flex; gap:10px; }
-    input{
-      flex:1; background:#0f0f0f; color:var(--ink);
-      border:1px solid rgba(232,230,226,.22); border-radius:14px;
-      padding:12px 14px; font:inherit; letter-spacing:.16em; text-transform:uppercase;
-      outline:none; transition:border-color .15s ease, box-shadow .15s ease;
+    .front { background-image: url('./front.jpg'); }
+    .back  { background-image: url('./back.jpg'); transform: rotateY(180deg); }
+    .hint {
+      position: absolute; bottom: 10px; left: 0; right: 0; text-align: center;
+      color: rgba(255,255,255,.35); font-size: 12px; letter-spacing: .12em;
+      text-transform: uppercase; opacity: 1; transition: opacity .6s ease 1.2s;
+      pointer-events: none;
     }
-    input:focus{ border-color:rgba(232,230,226,.4); box-shadow:0 0 0 3px rgba(232,230,226,.12); }
-    button{
-      appearance:none; cursor:pointer; border-radius:999px; border:1px solid rgba(255,255,255,.10);
-      padding:12px 18px; min-width:140px; color:#fff; font-family:"DM Serif Display",serif; letter-spacing:.02em;
-      background:
-        radial-gradient(220px 140px at 40% 18%, rgba(255,255,255,.10), transparent 60%),
-        linear-gradient(180deg, #b91c1c, #991b1b);
-      box-shadow:0 18px 40px rgba(0,0,0,.55), 0 12px 55px rgba(191,35,35,.24);
-      transition: transform .14s ease, background .2s ease, opacity .2s ease;
-    }
-    button:hover{ transform:translateY(-1px); background:
-        radial-gradient(220px 140px at 40% 18%, rgba(255,255,255,.12), transparent 60%),
-        linear-gradient(180deg, #dc2626, #b91c1c);}
-    button[disabled]{ opacity:.6; cursor:progress }
-    .err{ min-height:18px; color:#ffb3b3; text-align:center; font-size:14px; margin-top:6px }
-    .footnote{ text-align:center; color:rgba(232,230,226,.6); font-size:12px; margin-top:14px; }
+    .ecard.touched .hint { opacity: 0; }
+    @media (prefers-reduced-motion: reduce) { .inner { transition: none; } }
   </style>
 </head>
 <body>
-  <main class="card" role="main" aria-labelledby="title">
-    <div class="frame" aria-hidden="true"></div>
-
-    <p class="eyebrow">You’re Invited</p>
-    <div class="rule"></div>
-
-    <h1 id="title" class="title">Inner&nbsp;Circle</h1>
-    <p class="sub">Enter your check-in code to access the RSVP.</p>
-
-    <form class="gate" id="gate" autocomplete="off">
-      <label for="code">Your Check-in Code</label>
-      <div class="row">
-        <input id="code" name="code" placeholder="e.g., YS1CD3" inputmode="text" maxlength="24" required />
-        <button id="go" type="submit">Unlock</button>
+  <div class="stage">
+    <div id="ecard" class="ecard" role="button" aria-label="Flip card">
+      <div class="inner">
+        <div class="face front" aria-hidden="false"></div>
+        <div class="face back"  aria-hidden="true"></div>
       </div>
-      <div id="err" class="err"></div>
-    </form>
-
-    <div class="footnote">If you need help, reply to your invitation.</div>
-  </main>
+      <div class="hint">tap to flip</div>
+    </div>
+  </div>
 
   <script>
-    // ==== Configuration: put approved codes here (UPPERCASE). ====
-    // Add one code per line, e.g.: 'YS1CD3','K7A2Q9','MARCH25', ...
-    const CODE_WHITELIST = new Set([
-      'YS1CD3' // sample — add real codes here
-    ]);
+    const card = document.getElementById('ecard');
+    let touched = false;
+    function flip() {
+      card.classList.toggle('is-flipped');
+      if(!touched){ card.classList.add('touched'); touched = true; }
+    }
+    card.addEventListener('click', flip);
+    card.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') flip(); });
+    card.tabIndex = 0;
 
-    // Optional: allow a single master code that always passes (leave '' to disable)
-    const MASTER_CODE = '';
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
 
-    // Normalize user input (ignore case, spaces, dashes)
-    const normalize = v => (v||'').toUpperCase().replace(/[\s\-]+/g,'');
-
-    // Accept code via URL like ?code=YS1CD3 and auto-forward
-    (function bootstrap(){
-      const params = new URLSearchParams(location.search);
-      const q = normalize(params.get('code'));
-      if (q && (CODE_WHITELIST.has(q) || (MASTER_CODE && q === MASTER_CODE))) {
-        allowAndGo(q);
-      }
-    })();
-
-    const form = document.getElementById('gate');
-    const input = document.getElementById('code');
-    const btn = document.getElementById('go');
-    const err = document.getElementById('err');
-
-    form.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      err.textContent = '';
-      const code = normalize(input.value);
-      if (!code) { err.textContent = 'Please enter your code.'; return; }
-
-      if (CODE_WHITELIST.has(code) || (MASTER_CODE && code === MASTER_CODE)) {
-        allowAndGo(code);
-      } else {
-        err.textContent = 'That code wasn’t recognized.';
-        input.focus();
-      }
-    });
-
-    function allowAndGo(code){
-      try {
-        // mark gate passed + keep code for later display
-        sessionStorage.setItem('ic_gate', '1');
-        sessionStorage.setItem('innercircle_code', code);
-      } catch(_) {}
-      // go to RSVP
-      location.href = 'rsvp.html';
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
     }
   </script>
 </body>
