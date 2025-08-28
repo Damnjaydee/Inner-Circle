@@ -9,41 +9,32 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="format-detection" content="telephone=no">
-  <meta name="theme-color" content="#0b0b0b" media="(prefers-color-scheme: dark)">
-
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0b0b0b">
 
   <style>
-    :root{
-      --bg:#0a0a0a; --ink:#eceae4; --muted:#bdb7a8;
-      --shadow:0 22px 60px rgba(0,0,0,.55);
-      --panel:rgba(12,12,12,.72);
-      --line:rgba(255,255,255,.10);
-      --radius:14px;
-    }
+    :root{ --bg:#0a0a0a; --shadow:0 22px 60px rgba(0,0,0,.55); }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
-
     body{
-      margin:0; color:var(--ink); background:var(--bg);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+      margin:0; background:var(--bg);
       display:grid; place-items:center;
       padding:22px;
       padding-left:max(22px, env(safe-area-inset-left));
       padding-right:max(22px, env(safe-area-inset-right));
       padding-top:max(22px, env(safe-area-inset-top));
       padding-bottom:max(22px, env(safe-area-inset-bottom));
-      -webkit-tap-highlight-color: transparent;
+      -webkit-tap-highlight-color:transparent;
     }
 
     /* Flip viewport */
     .viewport{ width:min(780px, 94vw); perspective:1400px; }
+
     .flip{
       position:relative; width:100%;
       transform-style:preserve-3d;
       transition:transform .75s cubic-bezier(.2,.6,.2,1);
       min-height: clamp(420px, 60vw, 560px);
+      border-radius:12px; overflow:hidden; box-shadow:var(--shadow);
     }
     .flip.flipped{ transform:rotateY(180deg); }
 
@@ -51,118 +42,41 @@
       position:absolute; inset:0;
       display:flex; align-items:center; justify-content:center;
       backface-visibility:hidden; -webkit-backface-visibility:hidden;
+      cursor:pointer;
     }
 
-    /* FRONT — just the poster */
-    .front .poster{
-      width:min(680px, 100%);
-      border-radius:12px;
-      display:block; height:auto;
-      box-shadow:var(--shadow);
-      user-select:none;
+    /* FRONT — full poster image */
+    .front img{
+      width:100%; height:100%; object-fit:cover; display:block; user-select:none;
     }
 
-    /* BACK — subtle textured background with info panel */
+    /* BACK — only your red text image (not mirrored) */
     .back{
       transform:rotateY(180deg);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,.38), rgba(0,0,0,.62)),
-        url('./back.jpg') center/cover no-repeat;
-      border-radius:12px;
-      overflow:hidden;
-      padding:clamp(14px, 3.6vw, 22px);
-    }
-    .panel{
-      width:min(640px, 100%);
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:clamp(16px, 3.6vw, 22px);
-      box-shadow:0 16px 44px rgba(0,0,0,.55);
-      backdrop-filter:saturate(1.05) blur(4px);
-    }
-    h1{
-      font-family:"DM Serif Display", serif;
-      font-size:clamp(26px, 4vw, 34px);
-      line-height:1.12; letter-spacing:.01em; margin:0 0 6px;
-      font-weight:400;
-    }
-    .sub{ color:var(--muted); font-size:14px; margin:2px 0 14px; }
-    .row{ display:flex; gap:12px; margin:8px 0; align-items:flex-start; }
-    .k{ color:#a99f8e; text-transform:uppercase; letter-spacing:.16em; font-size:11px; min-width:90px; }
-    .v{ color:var(--ink); font-size:15px; }
-    .map a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
-
-    /* Optional hint (visually subtle) */
-    .hint{
-      margin-top:12px; text-align:center; color:rgba(232,230,226,.65); font-size:12px;
+      background:url('./back.jpg') center/cover no-repeat;
     }
 
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      .flip{ transition:none; }
-    }
+    @media (prefers-reduced-motion: reduce){ .flip{ transition:none; } }
   </style>
 </head>
 <body>
   <section class="viewport" aria-label="LAPS invitation">
     <div id="card" class="flip" aria-live="polite">
       <!-- FRONT -->
-      <div class="face front" aria-label="Front of card (tap to flip)">
-        <img class="poster" src="./Front.jpeg" alt="LAPS — Private After Party poster" loading="eager" decoding="async" fetchpriority="high">
+      <div class="face front" role="button" aria-label="Front (tap to flip)">
+        <img src="./Front.jpeg" alt="LAPS — Private After Party poster" loading="eager" decoding="async" fetchpriority="high">
       </div>
 
-      <!-- BACK -->
-      <div class="face back" aria-label="Back of card (tap to flip back)">
-        <div class="panel" role="group" aria-label="Event details">
-          <h1>LAPS After Party</h1>
-          <div class="sub">An intimate after-hours gathering</div>
-
-          <!-- Fill from the EVENT object below -->
-          <div class="row"><div class="k">Date</div>     <div class="v" id="dt"></div></div>
-          <div class="row"><div class="k">Time</div>     <div class="v" id="tm"></div></div>
-          <div class="row map"><div class="k">Location</div><div class="v"><span id="loc"></span> · <a id="map" href="#" target="_blank" rel="noopener">Open map</a></div></div>
-
-          <div class="hint">Tap anywhere to flip back.</div>
-        </div>
-      </div>
+      <!-- BACK (no panel/overlay/text) -->
+      <div class="face back" role="button" aria-label="Back (tap to flip back)"></div>
     </div>
   </section>
 
   <script>
-    // ====== EDIT THESE DETAILS ======
-    const EVENT = {
-      dateText: "Sat • September 6",
-      timeText: "10:30 PM — 2:00 AM",
-      locationText: "Private Loft, Lower East Side — NYC",
-      mapUrl: "https://maps.apple.com/?q=Lower+East+Side,+NYC"
-    };
-    // =================================
-
-    // Populate back-of-card text
-    dt.textContent  = EVENT.dateText;
-    tm.textContent  = EVENT.timeText;
-    loc.textContent = EVENT.locationText;
-    map.href        = EVENT.mapUrl;
-
-    // Flip interactions
-    const card = document.getElementById('card');
-    const front = document.querySelector('.front');
-    const back  = document.querySelector('.back');
-
-    const flip = (to) => {
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) { card.classList.toggle('flipped', to === 'back'); return; }
-      card.classList.toggle('flipped', to === 'back');
-    };
-
-    // Tap/click front to flip to back
-    front.addEventListener('click', () => flip('back'), {passive:true});
-    // Tap/click back to flip to front
-    back.addEventListener('click',  () => flip('front'), {passive:true});
-
-    // ESC to flip back to front (keyboard)
-    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') flip('front'); });
+    const card  = document.getElementById('card');
+    document.querySelector('.front').addEventListener('click', () => card.classList.add('flipped'), {passive:true});
+    document.querySelector('.back').addEventListener('click',  () => card.classList.remove('flipped'), {passive:true});
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') card.classList.remove('flipped'); });
   </script>
 </body>
 </html>
