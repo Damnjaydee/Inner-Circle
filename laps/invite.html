@@ -15,17 +15,30 @@
 
   <style>
     :root{
+      --paper:#0a0a0a; --panel:#0b0b0b; --ink:#eceae4; --muted:#bdb7a8; --line:rgba(255,255,255,.14);
+      --radius:16px;
+      --shadow:0 18px 48px rgba(0,0,0,.55);
+      --accent:#d1bfa0;
       --bg:#0a0a0a; --ink:#eceae4; --muted:#bdb7a8;
       --shadow:0 22px 60px rgba(0,0,0,.55);
+      --panel:rgba(12,12,12,.72);
+      --line:rgba(255,255,255,.10);
+      --radius:14px;
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
 
     body{
+      margin:0; color:var(--ink); background:var(--paper);
       margin:0; color:var(--ink); background:var(--bg);
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
       display:grid; place-items:center;
+      padding:24px;
+      padding-left:max(24px, env(safe-area-inset-left));
+      padding-right:max(24px, env(safe-area-inset-right));
+      padding-top:max(24px, env(safe-area-inset-top));
+      padding-bottom:max(24px, env(safe-area-inset-bottom));
       padding:22px;
       padding-left:max(22px, env(safe-area-inset-left));
       padding-right:max(22px, env(safe-area-inset-right));
@@ -34,116 +47,313 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* Outer frame */
+    .card{
+      width:min(780px, 94vw);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:var(--panel);
+      position:relative;
+      box-shadow:var(--shadow);
+      padding:clamp(18px, 4vw, 36px);
+    }
+    .frame{ position:absolute; inset:10px; border:1px solid rgba(255,255,255,.10);
+      border-radius:calc(var(--radius) - 6px); pointer-events:none; }
+
+    .eyebrow{
+      font-family:"DM Serif Display", serif;
+      letter-spacing:.16em; text-transform:uppercase;
+      font-size:12px; opacity:.95; text-align:center; margin:0;
+    }
+    .rule{ height:1px; background:rgba(255,255,255,.10); margin:14px 0 12px; border-radius:2px; }
+
+    /* 3D flip viewport */
+    .flip-viewport{ perspective:1400px; }
+    .flip-card{
     /* Flip viewport */
     .viewport{ width:min(780px, 94vw); perspective:1400px; }
     .flip{
       position:relative; width:100%;
       transform-style:preserve-3d;
+      transition:transform .7s cubic-bezier(.2,.6,.2,1);
       transition:transform .75s cubic-bezier(.2,.6,.2,1);
       min-height: clamp(420px, 60vw, 560px);
-      border-radius:12px; overflow:hidden;
-      box-shadow:var(--shadow);
     }
+    .flip-card.flipped{ transform:rotateY(180deg); }
     .flip.flipped{ transform:rotateY(180deg); }
 
     .face{
+      position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
+      backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:12px;
       position:absolute; inset:0;
       display:flex; align-items:center; justify-content:center;
       backface-visibility:hidden; -webkit-backface-visibility:hidden;
     }
 
-    /* FRONT — full poster */
-    .front img{
-      display:block; width:100%; height:auto; object-fit:cover;
+    /* FRONT */
+    .front .hero{ display:flex; justify-content:center; margin:6px 0 10px; }
+    .front .hero img{
+      display:block; width:min(640px, 100%); height:auto;
+      border-radius:10px; box-shadow:0 16px 44px rgba(0,0,0,.5);
+    }
+    .flip-hint{
+      margin:6px 0 2px; font-size:12px; color:var(--muted);
+      display:flex; align-items:center; gap:6px; user-select:none;
+    }
+    .flip-link{
+      color:var(--ink); opacity:.9; text-decoration:underline dotted;
+      text-underline-offset:3px; cursor:pointer;
+    /* FRONT — just the poster */
+    .front .poster{
+      width:min(680px, 100%);
+      border-radius:12px;
+      display:block; height:auto;
+      box-shadow:var(--shadow);
       user-select:none;
     }
 
-    /* BACK — full image with bottom details (no box) */
+    /* BACK */
+    /* BACK — subtle textured background with info panel */
     .back{
       transform:rotateY(180deg);
-      background: url('./back.jpg') center/cover no-repeat;
-      position:relative;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55)),
+        linear-gradient(180deg, rgba(0,0,0,.38), rgba(0,0,0,.62)),
+        url('./back.jpg') center/cover no-repeat;
+      border-radius:12px;
+      overflow:hidden;
+      padding:clamp(14px, 3.6vw, 22px);
+      justify-content:center;
     }
-
-    /* Soft bottom gradient for readability */
-    .overlay{
-      position:absolute; left:0; right:0; bottom:0; height:46%;
-      background:linear-gradient(180deg, rgba(0,0,0,0) 0%,
-                                         rgba(0,0,0,.38) 45%,
-                                         rgba(0,0,0,.72) 100%);
-      pointer-events:none;
+    .panel{
+      width:min(640px, 100%);
+      background:rgba(12,12,12,.72);
+      border:1px solid rgba(255,255,255,.10);
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:clamp(16px, 3.6vw, 22px);
+      box-shadow:0 12px 38px rgba(0,0,0,.55);
+      backdrop-filter:saturate(1.1) blur(4px);
+      box-shadow:0 16px 44px rgba(0,0,0,.55);
+      backdrop-filter:saturate(1.05) blur(4px);
     }
-
-    .details{
-      position:absolute; left:0; right:0; bottom:0;
-      padding: clamp(16px, 4vw, 28px);
-      padding-bottom: calc(clamp(16px, 4vw, 28px) + env(safe-area-inset-bottom));
-      display:flex; flex-direction:column; align-items:center; text-align:center;
-    }
-
+    h2{
     h1{
       font-family:"DM Serif Display", serif;
+      font-size:clamp(24px, 3.6vw, 30px);
+      line-height:1.15; letter-spacing:.01em; margin:0 0 6px;
       font-size:clamp(26px, 4vw, 34px);
-      line-height:1.12; letter-spacing:.01em; margin:0 0 6px; font-weight:400;
-      text-shadow:0 2px 12px rgba(0,0,0,.6);
+      line-height:1.12; letter-spacing:.01em; margin:0 0 6px;
+      font-weight:400;
     }
-    .sub{ color:var(--muted); font-size:14px; margin:2px 0 10px; text-shadow:0 2px 8px rgba(0,0,0,.6); }
-
-    .grid{
-      display:grid; grid-template-columns:auto 1fr; gap:8px 12px;
-      align-items:start; max-width:min(640px, 92%);
-      text-shadow:0 2px 8px rgba(0,0,0,.65);
-    }
-    .k{ color:#a99f8e; text-transform:uppercase; letter-spacing:.16em; font-size:11px; }
+    .meta{ color:var(--muted); font-size:14px; margin:2px 0 12px; }
+    .sub{ color:var(--muted); font-size:14px; margin:2px 0 14px; }
+    .row{ display:flex; gap:12px; margin:8px 0; align-items:flex-start; }
+    .k{ color:#a99f8e; text-transform:uppercase; letter-spacing:.16em; font-size:11px; min-width:88px; }
+    .k{ color:#a99f8e; text-transform:uppercase; letter-spacing:.16em; font-size:11px; min-width:90px; }
     .v{ color:var(--ink); font-size:15px; }
-    .v a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+    .map a{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
 
-    .hint{
-      margin-top:10px; color:rgba(232,230,226,.7); font-size:12px;
-      text-shadow:0 2px 8px rgba(0,0,0,.7);
+    /* Check-in code (shown on both sides when available) */
+    #checkin-front, #checkin-back{ display:none; text-align:center; margin:8px 0 0; }
+    #checkin-front .label, #checkin-back .label{
+      font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+    }
+    #checkin-front .code, #checkin-back .code{
+      margin-top:8px; font-family:"DM Serif Display", serif;
+      font-size:26px; letter-spacing:.18em;
     }
 
+    /* CTA */
+    .cta{ display:flex; justify-content:center; margin:16px 0 4px; }
+    .cta a{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:180px; height:180px; border-radius:50%; touch-action:manipulation;
+      text-decoration:none; outline:none;
+    }
+    .cta img{ width:180px; height:auto; display:block; transition:transform .12s ease, filter .12s ease; }
+    .cta a:active img{ transform:translateY(1px); filter:brightness(.98); }
+
+    .back-actions{
+      margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      justify-content:center; color:var(--muted); font-size:12px;
+    }
+    .btn-txt{ color:var(--ink); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+
+    .footnote{
+      text-align:center; color:rgba(232,230,226,.65); font-size:12px; margin-top:10px;
+    }
+
+    /* Small iPhones */
+    @media (max-width: 420px){
+      .cta a, .cta img{ width:150px; height:auto; }
+      #checkin-front .code, #checkin-back .code{ font-size:22px; letter-spacing:.16em; }
+    /* Optional hint (visually subtle) */
+    .hint{
+      margin-top:12px; text-align:center; color:rgba(232,230,226,.65); font-size:12px;
+    }
+
+    /* Reduced motion: fade instead of flip */
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
+      .flip-card{ transition:none; }
       .flip{ transition:none; }
     }
   </style>
 </head>
 <body>
+  <main class="card" role="main" aria-label="LAPS invitation">
+    <div class="frame" aria-hidden="true"></div>
+
+    <p class="eyebrow">You’re invited to the</p>
+    <div class="rule" aria-hidden="true"></div>
+
+    <section class="flip-viewport">
+      <div id="flip" class="flip-card" aria-live="polite">
+        <!-- FRONT -->
+        <div class="face front">
+          <div class="hero">
+            <img src="./Front.jpeg" alt="LAPS — Private After Party poster" loading="eager" decoding="async" fetchpriority="high">
+          </div>
+
+          <!-- Optional code on front -->
+          <div id="checkin-front">
+            <div class="label">Your check-in code</div>
+            <div id="code-front" class="code"></div>
+          </div>
+
+          <div class="cta">
+            <a id="enterFront" href="./index.html" aria-label="Enter the gate">
+              <img
+                src="../assets/invite/wax-seal-enter.png"
+                srcset="../assets/invite/wax-seal-enter.png 1x, ../assets/invite/wax-seal-enter@2x.png 2x"
+                alt="ENTER">
+            </a>
+          </div>
+
+          <div class="flip-hint">
+            <span class="flip-link" id="flipToBack">Flip for details</span>
+          </div>
+        </div>
+
+        <!-- BACK -->
+        <div class="face back">
+          <div class="panel" role="group" aria-label="Event details">
+            <h2>LAPS After Party</h2>
+            <div class="meta">An intimate after-hours gathering</div>
+
+            <!-- Replace the values in the script at bottom or hardcode here -->
+            <div class="row"><div class="k">Date</div>     <div class="v" id="dt"></div></div>
+            <div class="row"><div class="k">Time</div>     <div class="v" id="tm"></div></div>
+            <div class="row map"><div class="k">Location</div><div class="v"><span id="loc"></span> · <a id="map" href="#" target="_blank" rel="noopener">Open map</a></div></div>
   <section class="viewport" aria-label="LAPS invitation">
     <div id="card" class="flip" aria-live="polite">
       <!-- FRONT -->
       <div class="face front" aria-label="Front of card (tap to flip)">
-        <img src="./Front.jpeg" alt="LAPS — Private After Party poster" loading="eager" decoding="async" fetchpriority="high">
+        <img class="poster" src="./Front.jpeg" alt="LAPS — Private After Party poster" loading="eager" decoding="async" fetchpriority="high">
       </div>
 
+            <!-- Optional code on back -->
+            <div id="checkin-back" style="text-align:center; margin-top:10px;">
+              <div class="label">Your check-in code</div>
+              <div id="code-back" class="code"></div>
+            </div>
       <!-- BACK -->
       <div class="face back" aria-label="Back of card (tap to flip back)">
-        <div class="overlay" aria-hidden="true"></div>
-        <div class="details">
+        <div class="panel" role="group" aria-label="Event details">
           <h1>LAPS After Party</h1>
           <div class="sub">An intimate after-hours gathering</div>
 
-          <div class="grid">
-            <div class="k">Date</div>     <div class="v" id="dt"></div>
-            <div class="k">Time</div>     <div class="v" id="tm"></div>
-            <div class="k">Location</div> <div class="v"><span id="loc"></span> — <a id="map" href="#" target="_blank" rel="noopener">Open map</a></div>
-          </div>
+            <div class="cta" style="margin-top:12px;">
+              <a id="enterBack" href="./index.html" aria-label="Enter the gate">
+                <img
+                  src="../assets/invite/wax-seal-enter.png"
+                  srcset="../assets/invite/wax-seal-enter.png 1x, ../assets/invite/wax-seal-enter@2x.png 2x"
+                  alt="ENTER">
+              </a>
+            </div>
+          <!-- Fill from the EVENT object below -->
+          <div class="row"><div class="k">Date</div>     <div class="v" id="dt"></div></div>
+          <div class="row"><div class="k">Time</div>     <div class="v" id="tm"></div></div>
+          <div class="row map"><div class="k">Location</div><div class="v"><span id="loc"></span> · <a id="map" href="#" target="_blank" rel="noopener">Open map</a></div></div>
 
+            <div class="back-actions">
+              <span class="btn-txt" id="flipToFront">Flip back</span>
+            </div>
+          </div>
           <div class="hint">Tap anywhere to flip back.</div>
         </div>
       </div>
+    </section>
+
+    <p class="footnote">
+      If the button doesn’t load, visit <span style="text-decoration:underline;">innercircle.events/rsvp</span>
+    </p>
+  </main>
     </div>
   </section>
 
   <script>
+    // ====== QUICK EVENT SETTINGS (edit these) ======
     // ====== EDIT THESE DETAILS ======
     const EVENT = {
+      // Shown on the back of the card
       dateText: "Sat • September 6",
       timeText: "10:30 PM — 2:00 AM",
       locationText: "Private Loft, Lower East Side — NYC",
+      // Map link (Apple/Google/etc.)
       mapUrl: "https://maps.apple.com/?q=Lower+East+Side,+NYC"
     };
+    // ===============================================
+
+    (function(){
+      // Fill back-of-card details
+      document.getElementById('dt').textContent  = EVENT.dateText;
+      document.getElementById('tm').textContent  = EVENT.timeText;
+      document.getElementById('loc').textContent = EVENT.locationText;
+      document.getElementById('map').href        = EVENT.mapUrl;
+
+      // Check-in code handling
+      const params = new URLSearchParams(location.search);
+      let code = params.get('code') || sessionStorage.getItem('innercircle_code') || '';
+      code = String(code).toUpperCase().replace(/\s+/g,'').slice(0,24);
+
+      if (code) {
+        try { sessionStorage.setItem('innercircle_code', code); } catch(_){}
+        const showFront = document.getElementById('checkin-front');
+        const showBack  = document.getElementById('checkin-back');
+        document.getElementById('code-front').textContent = code;
+        document.getElementById('code-back').textContent  = code;
+        showFront.style.display = 'block';
+        showBack.style.display  = 'block';
+      }
+
+      // Forward code to the gate from both CTAs
+      const urlWithCode = code ? ('./index.html?code=' + encodeURIComponent(code)) : './index.html';
+      document.getElementById('enterFront').href = urlWithCode;
+      document.getElementById('enterBack').href  = urlWithCode;
+
+      // Clean ?code= from URL
+      if (params.has('code')) history.replaceState(null, '', location.pathname + location.hash);
+
+      // Flip logic
+      const card = document.getElementById('flip');
+      const toBack  = document.getElementById('flipToBack');
+      const toFront = document.getElementById('flipToFront');
+
+      const flip = (to) => {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if(reduce){
+          // Reduced motion: no 3D flip; just show back/front instantly
+          card.classList.toggle('flipped', to === 'back');
+          return;
+        }
+        card.classList.toggle('flipped', to === 'back');
+      };
+
+      toBack.addEventListener('click',  () => flip('back'));
+      toFront.addEventListener('click', () => flip('front'));
     // =================================
 
     // Populate back-of-card text
@@ -153,7 +363,7 @@
     map.href        = EVENT.mapUrl;
 
     // Flip interactions
-    const card  = document.getElementById('card');
+    const card = document.getElementById('card');
     const front = document.querySelector('.front');
     const back  = document.querySelector('.back');
 
@@ -163,8 +373,19 @@
       card.classList.toggle('flipped', to === 'back');
     };
 
+      // Also let users tap the poster to flip
+      document.querySelector('.front .hero img').addEventListener('click', () => flip('back'));
+    // Tap/click front to flip to back
     front.addEventListener('click', () => flip('back'), {passive:true});
+    // Tap/click back to flip to front
     back.addEventListener('click',  () => flip('front'), {passive:true});
+
+      // ESC to flip back (keyboard)
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'Escape') flip('front');
+      });
+    })();
+    // ESC to flip back to front (keyboard)
     document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') flip('front'); });
   </script>
 </body>
