@@ -2,88 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>LAPS After Party — Invitation</title>
-  <meta name="color-scheme" content="dark light" />
+
+  <!-- iOS polish -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="theme-color" content="#0b0b0b" media="(prefers-color-scheme: dark)">
+
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --paper:#0a0a0a; --panel:#0b0b0b; --ink:#e8e6e2; --muted:rgba(232,230,226,.75); --line:rgba(232,230,226,.22);
+      --paper:#0a0a0a; --panel:#0b0b0b; --ink:#eceae4; --muted:#bdb7a8; --line:rgba(255,255,255,.14);
+      --radius:14px;
     }
-    *{box-sizing:border-box} html,body{height:100%}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
     body{
-      margin:0; background:var(--paper); color:var(--ink);
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      display:grid; place-items:center; padding:28px;
+      margin:0; color:var(--ink); background:var(--paper);
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+      display:grid; place-items:center;
+      /* iPhone safe areas */
+      padding:24px;
+      padding-left:max(24px, env(safe-area-inset-left));
+      padding-right:max(24px, env(safe-area-inset-right));
+      padding-top:max(24px, env(safe-area-inset-top));
+      padding-bottom:max(24px, env(safe-area-inset-bottom));
+      -webkit-tap-highlight-color: transparent;
     }
+
     .card{
-      width:min(780px,92vw);
-      padding:clamp(28px,4vw,56px);
-      border:1px solid var(--line);
+      width:min(760px, 94vw);
+      padding:clamp(18px, 4vw, 36px);
       background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
       position:relative;
-      box-shadow:0 26px 70px rgba(0,0,0,.6);
-      border-radius:14px;
+      box-shadow:0 18px 48px rgba(0,0,0,.55);
     }
-    .frame{ position:absolute; inset:12px; border:1px solid var(--line); border-radius:10px; pointer-events:none; }
-    .rule{ height:1px; background:var(--line); width:100%; margin:18px 0 14px; }
+    .frame{
+      position:absolute; inset:10px; border:1px solid rgba(255,255,255,.10);
+      border-radius:calc(var(--radius) - 6px); pointer-events:none;
+    }
 
     .eyebrow{
-      font-family:"DM Serif Display",serif;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      opacity:.9;
-      text-align:center;
-      margin:0;
-      font-size:clamp(12px,1.6vw,14px);
+      font-family:"DM Serif Display", serif;
+      letter-spacing:.16em; text-transform:uppercase;
+      font-size:12px; opacity:.95; text-align:center; margin:0;
     }
+    .rule{ height:1px; background:rgba(255,255,255,.10); margin:14px 0 12px; border-radius:2px; }
 
-    /* Poster artwork */
-    .hero{ display:flex; justify-content:center; margin:6px 0 16px; }
+    /* Poster */
+    .hero{ display:flex; justify-content:center; margin:6px 0 14px; }
     .hero img{
-      display:block; width:min(640px,100%); height:auto;
-      border-radius:10px; box-shadow:0 20px 60px rgba(0,0,0,.55);
+      display:block; width:min(620px, 100%); height:auto;
+      border-radius:10px;
+      box-shadow:0 16px 44px rgba(0,0,0,.5);
+      image-rendering:auto;
     }
 
-    /* Optional code reveal */
-    #checkin{ display:none; text-align:center; margin:10px 0 0; }
+    /* Check-in code (revealed if present) */
+    #checkin{ display:none; text-align:center; margin:8px 0 0; }
     #checkin .label{
-      font:12px/1 Inter, system-ui, sans-serif;
-      letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+      font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
     }
     #checkin .code{
-      margin-top:8px; font-family:"DM Serif Display",serif;
-      font-size:28px; letter-spacing:.18em; color:var(--ink);
+      margin-top:8px; font-family:"DM Serif Display", serif;
+      font-size:26px; letter-spacing:.18em;
     }
 
-    /* Wax-seal CTA */
-    .cta{ display:flex; justify-content:center; margin:22px 0 8px; }
-    .cta a{ display:inline-block; text-decoration:none; outline:none; }
-    .cta img{ display:block; width:180px; height:auto; transition:transform .12s ease, filter .12s ease; }
-    .cta a:hover img{ transform:translateY(-1px); filter:brightness(1.05); }
-    .cta a:active img{ transform:translateY(0); filter:brightness(.98); }
+    /* CTA (min 44px tap size on iOS) */
+    .cta{ display:flex; justify-content:center; margin:20px 0 6px; }
+    .cta a{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:180px; height:180px; border-radius:50%; touch-action:manipulation;
+      text-decoration:none; outline:none;
+    }
+    .cta img{ width:180px; height:auto; display:block; transition:transform .12s ease, filter .12s ease; }
+    .cta a:active img{ transform:translateY(1px); filter:brightness(.98); }
 
-    .footnote{ text-align:center; color:rgba(232,230,226,.6); font-size:12px; margin-top:12px; }
+    .footnote{
+      text-align:center; color:rgba(232,230,226,.65); font-size:12px; margin-top:10px;
+    }
+
+    /* Small iPhones */
+    @media (max-width: 420px){
+      .card{ padding:18px; }
+      .frame{ inset:8px; }
+      .cta a, .cta img{ width:150px; height:auto; }
+      #checkin .code{ font-size:24px; letter-spacing:.16em; }
+    }
+
+    /* Respect motion settings */
+    @media (prefers-reduced-motion: reduce){
+      .cta img{ transition:none; }
+    }
   </style>
 </head>
 <body>
-  <main class="card" role="main">
+  <main class="card" role="main" aria-label="LAPS invitation">
     <div class="frame" aria-hidden="true"></div>
 
     <p class="eyebrow">You’re invited to the</p>
-    <div class="rule"></div>
+    <div class="rule" aria-hidden="true"></div>
 
-    <!-- Your poster artwork (lives in the same /laps folder) -->
+    <!-- Poster (your Front.jpeg sits in the same /laps folder) -->
     <div class="hero">
       <img
         src="./Front.jpeg"
-        alt="LAPS — Private After Party">
+        alt="LAPS — Private After Party"
+        loading="eager" decoding="async" fetchpriority="high">
     </div>
 
-    <!-- Wax-seal ENTER (clickable) -->
+    <!-- Wax-seal CTA -->
     <div class="cta">
-      <a id="enter" href="./index.html" aria-label="Enter">
+      <a id="enter" href="./index.html" aria-label="Enter the gate">
         <img
           src="../assets/invite/wax-seal-enter.png"
           srcset="../assets/invite/wax-seal-enter.png 1x, ../assets/invite/wax-seal-enter@2x.png 2x"
@@ -91,32 +128,29 @@
       </a>
     </div>
 
-    <div class="footnote">
+    <p class="footnote">
       If the button doesn’t load, visit <span style="text-decoration:underline;">innercircle.events/rsvp</span>
-    </div>
+    </p>
   </main>
 
   <script>
-    (function () {
+    (function(){
       const params = new URLSearchParams(location.search);
       let code = params.get('code') || sessionStorage.getItem('innercircle_code') || '';
       code = String(code).toUpperCase().replace(/\s+/g,'').slice(0,24);
 
-      // Persist + reveal code if we have it
-      if (code) {
-        try { sessionStorage.setItem('innercircle_code', code); } catch(_) {}
+      if(code){
+        try{ sessionStorage.setItem('innercircle_code', code); }catch(_){}
         document.getElementById('checkin-code').textContent = code;
         document.getElementById('checkin').style.display = 'block';
       }
 
-      // Forward code to the LAPS gate
+      // Forward code to the gate
       const link = document.getElementById('enter');
       link.href = code ? ('./index.html?code=' + encodeURIComponent(code)) : './index.html';
 
-      // Clean ?code= from the URL
-      if (params.has('code')) {
-        history.replaceState(null, '', location.pathname + location.hash);
-      }
+      // Clean ?code from URL
+      if (params.has('code')) history.replaceState(null, '', location.pathname + location.hash);
     })();
   </script>
 </body>
