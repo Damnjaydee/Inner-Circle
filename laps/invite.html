@@ -116,7 +116,6 @@
       <div class="face back" aria-label="Back of card (tap to flip back)">
         <div class="panel" role="group" aria-label="Event details">
           <h1>LAPS After Party</h1>
-          <div class="sub">An intimate after-hours gathering</div>
 
           <!-- Fill from the EVENT object below -->
           <div class="row"><div class="k">Date</div>     <div class="v" id="dt"></div></div>
@@ -138,12 +137,6 @@
       mapUrl: "https://maps.apple.com/?q=Lower+East+Side,+NYC"
     };
     // =================================
-
-    // Populate back-of-card text
-    dt.textContent  = EVENT.dateText;
-    tm.textContent  = EVENT.timeText;
-    loc.textContent = EVENT.locationText;
-    map.href        = EVENT.mapUrl;
 
     // Flip interactions
     const card = document.getElementById('card');
